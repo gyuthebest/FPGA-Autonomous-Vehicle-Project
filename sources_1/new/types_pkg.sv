@@ -35,9 +35,9 @@ package types_pkg;
 
         logic signed [9:0] approach_speed;
 
+        // Simulation Inputs
         logic [7:0] speed_limit;
 
-        // Simulation Inputs
         logic [1:0] weather;
 
         logic [1:0] rpm;
