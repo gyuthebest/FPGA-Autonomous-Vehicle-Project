@@ -70,7 +70,10 @@ package types_pkg;
         //----------------------------
 
         logic signed [15:0] delta_distance;
-        logic signed [9:0]  delta_speed;
+
+        logic signed [8:0]  delta_speed_x;
+        logic signed [8:0]  delta_speed_y;
+        logic signed [8:0]  delta_speed_z;
 
         logic signed [16:0] delta_accel_x;
         logic signed [16:0] delta_accel_y;
@@ -80,13 +83,17 @@ package types_pkg;
         logic signed [16:0] delta_gyro_y;
         logic signed [16:0] delta_gyro_z;
 
-        logic signed [12:0] delta_temp;
+        logic signed [16:0] delta_incline_x;
+        logic signed [16:0] delta_incline_y;
+        logic signed [16:0] delta_incline_z;
+
+        logic signed [11:0] delta_temp;
 
         logic signed [7:0] delta_hum;
 
-        logic signed [16:0] delta_lux;
+        logic signed [18:0] delta_lux;
 
-        logic signed [8:0] delta_volt;
+        logic signed [10:0] delta_approach_speed;
 
     } processed_data_t;
 

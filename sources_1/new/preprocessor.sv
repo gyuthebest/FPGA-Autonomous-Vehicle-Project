@@ -71,11 +71,20 @@ module preprocessor(
             //--------------------------------------------------------
             // Speed Delta
             //--------------------------------------------------------
-                
-            processed_data.delta_speed =
-                $signed({1'b0, sensor_data_in.speed}) -
-                $signed({1'b0, sensor_data_out.speed});
-            
+
+            processed_data.delta_speed_x =
+                $signed({1'b0, sensor_data_in.speed_x}) -
+                $signed({1'b0, sensor_data_out.speed_x});
+
+            processed_data.delta_speed_y =
+                $signed({1'b0, sensor_data_in.speed_y}) -
+                $signed({1'b0, sensor_data_out.speed_y});
+
+            processed_data.delta_speed_z =
+                $signed({1'b0, sensor_data_in.speed_z}) -
+                $signed({1'b0, sensor_data_out.speed_z});
+
+
             //--------------------------------------------------------
             // Acceleration Delta
             //--------------------------------------------------------
@@ -107,7 +116,23 @@ module preprocessor(
             processed_data.delta_gyro_z =
                 sensor_data_in.gyro_z -
                 sensor_data_out.gyro_z;
-            
+
+            //--------------------------------------------------------
+            // Incline Delta
+            //--------------------------------------------------------
+
+            processed_data.delta_incline_x =
+                sensor_data_in.incline_x -
+                sensor_data_out.incline_x;
+
+            processed_data.delta_incline_y =
+                sensor_data_in.incline_y -
+                sensor_data_out.incline_y;
+
+            processed_data.delta_incline_z =
+                sensor_data_in.incline_z -
+                sensor_data_out.incline_z;
+
             //--------------------------------------------------------
             // Temperature Delta
             //--------------------------------------------------------
@@ -133,12 +158,12 @@ module preprocessor(
                 $signed({1'b0, sensor_data_out.lux});
 
             //--------------------------------------------------------
-            // Voltage Delta
+            // Approach Speed Delta
             //--------------------------------------------------------
 
-            processed_data.delta_volt =
-                $signed({1'b0, sensor_data_in.voltage}) -
-                $signed({1'b0, sensor_data_out.voltage});
+            processed_data.delta_approach_speed =
+                sensor_data_in.approach_speed -
+                sensor_data_out.approach_speed;
         end
     end
         
