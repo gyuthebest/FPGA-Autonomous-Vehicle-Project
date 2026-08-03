@@ -15,11 +15,11 @@ module Sensor_reiability(
     input logic clk,
     input logic rst_n,
     input logic valid, // 추가
-    input sensor_data_T sensor_data_in, 
+    input sensor_data_t sensor_data_in, 
     input logic [7:0] Speed, // Speed 어디로 오는지 확인해야함
     
     output logic out_in_range_distance, jump_error_distance, is_stuck_distance, noise_high_distance, // output 추가
-    output logic out_in_range_appspeed, jump_error_appspeed, is_stuck_appspeed, noise_high_appspeed,
+    output logic out_in_range_approach_speed, jump_error_approach_speed, is_stuck_approach_speed, noise_high_approach_speed,
     output logic out_in_range_accel_x, jump_error_accel_x, is_stuck_accel_x, noise_high_accel_x,
     output logic out_in_range_accel_y, jump_error_accel_y, is_stuck_accel_y, noise_high_accel_y,
     output logic out_in_range_accel_z, jump_error_accel_z, is_stuck_accel_z, noise_high_accel_z,
@@ -29,22 +29,20 @@ module Sensor_reiability(
     output logic out_in_range_lux, jump_error_lux, noise_high_lux,
     output logic out_in_range_temp, jump_error_temp, noise_high_temp,
     output logic out_in_range_hum, jump_error_hum, noise_high_hum,
-    output logic out_in_range_voltage, jump_error_voltage, noise_high_voltage,
 
-    output logic is_timeout_distance, is_timeout_appspeed,
+    output logic is_timeout_distance, is_timeout_approach_speed,
     output logic is_timeout_accel_x, is_timeout_accel_y, is_timeout_accel_z,
     output logic is_timeout_gyro_x, is_timeout_gyro_y, is_timeout_gyro_z,
-    output logic is_timeout_lux, is_timeout_temp, is_timeout_hum, is_timeout_voltage,
+    output logic is_timeout_lux, is_timeout_temp, is_timeout_hum,
 
-    output logic temperature_warn,
-    output logic voltage_warn
+    output logic temperature_warn
     );
   
     
 ///distance reliability
 //거리 stuck check 애매함 
 
-    range_check_signed #(
+    range_check #(
     .WIDTH (16),
     .THRESHOLD_MAX(20000),
     .THRESHOLD_MIN(0),
@@ -112,51 +110,51 @@ module Sensor_reiability(
 
 // 접근속도 reliability. 의문: 확인필요
     range_check_signed #(
-        .WIDTH(16), 
+        .WIDTH(10), 
         .THRESHOLD_MAX(278), 
         .THRESHOLD_MIN(-278), 
         .USE_MIN(1), 
         .USE_MAX(1)
-        )u_range_appspeed (
+        )u_range_approach_speed (
         .clk(clk), 
         .rst_n(rst_n), 
-        .value(sensor_data_in.appspeed), 
-        .out_in_range(out_in_range_appspeed)
+        .value(sensor_data_in.approach_speed), 
+        .out_in_range(out_in_range_approach_speed)
     );
 
     jump_check #(
-        .WIDTH(16), 
+        .WIDTH(10), 
         .THRESHOLD(200) //시뮬레이션 통해 확인 필요
-    )u_jump_appspeed (
+    )u_jump_approach_speed (
         .clk(clk), 
         .rst_n(rst_n), 
-        .current_data(sensor_data_in.appspeed), 
+        .current_data(sensor_data_in.approach_speed), 
         .temp_except(1'b0), 
-        .jump_error(jump_error_appspeed)
+        .jump_error(jump_error_approach_speed)
     );
 
     stuck_check #(
-        .WIDTH(16), 
+        .WIDTH(10), 
         .HISTORY(10), 
         .THRESHOLD(1)
-    )u_stuck_appspeed (
+    )u_stuck_approach_speed (
         .clk(clk), 
         .rst_n(rst_n), 
         .new_sample(valid), 
-        .current_data(sensor_data_in.appspeed), // 새 신호 안 만들고 갖다쓴거임.
+        .current_data(sensor_data_in.approach_speed), // 새 신호 안 만들고 갖다쓴거임.
         .check_enable(distance_stuck_check_en), 
-        .is_stuck(is_stuck_appspeed)
+        .is_stuck(is_stuck_approach_speed)
     );
 
     noise_check #(
-        .WIDTH(16), 
+        .WIDTH(10), 
         .HISTORY(10)
-    )u_noise_appspeed (
+    )u_noise_approach_speed (
         .clk(clk), 
         .rst_n(rst_n), 
-        .jump_error(jump_error_appspeed), 
+        .jump_error(jump_error_approach_speed), 
         .new_sample(valid), 
-        .noise_high(noise_high_appspeed)
+        .noise_high(noise_high_approach_speed)
     );
 
 
@@ -478,7 +476,7 @@ module Sensor_reiability(
  //lux
 
     range_check_signed #(
-    .WIDTH (17),
+    .WIDTH (19),
     .THRESHOLD_MAX(30720),
     .THRESHOLD_MIN(10),
     .USE_MIN(1),
@@ -491,7 +489,7 @@ module Sensor_reiability(
 );
    
     jump_check #(
-    .WIDTH(17),
+    .WIDTH(19),
     .THRESHOLD(10000)
 )u_jump_lux(
     .clk(clk),
@@ -503,7 +501,7 @@ module Sensor_reiability(
    
     
      noise_check #(
-    .WIDTH(17),
+    .WIDTH(19),
     .HISTORY(10)
 )u_noise_lux(
     .clk(clk),
@@ -577,7 +575,7 @@ module Sensor_reiability(
     assign temp_except = weather_change || weather_change_next;
 
     range_check_signed #(
-    .WIDTH (12),
+    .WIDTH (11),
     .THRESHOLD_MAX(220),
     .THRESHOLD_MIN(-30),
     .USE_MIN(1),
@@ -590,7 +588,7 @@ module Sensor_reiability(
 );
    
     jump_check #(    
-    .WIDTH(12),
+    .WIDTH(11),
     .THRESHOLD(50)
 )u_jump_temperature(
     .clk(clk),
@@ -601,7 +599,7 @@ module Sensor_reiability(
     );
     
      noise_check #(
-    .WIDTH(12),
+    .WIDTH(11),
     .HISTORY(10)
 )u_noise_temperature(
     .clk(clk),
@@ -611,52 +609,12 @@ module Sensor_reiability(
     .noise_high(noise_high_temp)
     );
 
-//voltage
-//stuck check 빼도 되는거인가... ㅇㅇ
-
-    range_check_signed #(
-    .WIDTH (9),
-    .THRESHOLD_MAX(200),
-    .THRESHOLD_MIN(0),
-    .USE_MIN(0),
-    .USE_MAX(1)
-    )u_range_voltage(
-    .clk(clk),
-    .rst_n(rst_n),
-    .value(sensor_data_in.voltage),
-    .out_in_range(out_in_range_voltage)
-);
-   
-    jump_check #(
-    .WIDTH(9),
-    .THRESHOLD(20)
-)u_jump_voltage(
-    .clk(clk),
-    .rst_n(rst_n),
-    .current_data(sensor_data_in.voltage),
-    .temp_except(1'b0),
-    .jump_error(jump_error_voltage)
-    );
-    
-     noise_check #(
-    .WIDTH(9),
-    .HISTORY(10)
-)u_noise_voltage(
-    .clk(clk),
-    .rst_n(rst_n),
-    .jump_error(jump_error_voltage),
-    .new_sample(valid),
-    .noise_high(noise_high_voltage)
-    );
-
-//온도, 전압 경고
-    temp_voltage_checker u_temp_voltage_checker( 
+//온도 경고
+    temp_checker u_temp_checker( 
     .clk(clk),
     .rst_n(rst_n),
     .temperature(sensor_data_in.temperature),
-    .voltage(sensor_data_in.voltage),
-    .temperature_warn(temperature_warn),
-    .voltage_warn(voltage_warn)
+    .temperature_warn(temperature_warn)
     );
     
 
@@ -674,7 +632,7 @@ module Sensor_reiability(
     );
     
     assign is_timeout_distance  = is_time_out;
-    assign is_timeout_appspeed  = is_time_out;
+    assign is_timeout_approach_speed  = is_time_out;
     assign is_timeout_accel_x   = is_time_out;
     assign is_timeout_accel_y   = is_time_out;
     assign is_timeout_accel_z   = is_time_out;
@@ -684,7 +642,6 @@ module Sensor_reiability(
     assign is_timeout_lux       = is_time_out;
     assign is_timeout_temp      = is_time_out;
     assign is_timeout_hum       = is_time_out;
-    assign is_timeout_voltage   = is_time_out;
     
 endmodule
 

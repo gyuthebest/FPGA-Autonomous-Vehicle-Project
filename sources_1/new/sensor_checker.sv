@@ -11,28 +11,26 @@
 //signed, unsinged 둘다 별로 상관 없을 듯
 //WIDTH - sensor data 폭, THRESHOLD는 각각 range check 시 범위, USE_MIN, USE_MAX는 min, max 중 안 쓰는게 있으면 0으로 지정하여 기능을 끄도록 설계
 //clk, rst_n 은 필요 없을 수 있는데 일단 모든 모듈의 통일성을 위해 넣어둠, value는 받는 센서 측정값에 해당
-module range_check_signed #(
+module range_check #(
     parameter WIDTH = 12,
     parameter THRESHOLD_MAX = 100,
     parameter THRESHOLD_MIN = 100,
-    parameter USE_MIN = 1,
-    parameter USE_MAX = 1
+    parameter USE_MIN = 1'b1,
+    parameter USE_MAX = 1'b1
 )( 
-    input logic clk,
-    input logic rst_n,
-    input logic signed [WIDTH-1:0] value, // 수정: signed
-    output logic out_in_range
+    input logic signed [WIDTH-1:0] sensor_data, // 수정: signed
+    output logic range_error
     );
 //기준 이상 밑 이하의 값이 나올 경우 out_in_range, USE_MIN,USE_MAX와 AND 처리 되어있어서 0이 될시 자동적으로 if 문 안이 0이됨
     always_comb begin
-    out_in_range = 0;
+    range_error = 1'b0;
 
-    if (USE_MIN && (value < THRESHOLD_MIN))
-        out_in_range = 1;
+    if (USE_MIN && (sensor_data < THRESHOLD_MIN))
+        range_error = 1'b1;
 
-    if (USE_MAX && (value > THRESHOLD_MAX))
-        out_in_range = 1;
-end
+    if (USE_MAX && (sensor_data > THRESHOLD_MAX))
+        range_error = 1'b1;
+    end
 endmodule
 
 
@@ -42,34 +40,19 @@ module jump_check #(
     parameter WIDTH = 12,
     parameter THRESHOLD = 100
 )(
-    input logic clk,
-    input logic rst_n,
-    input logic signed [WIDTH-1:0] current_data,
-    input logic temp_except, //온도 예외처리용. 1이면 jump check 무조건 이상 없는것
+    input logic signed [WIDTH-1:0] delta_tendency,
+    input logic distance_except,
+    input logic weather_change,
     output logic jump_error
     );
 ///////////////////////////////////////////////////////////  
-//prev_data는 기존 값, diff는 절댓값에 해당한다. 아래는 diff, prev_data 정의한것
- logic signed [WIDTH-1:0] prev_data; 
- logic signed [WIDTH-1:0] diff; 
- 
-    always_ff @(posedge clk) begin //수정: 동기리셋
-        if(!rst_n) prev_data <= '0; 
-        else prev_data <= current_data; 
-    end 
-        
-    always_comb begin if (current_data >= prev_data) 
-        diff = current_data - prev_data; 
-        else diff = prev_data - current_data; 
-    end 
-
     //절댓값이 기준값보다 작으면 jump_error=0. temp_except = 1(날씨 전환되는 시점)이면 무조건 0
     always_comb begin 
-        if (temp_except)
-           jump_error = 0;
-        else if (diff < THRESHOLD ) 
-	       jump_error =0; 
-        else jump_error = 1; 
+        if (weather_change || distance_except)
+           jump_error = 1'b0;
+        else if (delta_tendency >= -THRESHOLD && delta_tendency <= THRESHOLD) 
+	       jump_error = 1'b0; 
+        else jump_error = 1'b1; 
     end 
 endmodule
 
@@ -84,30 +67,21 @@ module stuck_check #(
     input logic clk,
     input logic rst_n,
     input logic new_sample,
-    input logic signed [WIDTH-1:0] current_data,
+    input logic signed [WIDTH-1:0] sensor_data,
     input logic check_enable,
-    output logic is_stuck
+    output logic stuck_error
     );
-    logic signed [WIDTH-1:0] prev_data;
     logic [HISTORY-1:0] stuck_history;
-    logic signed [WIDTH-1:0] diff;
     logic [$clog2(HISTORY+1)-1:0] stuck_count;
     
-    
-    always_comb begin 
-        if (current_data >= prev_data) 
-        diff = current_data - prev_data; 
-    else 
-        diff = prev_data - current_data; 
-    end 
     //우선 reset, 그후 new sample이 들어올때 stuck history 는 left shift 하면서, (diff < THRESHOLD)&&check_enable가 true면 1, 아니면 0을 LSB에 채운다. 그후 prev_data를 업데이트
     //즉 stuck_history의 경우 기존 10개의 값에 대해 check를 진행하게 됨, 그중 특정 개수만큼이 1이면 stuck 으로 판단
     //이때 check_enable의 경우에는 조건식이 온다. 예를 들어 distance != 20000이면 distance 이 20000인 경우에는 자동적으로 0이되게 하던가 혹은 weather delta !=0 이면 날씨가 바뀔 때 1이 되게하는 등 
     //조건을 만족하게
     always_ff @(posedge clk) begin //수정: 동기 리셋
-    if (!rst_n) begin 
-    prev_data <= '0; 
-    stuck_history <= '0; 
+        if (!rst_n) begin 
+        prev_data <= '0; 
+        stuck_history <= '0; 
     end 
     else if (new_sample) begin 
     stuck_history <= { stuck_history[HISTORY-2:0], (diff < THRESHOLD)&&check_enable}; 
@@ -196,21 +170,18 @@ end
 
 endmodule
    
-// 여기서부터는 temperature, voltage 특정 범위에 따라 warning 뜨게 하는 모듈에 해당한다
- //temperature_warn, voltage_warn
-module temp_voltage_checker(
+// 여기서부터는 temperature 특정 범위에 따라 warning 뜨게 하는 모듈에 해당한다
+ //temperature_warn
+module temp_checker(
     input logic clk,
     input logic rst_n,
-    input logic signed [11:0] temperature,
-    input logic [7:0] voltage,
+    input logic signed [10:0] temperature,
 
-    output logic temperature_warn,
-    output logic voltage_warn
+    output logic temperature_warn
     );
     
 always_comb begin
     temperature_warn = (temperature <= -200) || (temperature >= 500); // 추가
-    voltage_warn = (voltage < 112); // 추가
 end
 
 endmodule

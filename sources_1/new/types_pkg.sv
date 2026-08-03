@@ -87,11 +87,11 @@ package types_pkg;
         logic signed [16:0] delta_incline_y;
         logic signed [16:0] delta_incline_z;
 
-        logic signed [11:0] delta_temp;
+        logic signed [10:0] delta_temp;
 
         logic signed [7:0] delta_hum;
 
-        logic signed [18:0] delta_lux;
+        logic signed [16:0] delta_lux;
 
         logic signed [10:0] delta_approach_speed;
 
