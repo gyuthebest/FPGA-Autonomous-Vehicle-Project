@@ -12,7 +12,7 @@
 		// Width of S_AXI data bus
 		parameter integer C_S_AXI_DATA_WIDTH	= 32,
 		// Width of S_AXI address bus
-		parameter integer C_S_AXI_ADDR_WIDTH	= 5
+		parameter integer C_S_AXI_ADDR_WIDTH	= 6
 	)
 	(
 		// Users to add ports here
@@ -101,11 +101,11 @@
 	// ADDR_LSB = 2 for 32 bits (n downto 2)
 	// ADDR_LSB = 3 for 64 bits (n downto 3)
 	localparam integer ADDR_LSB = (C_S_AXI_DATA_WIDTH/32) + 1;
-	localparam integer OPT_MEM_ADDR_BITS = 2;
+	localparam integer OPT_MEM_ADDR_BITS = 3;
 	//----------------------------------------------
 	//-- Signals for user logic register space example
 	//------------------------------------------------
-	//-- Number of Slave Registers 7
+	//-- Number of Slave Registers 10
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg0;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg1;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg2;
@@ -113,6 +113,9 @@
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg4;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg5;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg6;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg7;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg8;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg9;
 	wire	 slv_reg_rden;
 	wire	 slv_reg_wren;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	 reg_data_out;
@@ -232,60 +235,84 @@
 	      slv_reg4 <= 0;
 	      slv_reg5 <= 0;
 	      slv_reg6 <= 0;
-	    end 
+	      slv_reg7 <= 0;
+	      slv_reg8 <= 0;
+	      slv_reg9 <= 0;
+	    end
 	  else begin
 	    if (slv_reg_wren)
 	      begin
 	        case ( axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
-	          3'h0:
+	          4'h0:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
 	                // Respective byte enables are asserted as per write strobes 
 	                // Slave register 0
 	                slv_reg0[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
 	              end  
-	          3'h1:
+	          4'h1:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
+	                // Respective byte enables are asserted as per write strobes
 	                // Slave register 1
 	                slv_reg1[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
-	          3'h2:
+	              end
+	          4'h2:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
 	                // Respective byte enables are asserted as per write strobes 
 	                // Slave register 2
 	                slv_reg2[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
 	              end  
-	          3'h3:
+	          4'h3:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
+	                // Respective byte enables are asserted as per write strobes
 	                // Slave register 3
 	                slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
-	          3'h4:
+	              end
+	          4'h4:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
 	                // Respective byte enables are asserted as per write strobes 
 	                // Slave register 4
 	                slv_reg4[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
 	              end  
-	          3'h5:
+	          4'h5:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
+	                // Respective byte enables are asserted as per write strobes
 	                // Slave register 5
 	                slv_reg5[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
-	          3'h6:
+	              end
+	          4'h6:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
+	                // Respective byte enables are asserted as per write strobes
 	                // Slave register 6
 	                slv_reg6[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
+	              end
+	          4'h7:
+	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
+	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
+	                // Respective byte enables are asserted as per write strobes
+	                // Slave register 7
+	                slv_reg7[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+	              end
+	          4'h8:
+	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
+	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
+	                // Respective byte enables are asserted as per write strobes
+	                // Slave register 8
+	                slv_reg8[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+	              end
+	          4'h9:
+	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
+	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
+	                // Respective byte enables are asserted as per write strobes
+	                // Slave register 9
+	                slv_reg9[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+	              end
 	          default : begin
 	                      slv_reg0 <= slv_reg0;
 	                      slv_reg1 <= slv_reg1;
@@ -294,6 +321,9 @@
 	                      slv_reg4 <= slv_reg4;
 	                      slv_reg5 <= slv_reg5;
 	                      slv_reg6 <= slv_reg6;
+	                      slv_reg7 <= slv_reg7;
+	                      slv_reg8 <= slv_reg8;
+	                      slv_reg9 <= slv_reg9;
 	                    end
 	        endcase
 	      end
@@ -402,13 +432,16 @@
 	begin
 	      // Address decoding for reading registers
 	      case ( axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
-	        3'h0   : reg_data_out <= slv_reg0;
-	        3'h1   : reg_data_out <= slv_reg1;
-	        3'h2   : reg_data_out <= slv_reg2;
-	        3'h3   : reg_data_out <= slv_reg3;
-	        3'h4   : reg_data_out <= slv_reg4;
-	        3'h5   : reg_data_out <= slv_reg5;
-	        3'h6   : reg_data_out <= slv_reg6;
+	        4'h0   : reg_data_out <= slv_reg0;
+	        4'h1   : reg_data_out <= slv_reg1;
+	        4'h2   : reg_data_out <= slv_reg2;
+	        4'h3   : reg_data_out <= slv_reg3;
+	        4'h4   : reg_data_out <= slv_reg4;
+	        4'h5   : reg_data_out <= slv_reg5;
+	        4'h6   : reg_data_out <= slv_reg6;
+	        4'h7   : reg_data_out <= slv_reg7;
+	        4'h8   : reg_data_out <= slv_reg8;
+	        4'h9   : reg_data_out <= slv_reg9;
 	        default : reg_data_out <= 0;
 	      endcase
 	end
@@ -434,44 +467,56 @@
 
 	// Add user logic here
     always_comb begin
-    // ±¸Á¶Ã¼ÀÇ ¸ðµç ºñÆ®¸¦ ¿ì¼± 0À¸·Î ÃÊ±âÈ­
+    // ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ì¼± 0ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
     sensor_data_out = '0;
 
     // slv_reg0
-    sensor_data_out.distance    = slv_reg0[14:0];
-    sensor_data_out.speed       = slv_reg0[22:15];
-    sensor_data_out.weather     = slv_reg0[24:23];
-    sensor_data_out.rpm         = slv_reg0[26:25];
-    sensor_data_out.manual_mode = slv_reg0[27];
-    sensor_data_out.accelerator = slv_reg0[31:28];
+    sensor_data_out.accel_x        = $signed(slv_reg0[15:0]);
+    sensor_data_out.accel_y        = $signed(slv_reg0[31:16]);
 
     // slv_reg1
-    sensor_data_out.accel_x     = $signed(slv_reg1[15:0]);
-    sensor_data_out.accel_y     = $signed(slv_reg1[31:16]);
+    sensor_data_out.accel_z        = $signed(slv_reg1[15:0]);
+    sensor_data_out.gyro_x         = $signed(slv_reg1[31:16]);
 
     // slv_reg2
-    sensor_data_out.accel_z     = $signed(slv_reg2[15:0]);
-    sensor_data_out.gyro_x      = $signed(slv_reg2[31:16]);
+    sensor_data_out.gyro_y         = $signed(slv_reg2[15:0]);
+    sensor_data_out.gyro_z         = $signed(slv_reg2[31:16]);
 
     // slv_reg3
-    sensor_data_out.gyro_y      = $signed(slv_reg3[15:0]);
-    sensor_data_out.gyro_z      = $signed(slv_reg3[31:16]);
+    sensor_data_out.incline_x      = $signed(slv_reg3[15:0]);
+    sensor_data_out.incline_y      = $signed(slv_reg3[31:16]);
 
     // slv_reg4
-    sensor_data_out.temperature = $signed(slv_reg4[11:0]);
-    sensor_data_out.humidity    = slv_reg4[18:12];
-    sensor_data_out.voltage     = slv_reg4[26:19];
-    sensor_data_out.brake       = slv_reg4[30:27];
-    sensor_data_out.headlight   = slv_reg4[31];
+    sensor_data_out.incline_z      = $signed(slv_reg4[15:0]);
+    sensor_data_out.speed_x        = slv_reg4[23:16];
+    sensor_data_out.speed_y        = slv_reg4[31:24];
 
     // slv_reg5
-    sensor_data_out.lux         = slv_reg5[15:0];
-    sensor_data_out.steering    = slv_reg5[20:16];
-    sensor_data_out.gear        = slv_reg5[22:21];
-    sensor_data_out.hazard      = slv_reg5[23];
+    sensor_data_out.distance       = slv_reg5[14:0];
+    sensor_data_out.approach_speed = $signed(slv_reg5[24:15]);
+    sensor_data_out.humidity       = slv_reg5[31:25];
 
     // slv_reg6
-    sample_seq                  = slv_reg6;
+    sensor_data_out.lux            = slv_reg6[17:0];
+    sensor_data_out.speed_z        = slv_reg6[25:18];
+    sensor_data_out.accelerator    = slv_reg6[29:26];
+    sensor_data_out.weather        = slv_reg6[31:30];
+
+    // slv_reg7
+    sensor_data_out.temperature    = $signed(slv_reg7[10:0]);
+    sensor_data_out.speed_limit    = slv_reg7[18:11];
+    sensor_data_out.steering       = slv_reg7[23:19];
+    sensor_data_out.brake          = slv_reg7[27:24];
+    sensor_data_out.rpm            = slv_reg7[29:28];
+    sensor_data_out.gear           = slv_reg7[31:30];
+
+    // slv_reg8
+    sensor_data_out.manual_mode    = slv_reg8[0];
+    sensor_data_out.headlight      = slv_reg8[1];
+    sensor_data_out.hazard         = slv_reg8[2];
+
+    // slv_reg9
+    sample_seq                     = slv_reg9;
     end
 	// User logic ends
 

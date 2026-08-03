@@ -10,7 +10,10 @@ package types_pkg;
 
         // Sensor Inputs
         logic [14:0] distance;
-        logic [7:0]  speed;
+
+        logic [7:0]  speed_x;
+        logic [7:0]  speed_y;
+        logic [7:0]  speed_z;
 
         logic signed [15:0] accel_x;
         logic signed [15:0] accel_y;
@@ -20,13 +23,19 @@ package types_pkg;
         logic signed [15:0] gyro_y;
         logic signed [15:0] gyro_z;
 
-        logic signed [11:0] temperature;
+        logic signed [15:0] incline_x;
+        logic signed [15:0] incline_y;
+        logic signed [15:0] incline_z;
+
+        logic signed [10:0] temperature;
 
         logic [6:0] humidity;
 
-        logic [15:0] lux;
+        logic [17:0] lux;
 
-        logic [7:0] voltage;
+        logic signed [9:0] approach_speed;
+
+        logic [7:0] speed_limit;
 
         // Simulation Inputs
         logic [1:0] weather;
