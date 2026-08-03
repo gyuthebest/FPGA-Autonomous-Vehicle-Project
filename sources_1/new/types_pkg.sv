@@ -60,44 +60,6 @@ package types_pkg;
 
 
     //============================================================
-    // Preprocessor Output
-    //============================================================
-
-    typedef struct packed {
-
-        //----------------------------
-        // Derived Values
-        //----------------------------
-
-        logic signed [15:0] delta_distance;
-
-        logic signed [8:0]  delta_speed_x;
-        logic signed [8:0]  delta_speed_y;
-        logic signed [8:0]  delta_speed_z;
-
-        logic signed [16:0] delta_accel_x;
-        logic signed [16:0] delta_accel_y;
-        logic signed [16:0] delta_accel_z;
-
-        logic signed [16:0] delta_gyro_x;
-        logic signed [16:0] delta_gyro_y;
-        logic signed [16:0] delta_gyro_z;
-
-        logic signed [16:0] delta_incline_x;
-        logic signed [16:0] delta_incline_y;
-        logic signed [16:0] delta_incline_z;
-
-        logic signed [10:0] delta_temp;
-
-        logic signed [7:0] delta_hum;
-
-        logic signed [16:0] delta_lux;
-
-        logic signed [10:0] delta_approach_speed;
-
-    } processed_data_t;
-
-    //============================================================
     // Reliability Output
     //============================================================
 

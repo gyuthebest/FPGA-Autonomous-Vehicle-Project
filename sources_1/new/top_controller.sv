@@ -104,7 +104,6 @@ module top_controller #(
     // Preprocessor 인스턴스
     //---------------------------
     sensor_data_t sensor_data_s0;
-    processed_data_t process_data_s0;
     logic [31:0] sample_seq_s1;
     
     preprocessor u_preprocessor (
@@ -112,7 +111,6 @@ module top_controller #(
         .rst_n              (S_AXI_ARESETN),
         .sensor_data_in     (sensor_data_axi),
         .sensor_data_out    (sensor_data_s0),
-        .processed_data_out (processed_data_s0),
         .sample_seq         (sample_seq_axi),
         .sample_seq_s1      (sample_seq_s1)
     );
