@@ -6,14 +6,16 @@ module Driving_based_on_Risk #(
     input logic clk,
     input logic rst_n,
     input logic is_trash,           
-    input logic [31:0] sample_seq_s1,  
+    input logic [31:0] sample_seq_s1_in,  
+    input logic            valid_s1_in,
 
     input sensor_data_t sensor_data_in,
     input processed_data_t processed_data_in, // Z축 가속도 변화량(17-bit) 수신용
     
     output sensor_data_t sensor_data_out,
     output logic [4:0] steering_limit_out,    // Rate Limit 방출 포트
-    output logic [31:0] sample_seq_s
+    output logic [31:0] sample_seq_s1_out,
+    output logic            valid_s1_out
 );
 
     // =========================================================================
@@ -395,7 +397,8 @@ module Driving_based_on_Risk #(
             sensor_data_out.manual_mode <= sensor_data_in.manual_mode;
             
             steering_limit_out <= 5'd10; 
-            sample_seq_s <= sample_seq_s1;
+            sample_seq_s1_out <= sample_seq_s1_in;
+            valid_s1_out <= valid_s1_in;
             
             gear_cooldown_cnt <= 0;
             shift_count <= 2'd0;
@@ -413,7 +416,8 @@ module Driving_based_on_Risk #(
             sensor_data_out.manual_mode <= sensor_data_in.manual_mode;
             
             steering_limit_out <= Ri__steering_limit_posture;
-            sample_seq_s <= sample_seq_s1;
+            sample_seq_s1_out <= sample_seq_s1_in;
+            valid_s1_out <= valid_s1_in;
             
             prev_collision_risk <= collision_risk;
             
