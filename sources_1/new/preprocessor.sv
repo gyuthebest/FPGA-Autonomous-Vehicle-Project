@@ -12,6 +12,7 @@ module preprocessor(
     //------------------------------------------------------------
 
     input  sensor_data_t   sensor_data_in,
+    input  sim_data_t      sim_data_in,
     input  logic [31:0]    sample_seq,
 
     //------------------------------------------------------------
@@ -19,7 +20,10 @@ module preprocessor(
     //------------------------------------------------------------
 
     output sensor_data_t    sensor_data_out,
+    output sim_data_t       sim_data_out,
+    output sensor_data_t    prev_sensor_data_out,
     output processed_data_t processed_data_out,
+    output processed_data_t prev_processed_data_out,
     output logic            valid_s1,
     output logic [31:0]     sample_seq_s1 
 );
@@ -46,8 +50,8 @@ module preprocessor(
     //------------------------------------------------------------
 
     processed_data_t processed_data;
-
-    logic first_sample;
+    processed_data_t prev_processed_data;
+    logic [1:0]      drop_cnt;
 
     //------------------------------------------------------------
     // Next-State Logic
@@ -55,10 +59,12 @@ module preprocessor(
 
     
     always_comb begin
+
         processed_data = processed_data_out;
-        
-        // Ignore first sample (Can't calculate delta)
-        if(valid_s0 && !first_sample) begin
+        prev_processed_data = prev_processed_data_out;
+
+        // Ignore two sample (Can't calculate delta)
+        if(valid_s0 && !drop_cnt) begin
 
             //--------------------------------------------------------
             // Distance Delta
@@ -164,6 +170,122 @@ module preprocessor(
             processed_data.delta_approach_speed =
                 sensor_data_in.approach_speed -
                 sensor_data_out.approach_speed;
+        
+            //--------------------------------------------------------
+            // Previous Distance Delta
+            //--------------------------------------------------------
+            
+            prev_processed_data.delta_distance =
+                $signed({1'b0, sensor_data_out.distance}) -
+                $signed({1'b0, prev_sensor_data_out.distance});
+                
+            //--------------------------------------------------------
+            // Previous Speed Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_speed_x =
+                $signed({1'b0, sensor_data_out.speed_x}) -
+                $signed({1'b0, prev_sensor_data_out.speed_x});
+
+            prev_processed_data.delta_speed_y =
+                $signed({1'b0, sensor_data_out.speed_y}) -
+                $signed({1'b0, prev_sensor_data_out.speed_y});
+
+            prev_processed_data.delta_speed_z =
+                $signed({1'b0, sensor_data_out.speed_z}) -
+                $signed({1'b0, prev_sensor_data_out.speed_z});
+
+
+            //--------------------------------------------------------
+            // Previous Acceleration Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_accel_x =
+                sensor_data_out.accel_x -
+                prev_sensor_data_out.accel_x;
+
+            prev_processed_data.delta_accel_y =
+                sensor_data_out.accel_y -
+                prev_sensor_data_out.accel_y;
+
+            prev_processed_data.delta_accel_z =
+                sensor_data_out.accel_z -
+                prev_sensor_data_out.accel_z;
+
+            //--------------------------------------------------------
+            // Previous Gyroscope Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_gyro_x =
+                sensor_data_out.gyro_x -
+                prev_sensor_data_out.gyro_x;
+
+            prev_processed_data.delta_gyro_y =
+                sensor_data_out.gyro_y -
+                prev_sensor_data_out.gyro_y;
+
+            prev_processed_data.delta_gyro_z =
+                sensor_data_out.gyro_z -
+                prev_sensor_data_out.gyro_z;
+
+            //--------------------------------------------------------
+            // Previous Incline Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_incline_x =
+                sensor_data_out.incline_x -
+                prev_sensor_data_out.incline_x;
+
+            prev_processed_data.delta_incline_y =
+                sensor_data_out.incline_y -
+                prev_sensor_data_out.incline_y;
+
+            prev_processed_data.delta_incline_z =
+                sensor_data_out.incline_z -
+                prev_sensor_data_out.incline_z;
+
+            //--------------------------------------------------------
+            // Previous Temperature Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_temp =
+                sensor_data_out.temperature -
+                prev_sensor_data_out.temperature;
+
+            //--------------------------------------------------------
+            // Previous Humidity Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_hum =
+                $signed({1'b0, sensor_data_out.humidity}) -
+                $signed({1'b0, prev_sensor_data_out.humidity});
+
+            //--------------------------------------------------------
+            // Previous Lux Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_lux =
+                $signed({1'b0, sensor_data_out.lux}) -
+                $signed({1'b0, prev_sensor_data_out.lux});
+
+            //--------------------------------------------------------
+            // Previous Approach Speed Delta
+            //--------------------------------------------------------
+
+            prev_processed_data.delta_approach_speed =
+                sensor_data_out.approach_speed -
+                prev_sensor_data_out.approach_speed;
+
+            //-------------------------
+            // Weather Change
+            //-------------------------
+        
+            if(sim_data_out.weather != sim_data_in.weather) begin
+                processed_data.weather_change = 1'b1;
+            end
+            else begin
+                processed_data.weather_change = 1'b0;
+            end
         end
     end
         
@@ -174,11 +296,14 @@ module preprocessor(
     always_ff @(posedge clk) begin
 
         if(!rst_n) begin
-            processed_data_out  <= '0;
-            sensor_data_out     <= '0;
-            first_sample        <= 1'b1;
-            valid_s1            <= 1'b0;
-            sample_seq_s1       <= 32'd0;
+            sensor_data_out         <= '0;
+            sim_data_out            <= '0;
+            prev_sensor_data_out    <= '0;
+            processed_data_out      <= '0;
+            prev_processed_data_out <= '0;
+            drop_cnt                <= 2'b10;
+            valid_s1                <= 1'b0;
+            sample_seq_s1           <= 32'd0;
         end
         else begin
             
@@ -191,23 +316,35 @@ module preprocessor(
                 // Always
                 sample_seq_s1 <= sample_seq;
                 sensor_data_out <= sensor_data_in;
+                sim_data_out    <= sim_data_in;
                 
                 //--------------------------------------------
-                // First Valid Sample
+                // First, Second Sample
                 //--------------------------------------------
 
-                if(first_sample) begin
+                if(drop_cnt=2'b10) begin
+                    prev_sensor_data_out <= '0;
                     processed_data_out <= '0;
+                    prev_processed_data_out <= '0;
                     valid_s1 <= 1'b0;
-                    first_sample <= 1'b0;
+                    drop_cnt <= 2'b01;
                 end
-
+                else if(drop_cnt=2'b01) begin
+                    prev_sensor_data_out <= sensor_data_out;
+                    processed_data_out <= '0;
+                    prev_processed_data_out <= '0;
+                    valid_s1 <= 1'b0;
+                    drop_cnt <= 2'b00;
+                end
+                
                 //--------------------------------------------
                 // Normal Operation
                 //--------------------------------------------
 
                 else begin
+                    prev_sensor_data_out <= sensor_data_out;
                     processed_data_out <= processed_data;
+                    prev_processed_data_out <= prev_processed_data;
                     valid_s1 <= valid_s0;
                 end
             end

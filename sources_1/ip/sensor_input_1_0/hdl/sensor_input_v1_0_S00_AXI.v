@@ -17,6 +17,7 @@
 	(
 		// Users to add ports here
         output sensor_data_t sensor_data_out,
+        output sim_data_t    sim_data_out,
         output logic [31:0]  sample_seq,
 		// User ports ends
 		// Do not modify the ports beyond this line
@@ -499,21 +500,21 @@
     // slv_reg6
     sensor_data_out.lux            = slv_reg6[17:0];
     sensor_data_out.speed_z        = slv_reg6[25:18];
-    sensor_data_out.accelerator    = slv_reg6[29:26];
-    sensor_data_out.weather        = slv_reg6[31:30];
+    sim_data_out.accelerator    = slv_reg6[29:26];
+    sim_data_out.weather        = slv_reg6[31:30];
 
     // slv_reg7
     sensor_data_out.temperature    = $signed(slv_reg7[10:0]);
-    sensor_data_out.speed_limit    = slv_reg7[18:11];
-    sensor_data_out.steering       = slv_reg7[23:19];
-    sensor_data_out.brake          = slv_reg7[27:24];
-    sensor_data_out.rpm            = slv_reg7[29:28];
-    sensor_data_out.gear           = slv_reg7[31:30];
+    sim_data_out.speed_limit    = slv_reg7[18:11];
+    sim_data_out.steering       = slv_reg7[23:19];
+    sim_data_out.brake          = slv_reg7[27:24];
+    sim_data_out.rpm            = slv_reg7[29:28];
+    sim_data_out.gear           = slv_reg7[31:30];
 
     // slv_reg8
-    sensor_data_out.manual_mode    = slv_reg8[0];
-    sensor_data_out.headlight      = slv_reg8[1];
-    sensor_data_out.hazard         = slv_reg8[2];
+    sim_data_out.manual_mode    = slv_reg8[0];
+    sim_data_out.headlight      = slv_reg8[1];
+    sim_data_out.hazard         = slv_reg8[2];
 
     // slv_reg9
     sample_seq                     = slv_reg9;

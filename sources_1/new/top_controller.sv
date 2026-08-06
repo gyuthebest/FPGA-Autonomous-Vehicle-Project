@@ -57,19 +57,21 @@ module top_controller #(
 );
 
     //------------------------------------------------------------
-    // AXI Slave ¡æ Pipeline ³»ºÎ ¿¬°á ½ÅÈ£
+    // AXI Slave ï¿½ï¿½ Pipeline ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£
     //------------------------------------------------------------
     sensor_data_t sensor_data_axi;
+    sim_data_t    sim_data_axi;
     logic [31:0]  sample_seq_axi;
 
     //------------------------------------------------------------
-    // AXI Slave ÀÎ½ºÅÏ½º
+    // AXI Slave ï¿½Î½ï¿½ï¿½Ï½ï¿½
     //------------------------------------------------------------
     sensor_input_v1_0_S00_AXI #(
         .C_S_AXI_DATA_WIDTH (C_S_AXI_DATA_WIDTH),
         .C_S_AXI_ADDR_WIDTH (C_S_AXI_ADDR_WIDTH)
     ) u_axi_slave (
         .sensor_data_out (sensor_data_axi),
+        .sim_data_out    (sim_data_axi),
         .sample_seq      (sample_seq_axi),
 
         .S_AXI_ACLK      (S_AXI_ACLK),
@@ -101,17 +103,20 @@ module top_controller #(
     );
     
     //---------------------------
-    // Preprocessor ÀÎ½ºÅÏ½º
+    // Preprocessor ï¿½Î½ï¿½ï¿½Ï½ï¿½
     //---------------------------
     sensor_data_t sensor_data_s0;
-    processed_data_t process_data_s0;
+    sim_data_t    sim_data_s0;
+    processed_data_t processed_data_s0;
     logic [31:0] sample_seq_s1;
     
     preprocessor u_preprocessor (
         .clk                (S_AXI_ACLK),
         .rst_n              (S_AXI_ARESETN),
         .sensor_data_in     (sensor_data_axi),
+        .sim_data_in        (sim_data_axi),
         .sensor_data_out    (sensor_data_s0),
+        .sim_data_out       (sim_data_s0),
         .processed_data_out (processed_data_s0),
         .sample_seq         (sample_seq_axi),
         .sample_seq_s1      (sample_seq_s1)

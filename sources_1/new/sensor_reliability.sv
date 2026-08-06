@@ -15,7 +15,8 @@ module Sensor_reiability(
     input logic clk,
     input logic rst_n,
     input logic valid, // 추가
-    input sensor_data_t sensor_data_in, 
+    input sensor_data_t sensor_data_in,
+    input sim_data_t    sim_data_in, 
     input logic [7:0] Speed, // Speed 어디로 오는지 확인해야함
     
     output logic out_in_range_distance, jump_error_distance, is_stuck_distance, noise_high_distance, // output 추가
@@ -560,10 +561,10 @@ module Sensor_reiability(
     if(!rst_n)
         prev_weather <= 2'b0;
     else if (valid)
-        prev_weather <= sensor_data_in.weather; //weather 여기로 들어오는지 확인
+        prev_weather <= sim_data_in.weather; //weather 여기로 들어오는지 확인
     end
     
-    assign weather_change = (sensor_data_in.weather != prev_weather);
+    assign weather_change = (sim_data_in.weather != prev_weather);
     
     always_ff @(posedge clk) begin
         if(!rst_n)

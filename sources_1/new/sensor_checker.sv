@@ -1,16 +1,18 @@
-//sensor_checker- ÁÖ¼® + ¼öÁ¤º»
-//abs ¾È ¹Þ°í ¾È¿¡¼­ °è»êÇÏ°Ô ¼³°èÇÏ
+//sensor_checker- ï¿½Ö¼ï¿½ + ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//abs ï¿½ï¿½ ï¿½Þ°ï¿½ ï¿½È¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
 `timescale 1ns / 1ps
+
+import types_pkg::*;
 
 
 
 //////////////////////////////////////////////////////////////////////////////////
 //signed_check_module
-//signed, unsinged µÑ´Ù º°·Î »ó°ü ¾øÀ» µí
-//WIDTH - sensor data Æø, THRESHOLD´Â °¢°¢ range check ½Ã ¹üÀ§, USE_MIN, USE_MAX´Â min, max Áß ¾È ¾²´Â°Ô ÀÖÀ¸¸é 0À¸·Î ÁöÁ¤ÇÏ¿© ±â´ÉÀ» ²ôµµ·Ï ¼³°è
-//clk, rst_n Àº ÇÊ¿ä ¾øÀ» ¼ö ÀÖ´Âµ¥ ÀÏ´Ü ¸ðµç ¸ðµâÀÇ ÅëÀÏ¼ºÀ» À§ÇØ ³Ö¾îµÒ, value´Â ¹Þ´Â ¼¾¼­ ÃøÁ¤°ª¿¡ ÇØ´ç
+//signed, unsinged ï¿½Ñ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+//WIDTH - sensor data ï¿½ï¿½, THRESHOLDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ range check ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, USE_MIN, USE_MAXï¿½ï¿½ min, max ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//clk, rst_n ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´Âµï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½, valueï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½
 module range_check #(
     parameter WIDTH = 12,
     parameter THRESHOLD_MAX = 100,
@@ -18,10 +20,10 @@ module range_check #(
     parameter USE_MIN = 1'b1,
     parameter USE_MAX = 1'b1
 )( 
-    input logic signed [WIDTH-1:0] sensor_data, // ¼öÁ¤: signed
+    input logic signed [WIDTH-1:0] sensor_data, // ï¿½ï¿½ï¿½ï¿½: signed
     output logic range_error
     );
-//±âÁØ ÀÌ»ó ¹Ø ÀÌÇÏÀÇ °ªÀÌ ³ª¿Ã °æ¿ì out_in_range, USE_MIN,USE_MAX¿Í AND Ã³¸® µÇ¾îÀÖ¾î¼­ 0ÀÌ µÉ½Ã ÀÚµ¿ÀûÀ¸·Î if ¹® ¾ÈÀÌ 0ÀÌµÊ
+//ï¿½ï¿½ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ out_in_range, USE_MIN,USE_MAXï¿½ï¿½ AND Ã³ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½Ö¾î¼­ 0ï¿½ï¿½ ï¿½É½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ if ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 0ï¿½Ìµï¿½
     always_comb begin
     range_error = 1'b0;
 
@@ -34,79 +36,96 @@ module range_check #(
 endmodule
 
 
-// jump check ÀÇ °æ¿ì¿¡´Â °ú°Å¿Í ÇöÀç °ªÀ» µÑ ´Ù »ç¿ëÇÒ ¼ö ÀÖ¾î¾ßÇÑ´Ù. ->Áï register°¡ ÇÊ¿äÇÏ±â ¶§¹®¿¡ ´Ù¸¥ ¸ðµâ°úÀÇ timing¿¡ ´ëÇØ¼­´Â »ý°¢ÇØº¸´Â°Íµµ ³ª»ÚÁö ¾ÊÀ»Áöµµ
+// jump check ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½Ñ´ï¿½. ->ï¿½ï¿½ registerï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ timingï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Øºï¿½ï¿½Â°Íµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 module jump_check #(
     parameter WIDTH = 12,
     parameter THRESHOLD = 100
 )(
-    input logic signed [WIDTH-1:0] delta_tendency,
-    input logic distance_except,
+    input logic signed [WIDTH-1:0],
     input logic weather_change,
     output logic jump_error
     );
 ///////////////////////////////////////////////////////////  
-    //Àý´ñ°ªÀÌ ±âÁØ°ªº¸´Ù ÀÛÀ¸¸é jump_error=0. temp_except = 1(³¯¾¾ ÀüÈ¯µÇ´Â ½ÃÁ¡)ÀÌ¸é ¹«Á¶°Ç 0
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ jump_error=0. temp_except = 1(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½)ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0
     always_comb begin 
         if (weather_change || distance_except)
            jump_error = 1'b0;
-        else if (delta_tendency >= -THRESHOLD && delta_tendency <= THRESHOLD) 
+        else if ( >= -THRESHOLD && delta_tendency <= THRESHOLD) 
 	       jump_error = 1'b0; 
         else jump_error = 1'b1; 
     end 
 endmodule
 
 //stuck check
-//»ç½Ç HISTORY´Â •ûµµ µÇ±äÇÏ´Ù ¸¸¾à HISTORY ±æÀÌ¸¦ ÀüºÎ 10ºñÆ®·Î ¸ÂÃâ°Å¶ó¸é
-//new_sample ¹Þ¾Æ¿Í¼­ ½ÅÈ£°¡ µé¾î¿ÔÀ½À» ÀÎÁöÇØ¾ßÇÑ´Ù
+
 module stuck_check #(
-    parameter WIDTH=16,
-    parameter HISTORY =10,
-    parameter THRESHOLD=10
+    parameter int          WIDTH       = 16,
+    parameter int          THRESHOLD   = 0,    // â† signed ìœ ì§€
+    parameter int          CHANNEL_NUM = 1,
+    parameter int          TW          = 20,
+    parameter int unsigned U           = 1,    // â† unsigned
+    parameter int unsigned D           = 1,
+    parameter int unsigned N           = 10
 )(
     input logic clk,
     input logic rst_n,
-    input logic new_sample,
+    input logic valid_s1,
     input logic signed [WIDTH-1:0] sensor_data,
-    input logic check_enable,
+    input logic signed [WIDTH-1:0] prev_sensor_data,
+    input logic signed [TW-1:0] trig_val,
     output logic stuck_error
     );
-    logic [HISTORY-1:0] stuck_history;
-    logic [$clog2(HISTORY+1)-1:0] stuck_count;
     
-    //¿ì¼± reset, ±×ÈÄ new sampleÀÌ µé¾î¿Ã¶§ stuck history ´Â left shift ÇÏ¸é¼­, (diff < THRESHOLD)&&check_enable°¡ true¸é 1, ¾Æ´Ï¸é 0À» LSB¿¡ Ã¤¿î´Ù. ±×ÈÄ prev_data¸¦ ¾÷µ¥ÀÌÆ®
-    //Áï stuck_historyÀÇ °æ¿ì ±âÁ¸ 10°³ÀÇ °ª¿¡ ´ëÇØ check¸¦ ÁøÇàÇÏ°Ô µÊ, ±×Áß Æ¯Á¤ °³¼ö¸¸Å­ÀÌ 1ÀÌ¸é stuck À¸·Î ÆÇ´Ü
-    //ÀÌ¶§ check_enableÀÇ °æ¿ì¿¡´Â Á¶°Ç½ÄÀÌ ¿Â´Ù. ¿¹¸¦ µé¾î distance != 20000ÀÌ¸é distance ÀÌ 20000ÀÎ °æ¿ì¿¡´Â ÀÚµ¿ÀûÀ¸·Î 0ÀÌµÇ°Ô ÇÏ´ø°¡ È¤Àº weather delta !=0 ÀÌ¸é ³¯¾¾°¡ ¹Ù²ð ¶§ 1ÀÌ µÇ°ÔÇÏ´Â µî 
-    //Á¶°ÇÀ» ¸¸Á·ÇÏ°Ô
-    always_ff @(posedge clk) begin //¼öÁ¤: µ¿±â ¸®¼Â
-        if (!rst_n) begin 
-        prev_data <= '0; 
-        stuck_history <= '0; 
-    end 
-    else if (new_sample) begin 
-    stuck_history <= { stuck_history[HISTORY-2:0], (diff < THRESHOLD)&&check_enable}; 
-    prev_data <= current_data; 
-    end 
-    end 
+    logic raw_stuck;
+    logic cond_b;
+    logic [$clog2(N+1)-1:0] stuck_cnt;
 
-    //stuck_countÀÇ °æ¿ì ÃÖ±Ù HISTORY¸¸Å­ÀÇ µ¥ÀÌÅÍ Áß ¸î°³°¡ stuckÀ¸·Î countµÇ¾ú´ÂÁö È®ÀÎÇÏ´Â°Í
-    always_comb begin 
-	stuck_count = 0; 
-        for (int i = 0; i < HISTORY; i++) begin 
-        stuck_count = stuck_count + stuck_history[i]; 
-        end 
-    end 
-    //ÃÖÁ¾ÀûÀ¸·Î is_stuck ÆÇ´Ü ¿©ºÎ (stuck 8È¸ ÀÌ»ó µÇ¾úÀ» ¶§ is_stuck°¡ µÊ)
-    always_comb begin 
-    is_stuck = (stuck_count >= 8); 
-    end 
+    always_comb begin
+        case (CHANNEL_NUM)
+            1:  cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ê±°ë¦¬     <- Sum(ì ‘ê·¼ì†ë„)
+            2:  cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ì ‘ê·¼ì†ë„ <- ê±°ë¦¬ residual
+            3:  cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ì†ë„x    <- Sum(ê°€ì†ë„x)
+            4:  cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ì†ë„y    <- Sum(ê°€ì†ë„y)
+            5:  cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ì†ë„z    <- Sum(ê°€ì†ë„z)
+            6:  cond_b = (trig_val != '0);                                      // ê°€ì†ë„x  <- delta ì†ë„x
+            7:  cond_b = (trig_val != '0);                                      // ê°€ì†ë„y  <- delta ì†ë„y
+            8:  cond_b = (trig_val != '0);                                      // ê°€ì†ë„z  <- delta ì†ë„z
+            9:  cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ê¸°ìš¸ê¸°x  <- Sum(ê°ì†ë„x)
+            10: cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ê¸°ìš¸ê¸°y  <- Sum(ê°ì†ë„y)
+            11: cond_b = (trig_val >  THRESHOLD) || (trig_val < -THRESHOLD);    // ê¸°ìš¸ê¸°z  <- Sum(ê°ì†ë„z)
+            12: cond_b = (trig_val != '0);                                      // ê°ì†ë„x  <- delta ê¸°ìš¸ê¸°x
+            13: cond_b = (trig_val != '0);                                      // ê°ì†ë„y  <- delta ê¸°ìš¸ê¸°y
+            14: cond_b = (trig_val != '0);                                      // ê°ì†ë„z  <- delta ë°©í–¥
+            15: cond_b = 1'b1;                                                  // ì˜¨ë„     <- í´ë°± (íŠ¸ë¦¬ê±° ì—†ìŒ)
+            16: cond_b = 1'b1;                                                  // ìŠµë„     <- í´ë°± (íŠ¸ë¦¬ê±° ì—†ìŒ)
+            17: cond_b = 1'b1;                                                  // ì¡°ë„     <- í´ë°± (íŠ¸ë¦¬ê±° ì—†ìŒ)
+            default: cond_b = 1'b0;
+        endcase
+
+        if (valid_s1) raw_stuck = ((sensor_data == prev_sensor_data) && cond_b) ? 1'b1 : 1'b0;
+        else raw_stuck = 1'b0;
+    end
+
+    always_ff @(posedge clk) begin
+        if (!rst_n) begin
+            stuck_cnt   <= '0;
+            stuck_error <= 1'b0;
+        end
+        else begin
+            if (valid_s1) begin 
+                stuck_cnt <= (raw_stuck == 1'b1) ? ((stuck_cnt + U > N) ? N : N+U) : ((stuck_cnt < D) ? '0 : stuck_cnt - D);
+                stuck_error <= (stuck_cnt == N) ? 1'b1 : 1'b0;
+            end
+        end
+    end
 endmodule
 
 //time_out check
-//UPDATE_PERIOD´Â µû·Î ¹Þ¾Æ¿Í¾ßÇÑ´Ù(¾÷µ¥ÀÌÆ® ÁÖ±â°ªÀ» ¾Ë¾Æ¼­ ¿Í¾ßÇÔ)
-//COUNTERWIDTHÀÇ °æ¿ì history¿Í À¯»çÇÑ ¿ªÇÒ
+//UPDATE_PERIODï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿Í¾ï¿½ï¿½Ñ´ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ö±â°ªï¿½ï¿½ ï¿½Ë¾Æ¼ï¿½ ï¿½Í¾ï¿½ï¿½ï¿½)
+//COUNTERWIDTHï¿½ï¿½ ï¿½ï¿½ï¿½ historyï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 module timeout_check #(
-    parameter UPDATE_PERIOD = 10, // ³ªÁß¿¡ °áÁ¤µÉ °ª
+    parameter UPDATE_PERIOD = 10, // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     parameter COUNTERWIDTH =10
     )(
     input logic clk,
@@ -115,8 +134,8 @@ module timeout_check #(
     output logic is_time_out
     );
     logic [COUNTERWIDTH-1:0] count;
-//1Å¬¶ô ¸¶´Ù counter°¡ Áõ°¡ÇÏ´Âµ¥ valid µé¾î¿À¸é 0À¸·Î ¸®¼Â. Áï ¸¸¾à clock ÀÌ ¾÷µ¥ÀÌÆ®ÁÖ±âÀÇ 2¹è ÀÌ»ó µ¹¾Æ count °ªÀÌ Ä¿Á³´Âµ¥ ¸®¼ÂÀÌ ¾ÈµÊ --> valid °ªÀÌ ÀÔ·ÂµÇÁö ¾Ê°í ÀÖÀ½
-always_ff @(posedge clk) begin // ¼öÁ¤: µ¿±â¸®¼Â
+//1Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ counterï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ valid ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ clock ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ö±ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ count ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½ --> valid ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·Âµï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½
+always_ff @(posedge clk) begin // ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½â¸®ï¿½ï¿½
     if (!rst_n  )
         count <= 0;
     else if(valid)
@@ -131,7 +150,7 @@ endmodule
 
 
 //noise_check
-//½ÇÁ¦ current °ªÀ» ¹ÞÀ» ÇÊ¿ä ¾ø°í ¸¶Âù°¡Áö·Î history¸¸ ÇÊ¿äÇÔ-->new_sample¸¸ ¹ÞÀ¸¸é µÉµí
+//ï¿½ï¿½ï¿½ï¿½ current ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ historyï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½-->new_sampleï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Éµï¿½
 module noise_check #(
     parameter WIDTH =16,
     parameter HISTORY =10
@@ -145,9 +164,9 @@ module noise_check #(
     logic [HISTORY-1:0] noise_history;
     logic [$clog2(HISTORY+1)-1:0] noise_count;
     
-    //¸¶Âù°¡Áö·Î newsample ¹Þ¾Æ¿À¸é LSB¿¡ jump_error °ªÀÌ µé¾î¿È
-    //ÀÌ¶§ jump_error ´Â À§ÀÇ jump_error ¸ðµâ¿¡¼­ logicÀ¸·Î »©¿Í¼­ ¹Þ¾Æ¿Í¾ßÇÔ
-    always_ff @(posedge clk) begin // ¼öÁ¤: µ¿±â¸®¼Â
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ newsample ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ LSBï¿½ï¿½ jump_error ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //ï¿½Ì¶ï¿½ jump_error ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ jump_error ï¿½ï¿½â¿¡ï¿½ï¿½ logicï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½Þ¾Æ¿Í¾ï¿½ï¿½ï¿½
+    always_ff @(posedge clk) begin // ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½â¸®ï¿½ï¿½
     if (!rst_n) begin
        noise_history <= '0;
       end
@@ -156,7 +175,7 @@ module noise_check #(
             noise_history[HISTORY-2:0],jump_error};
     end
     end
-//¾Æ±î stuck check ÀÇ ³í¸®¿Í À¯»çÇÔ    
+//ï¿½Æ±ï¿½ stuck check ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    
 always_comb begin
     noise_count = 0;
 
@@ -170,7 +189,7 @@ end
 
 endmodule
    
-// ¿©±â¼­ºÎÅÍ´Â temperature Æ¯Á¤ ¹üÀ§¿¡ µû¶ó warning ¶ß°Ô ÇÏ´Â ¸ðµâ¿¡ ÇØ´çÇÑ´Ù
+// ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ï¿½Í´ï¿½ temperature Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ warning ï¿½ß°ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½â¿¡ ï¿½Ø´ï¿½ï¿½Ñ´ï¿½
  //temperature_warn
 module temp_checker(
     input logic clk,
@@ -181,16 +200,16 @@ module temp_checker(
     );
     
 always_comb begin
-    temperature_warn = (temperature <= -200) || (temperature >= 500); // Ãß°¡
+    temperature_warn = (temperature <= -200) || (temperature >= 500); // ï¿½ß°ï¿½
 end
 
 endmodule
 
-//timing ¿©ºÎ°¡ ¸Â´ÂÁö´Â È®ÀÎÇÏÁö ¸øÇÔ
-//temp, vlotageÀÇ °æ¿ì ±¸Ã¼ÀûÀÎ ¼öÄ¡´Â ´Ù½Ã ¹Ù²ã³ö¾ßÇÔ Æ¯È÷ 11.2 Ã³·³ ¼Ò¼öÁ¡ ¾î¶»°Ô ÇÒÁö
-//¼Óµµ ±âÁØÀº ¾ÆÁ÷ Â¥Áö ¸øÇÔ
-//¿ÂµµÀÇ jumpcheckÀÇ °æ¿ì¿¡´Â ºÒ·¯¿Â ¸ðµâ ¹Û¿¡¼­ ÄÚµå¸¦ ÇÏ³ª ´õ ¸¸µé¾î¾ßÇÒµí
-//sensor_reliability output¿¡ ¹¹ ¿¬°áÇÒÁö ¸øÁ¤ÇÔ
-//input¿¡ abs Áö¿ìÁö ¸øÇÔ
-//¼Óµµ ¸ðµâ ¾ÆÁ÷ ¾øÀ½
-//¾Æ¸¶ °ªÀÌ³ª ÀÌ·±°Å Æ²¸°°Å ÀÖ¿ï ¼ö ÀÖ°í, ¸ðµâ input output¿¡ ¿¬°áÇÑ º¯¼ö¸í, ¸ðµâ ºÒ·¯¿Â ÀÎ½ºÅÏ½º¸í Àß È®ÀÎÇØ¾ßÇÒµí(Á¦°¡ º¹ºÙ ½ÃÅ²°Å¶ó º¯¼ö¸íÀÌ ¾È¹Ù²î¾úÀ»¼öµµ ÀÖ½À´Ï´Ù..)
+//timing ï¿½ï¿½ï¿½Î°ï¿½ ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//temp, vlotageï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Æ¯ï¿½ï¿½ 11.2 Ã³ï¿½ï¿½ ï¿½Ò¼ï¿½ï¿½ï¿½ ï¿½î¶»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Â¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//ï¿½Âµï¿½ï¿½ï¿½ jumpcheckï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Û¿ï¿½ï¿½ï¿½ ï¿½Úµå¸¦ ï¿½Ï³ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½
+//sensor_reliability outputï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//inputï¿½ï¿½ abs ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//ï¿½Óµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//ï¿½Æ¸ï¿½ ï¿½ï¿½ï¿½Ì³ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ Æ²ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¿ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½, ï¿½ï¿½ï¿½ input outputï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½Òµï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å²ï¿½Å¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È¹Ù²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½..)
