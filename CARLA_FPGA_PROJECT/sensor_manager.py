@@ -105,12 +105,12 @@ class SensorManager:
         # 1. IMU Sensor
         imu_bp = bp_lib.find('sensor.other.imu')
         # Add realistic noise (Optional, currently 0 for testing stability, but can be tweaked)
-        imu_bp.set_attribute('noise_accel_stddev_x', '0.01')
-        imu_bp.set_attribute('noise_accel_stddev_y', '0.01')
-        imu_bp.set_attribute('noise_accel_stddev_z', '0.01')
-        imu_bp.set_attribute('noise_gyro_stddev_x', '0.001')
-        imu_bp.set_attribute('noise_gyro_stddev_y', '0.001')
-        imu_bp.set_attribute('noise_gyro_stddev_z', '0.001')
+        imu_bp.set_attribute('noise_accel_stddev_x', '0.0')
+        imu_bp.set_attribute('noise_accel_stddev_y', '0.0')
+        imu_bp.set_attribute('noise_accel_stddev_z', '0.0')
+        imu_bp.set_attribute('noise_gyro_stddev_x', '0.0')
+        imu_bp.set_attribute('noise_gyro_stddev_y', '0.0')
+        imu_bp.set_attribute('noise_gyro_stddev_z', '0.0')
 
         imu_transform = carla.Transform(carla.Location(x=0.0, y=0.0, z=0.0)) # Center of vehicle
         self.imu_sensor = self.world.spawn_actor(imu_bp, imu_transform, attach_to=self.vehicle)
@@ -146,32 +146,21 @@ class SensorManager:
         self.gyro_z = data.gyroscope.z
 
         # ==========================================
-        # Sensor Fusion: Complementary Filter
+        # Incline Calculation: Gravity + Compass ONLY
+        # (유저 요청: 자이로 적분 제거, 오직 중력/나침반으로만 계산)
         # ==========================================
         current_time = data.timestamp
         if self.last_imu_time == 0.0:
             self.last_imu_time = current_time
             return
             
-        dt = current_time - self.last_imu_time
-        if dt <= 0.0:
-            dt = 0.01
         self.last_imu_time = current_time
 
-        # 1. 자이로 각속도 적분을 통한 각도 변화량 (rad/s -> deg/s -> deg)
-        gyro_pitch_delta = math.degrees(self.gyro_y) * dt
-        gyro_roll_delta = math.degrees(self.gyro_x) * dt
+        # 1. 가속도계(중력 벡터)를 이용한 실시간 Pitch / Roll 추출
+        self.incline_y = math.degrees(math.atan2(-self.accel_x, math.sqrt(self.accel_y**2 + self.accel_z**2)))
+        self.incline_x = math.degrees(math.atan2(self.accel_y, self.accel_z))
 
-        # 2. 가속도계를 이용한 중력 벡터 기반 각도 추출 (Static Pitch/Roll)
-        pitch_accel = math.degrees(math.atan2(-self.accel_x, math.sqrt(self.accel_y**2 + self.accel_z**2)))
-        roll_accel = math.degrees(math.atan2(self.accel_y, self.accel_z))
-
-        # 3. 상보 필터(Complementary Filter) 적용
-        alpha = 0.98
-        self.incline_y = alpha * (self.incline_y + gyro_pitch_delta) + (1.0 - alpha) * pitch_accel
-        self.incline_x = alpha * (self.incline_x + gyro_roll_delta) + (1.0 - alpha) * roll_accel
-
-        # 4. Yaw (방향각)은 IMU 내장 지자기 센서(Compass) 값 그대로 사용
+        # 2. Yaw (방향각)은 IMU 내장 지자기 센서(Compass) 값 그대로 사용
         self.incline_z = math.degrees(data.compass)
 
     @staticmethod
@@ -254,7 +243,7 @@ class SensorManager:
         base_lux -= self.cached_cloudiness * 90
         base_lux -= self.cached_fog_density * 60
 
-        noise = random.uniform(-100, 100)
+        noise = 0.0
         self.lux = utils.clamp(base_lux + noise, 50, 130000)
 
     def destroy(self):
