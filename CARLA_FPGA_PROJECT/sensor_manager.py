@@ -146,21 +146,35 @@ class SensorManager:
         self.gyro_z = data.gyroscope.z
 
         # ==========================================
-        # Incline Calculation: Gravity + Compass ONLY
-        # (유저 요청: 자이로 적분 제거, 오직 중력/나침반으로만 계산)
+        # Sensor Fusion: Complementary Filter
         # ==========================================
         current_time = data.timestamp
         if self.last_imu_time == 0.0:
             self.last_imu_time = current_time
             return
             
+        dt = current_time - self.last_imu_time
+        if dt <= 0.0:
+            dt = 0.01
         self.last_imu_time = current_time
 
-        # 1. 가속도계(중력 벡터)를 이용한 실시간 Pitch / Roll 추출
-        self.incline_y = math.degrees(math.atan2(-self.accel_x, math.sqrt(self.accel_y**2 + self.accel_z**2)))
-        self.incline_x = math.degrees(math.atan2(self.accel_y, self.accel_z))
+        # 1. 자이로 각속도 적분을 통한 각도 변화량 (rad/s -> deg/s -> deg)
+        gyro_pitch_delta = math.degrees(self.gyro_y) * dt
+        gyro_roll_delta = math.degrees(self.gyro_x) * dt
 
-        # 2. Yaw (방향각)은 IMU 내장 지자기 센서(Compass) 값 그대로 사용
+        # 2. 가속도계를 이용한 중력 벡터 기반 각도 추출 (Static Pitch/Roll)
+        pitch_accel = math.degrees(math.atan2(-self.accel_x, math.sqrt(self.accel_y**2 + self.accel_z**2)))
+        roll_accel = math.degrees(math.atan2(self.accel_y, self.accel_z))
+
+        # 3. 상보 필터(Complementary Filter) 적용 (최대 30도 제한)
+        alpha = 0.98
+        new_pitch = alpha * (self.incline_y + gyro_pitch_delta) + (1.0 - alpha) * pitch_accel
+        new_roll = alpha * (self.incline_x + gyro_roll_delta) + (1.0 - alpha) * roll_accel
+        
+        self.incline_y = utils.clamp(new_pitch, -30.0, 30.0)
+        self.incline_x = utils.clamp(new_roll, -30.0, 30.0)
+
+        # 4. Yaw (방향각)은 IMU 내장 지자기 센서(Compass) 값 그대로 사용
         self.incline_z = math.degrees(data.compass)
 
     @staticmethod

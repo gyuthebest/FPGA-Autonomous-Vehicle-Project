@@ -39,8 +39,8 @@ class ObstacleManager:
         # 다음 장애물 생성까지 대기시간
         self.spawn_interval = 20.0
 
-        # 마지막 생성 시각
-        self.last_spawn_time = 0.0
+        # 마지막 생성 시각 (처음 진입 시 즉시 생성되도록 20.0으로 초기화)
+        self.last_spawn_time = 20.0
 
     ######################################################
 
@@ -73,6 +73,11 @@ class ObstacleManager:
                     )
                 elif "walker" in actor.type_id:
                     self.update_pedestrian_behavior(
+                        actor,
+                        dt
+                    )
+                elif self.actor_state.get(actor.id) == "BUMP":
+                    self.update_bump_behavior(
                         actor,
                         dt
                     )
@@ -125,6 +130,25 @@ class ObstacleManager:
             location = actor.get_location()
             location.y += 0.05
             actor.set_location(location)
+
+    ########################################################
+
+    def update_bump_behavior(
+        self,
+        actor,
+        dt
+    ):
+        self.actor_timer[actor.id] += dt
+
+        if self.actor_timer[actor.id] > 20.0:
+            try:
+                actor.destroy()
+            except:
+                pass
+
+            self.actors.remove(actor)
+            self.actor_state.pop(actor.id, None)
+            self.actor_timer.pop(actor.id, None)
 
     ######################################################
 
@@ -243,7 +267,8 @@ class ObstacleManager:
             project_to_road=True
         )
 
-        distance = random.uniform(70, 100)
+        # 방지턱 테스트를 위해 생성 거리를 30~50m로 줄임
+        distance = random.uniform(30, 50)
         next_waypoints = ego_wp.next(distance)
 
         if not next_waypoints:
@@ -264,7 +289,8 @@ class ObstacleManager:
 
         transform = target_wp.transform
 
-        self.spawn_vehicle(transform)
+        # 확실한 테스트를 위해 city 구역에서는 100% 확률로 방지턱 생성
+        self.spawn_speed_bump(transform)
 
     ######################################################
 
@@ -397,6 +423,54 @@ class ObstacleManager:
             self.actor_timer[actor.id] = 0.0
 
         return actor
+
+    ######################################################
+
+    def spawn_speed_bump(
+        self,
+        transform
+    ):
+        """
+        static.prop.box01을 차선 폭만큼 여러 개 땅에 살짝 묻어 방지턱 효과를 내고,
+        시각적으로 눈에 띄게 하기 위해 그 위에 주황색 트래픽 콘을 세웁니다.
+        """
+        box_bp = self.world.get_blueprint_library().find("static.prop.box01")
+        cone_bp = self.world.get_blueprint_library().find("static.prop.trafficcone01")
+        right_vector = transform.get_right_vector()
+
+        # 차선 폭(약 3.5m)을 덮기 위해 1m짜리 상자 4개를 이어 붙임
+        for offset in [-1.5, -0.5, 0.5, 1.5]:
+            # 박스는 z=-0.42으로 두어 위로 0.08m(8cm) 튀어나오게 설정 (이 이상 높으면 범퍼가 충돌함)
+            bump_loc = carla.Location(
+                x=transform.location.x + right_vector.x * offset,
+                y=transform.location.y + right_vector.y * offset,
+                z=transform.location.z - 0.42
+            )
+            bump_transform = carla.Transform(bump_loc, transform.rotation)
+            
+            actor = self.world.try_spawn_actor(box_bp, bump_transform)
+            if actor:
+                self.actors.append(actor)
+                self.actor_state[actor.id] = "BUMP"
+                self.actor_timer[actor.id] = 0.0
+
+        # 시각적 인지를 위한 트래픽 콘(주황색)을 차량과 닿지 않게 차선 양끝(-2.0, 2.0)에만 배치
+        for offset in [-2.0, 2.0]:
+            cone_loc = carla.Location(
+                x=transform.location.x + right_vector.x * offset,
+                y=transform.location.y + right_vector.y * offset,
+                z=transform.location.z + 0.1
+            )
+            cone_transform = carla.Transform(cone_loc, transform.rotation)
+            
+            cone_actor = self.world.try_spawn_actor(cone_bp, cone_transform)
+            if cone_actor:
+                cone_actor.set_simulate_physics(True)  # 물리 엔진 켜서 부딪히면 날아가게 만듦
+                self.actors.append(cone_actor)
+                self.actor_state[cone_actor.id] = "BUMP"
+                self.actor_timer[cone_actor.id] = 0.0
+                
+        self.last_spawn_time = 0.0
 
     ######################################################
 
