@@ -102,21 +102,7 @@ class SensorManager:
     def _setup_sensors(self):
         bp_lib = self.world.get_blueprint_library()
 
-        # 1. IMU Sensor
-        imu_bp = bp_lib.find('sensor.other.imu')
-        # Add realistic noise (Optional, currently 0 for testing stability, but can be tweaked)
-        imu_bp.set_attribute('noise_accel_stddev_x', '0.0')
-        imu_bp.set_attribute('noise_accel_stddev_y', '0.0')
-        imu_bp.set_attribute('noise_accel_stddev_z', '0.0')
-        imu_bp.set_attribute('noise_gyro_stddev_x', '0.0')
-        imu_bp.set_attribute('noise_gyro_stddev_y', '0.0')
-        imu_bp.set_attribute('noise_gyro_stddev_z', '0.0')
-
-        imu_transform = carla.Transform(carla.Location(x=0.0, y=0.0, z=0.0)) # Center of vehicle
-        self.imu_sensor = self.world.spawn_actor(imu_bp, imu_transform, attach_to=self.vehicle)
-        
-        weak_self = weakref.ref(self)
-        self.imu_sensor.listen(lambda data: SensorManager._on_imu_event(weak_self, data))
+        # 1. IMU Sensor (제거됨 - Ground Truth 사용)
 
         # 2. Radar Sensor
         radar_bp = bp_lib.find('sensor.other.radar')
@@ -129,53 +115,7 @@ class SensorManager:
         
         self.radar_sensor.listen(lambda data: SensorManager._on_radar_event(weak_self, data))
 
-    @staticmethod
-    def _on_imu_event(weak_self, data):
-        self = weak_self()
-        if not self:
-            return
-        
-        # Acceleration from IMU includes Gravity (+9.81 on Z when parked)
-        self.accel_x = data.accelerometer.x
-        self.accel_y = data.accelerometer.y
-        self.accel_z = data.accelerometer.z
-
-        # Gyroscope directly from IMU (rad/s)
-        self.gyro_x = data.gyroscope.x
-        self.gyro_y = data.gyroscope.y
-        self.gyro_z = data.gyroscope.z
-
-        # ==========================================
-        # Sensor Fusion: Complementary Filter
-        # ==========================================
-        current_time = data.timestamp
-        if self.last_imu_time == 0.0:
-            self.last_imu_time = current_time
-            return
-            
-        dt = current_time - self.last_imu_time
-        if dt <= 0.0:
-            dt = 0.01
-        self.last_imu_time = current_time
-
-        # 1. 자이로 각속도 적분을 통한 각도 변화량 (rad/s -> deg/s -> deg)
-        gyro_pitch_delta = math.degrees(self.gyro_y) * dt
-        gyro_roll_delta = math.degrees(self.gyro_x) * dt
-
-        # 2. 가속도계를 이용한 중력 벡터 기반 각도 추출 (Static Pitch/Roll)
-        pitch_accel = math.degrees(math.atan2(-self.accel_x, math.sqrt(self.accel_y**2 + self.accel_z**2)))
-        roll_accel = math.degrees(math.atan2(self.accel_y, self.accel_z))
-
-        # 3. 상보 필터(Complementary Filter) 적용 (최대 30도 제한)
-        alpha = 0.98
-        new_pitch = alpha * (self.incline_y + gyro_pitch_delta) + (1.0 - alpha) * pitch_accel
-        new_roll = alpha * (self.incline_x + gyro_roll_delta) + (1.0 - alpha) * roll_accel
-        
-        self.incline_y = utils.clamp(new_pitch, -30.0, 30.0)
-        self.incline_x = utils.clamp(new_roll, -30.0, 30.0)
-
-        # 4. Yaw (방향각)은 IMU 내장 지자기 센서(Compass) 값 그대로 사용
-        self.incline_z = math.degrees(data.compass)
+    # IMU 이벤트 핸들러 제거 ( Ground Truth 방식 사용 )
 
     @staticmethod
     def _on_radar_event(weak_self, data):
@@ -196,6 +136,16 @@ class SensorManager:
         self.approach_speed = approach_vel
 
     def update(self):
+        # =============================
+        # Gyro (Ground Truth - Angular Velocity)
+        # =============================
+        # 차량 물리 엔진 참값에서 각속도를 추출합니다.
+        angular_vel = self.vehicle.get_angular_velocity()
+        # CARLA의 get_angular_velocity()는 deg/s를 반환하므로 rad/s로 변환
+        self.gyro_x = math.radians(angular_vel.x)
+        self.gyro_y = math.radians(angular_vel.y)
+        self.gyro_z = math.radians(angular_vel.z)
+
         # =============================
         # Velocity & Speed (Ground Truth)
         # =============================
@@ -222,17 +172,36 @@ class SensorManager:
         self.speed_limit = limit if limit and limit > 0 else 50
 
         # =============================
-        # Location & Rotation (Ground Truth)
+        # Location & Rotation & Accel (Ground Truth)
         # =============================
+        transform = self.vehicle.get_transform()
         location = transform.location
+        rotation = transform.rotation
 
         self.location_x = location.x
         self.location_y = location.y
         self.location_z = location.z
 
+        forward = transform.get_forward_vector()
+        right = transform.get_right_vector()
+        up = transform.get_up_vector()
+        
         self.forward_x = forward.x
         self.forward_y = forward.y
         self.forward_z = forward.z
+
+        # 신의 기준(Ground Truth) 완벽한 참값 기울기 추출 (±30도 캡핑 유지)
+        self.incline_x = utils.clamp(rotation.roll, -30.0, 30.0)
+        self.incline_y = utils.clamp(rotation.pitch, -30.0, 30.0)
+        self.incline_z = rotation.yaw
+
+        # IMU 센서를 제거했으므로, 가속도 역시 Ground Truth(물리 엔진 참값)로 받아옴
+        accel = self.vehicle.get_acceleration()
+        self.accel_x = accel.x
+        self.accel_y = accel.y
+        # CARLA의 get_acceleration()은 중력가속도(9.81)를 포함하지 않는 순수 이동 가속도임.
+        # 방지턱 충격(Road Shock) 감지를 위해 기존 IMU와 동일하게 중력(9.81)이 더해진 상태로 맞춰줌
+        self.accel_z = accel.z + 9.81
 
         # =============================
         # Day/Night Cycle + Lux (조도)
