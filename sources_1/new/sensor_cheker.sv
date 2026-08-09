@@ -1,25 +1,23 @@
 `timescale 1ns / 1ps
 
-//output package pkg¿¡¼­ ¹­¾î³ö¾ßÇÒµí, output port Á¤ÀÇÇØÁà¾ßÇÔ
-//current value°¡ [WIDHT-1:0]À¸·Î Á¤ÀÇ µÊ
-//deltaÀÇ abs¸¦ ³Ö¾î¾ßÇÒ °ÍÀÓ ¤¤¤¤
-//noise check ÇÒ ¶§ jump_error °ª ÇÊ¿ä --> logicÀ¸·Î µû·Î Á¤ÀÇÇØÁà¾ßÇÔ 
-//new_sample ¾îµð¼­ ¹Þ´ÂÁö... ±×¸®°í sensor inputÀ» preprocessed¶û °°ÀÌ ¹ÞÀ» ¼ö ÀÖ´Â timingÀÌ µÇ´ÂÁöµµ È®ÀÎÇØÁà¾ßÇÔ¤±
-//stuck check º¯È­°¡ ÀÖÀ¸ ¶§ÀÇ Á¶°ÇÀÌ ÇÊ¿äÇÒ ½Ã ¸ðµâ·Î °¡¼­ input delta¸¦ ¹Þ¾Æ¿Í¼­ if delta>0 ÀÏ ¶§ÀÇ Á¶°ÇÀ¸·Î ¹Ù²Ù¸é µÉµí
+//output package pkgï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½, output port ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//current valueï¿½ï¿½ [WIDHT-1:0]ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+//deltaï¿½ï¿½ absï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//noise check ï¿½ï¿½ ï¿½ï¿½ jump_error ï¿½ï¿½ ï¿½Ê¿ï¿½ --> logicï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+//new_sample ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½... ï¿½×¸ï¿½ï¿½ï¿½ sensor inputï¿½ï¿½ preprocessedï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ timingï¿½ï¿½ ï¿½Ç´ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½
+//stuck check ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ input deltaï¿½ï¿½ ï¿½Þ¾Æ¿Í¼ï¿½ if delta>0 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù¸ï¿½ ï¿½Éµï¿½
 
-//¼öÁ¤: Á¶µµ, ¿Âµµ, ½Àµµ, Àü¾Ð¿¡ ´ëÇØ¼­´Â stuck check ÇÏÁö ¾ÊÀ½. °íÁ¤µÈ°Ô Á¤»óÀÎ °ªÀÌ±â ¶§¹®
+//ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½, ï¿½Âµï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Ð¿ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ stuck check ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½È°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 import types_pkg::*;
 
-module Sensor_reiability(
+module top_sensor_checker(
     input logic clk,
     input logic rst_n,
-    input logic valid, // Ãß°¡
+    input logic valid,
     input sensor_data_t sensor_data_in,
-    input sim_data_t    sim_data_in, 
-    input logic [7:0] Speed, // Speed ¾îµð·Î ¿À´ÂÁö È®ÀÎÇØ¾ßÇÔ
-    
-    output logic out_in_range_distance, jump_error_distance, is_stuck_distance, noise_high_distance, // output Ãß°¡
+    input sim_data_t    sim_data_in,
+    output logic out_in_range_distance, jump_error_distance, is_stuck_distance, noise_high_distance, // output ï¿½ß°ï¿½
     output logic out_in_range_approach_speed, jump_error_approach_speed, is_stuck_approach_speed, noise_high_approach_speed,
     output logic out_in_range_accel_x, jump_error_accel_x, is_stuck_accel_x, noise_high_accel_x,
     output logic out_in_range_accel_y, jump_error_accel_y, is_stuck_accel_y, noise_high_accel_y,
@@ -41,7 +39,7 @@ module Sensor_reiability(
   
     
 ///distance reliability
-//°Å¸® stuck check ¾Ö¸ÅÇÔ 
+//ï¿½Å¸ï¿½ stuck check ï¿½Ö¸ï¿½ï¿½ï¿½ 
 
     range_check #(
     .WIDTH (16),
@@ -63,11 +61,11 @@ module Sensor_reiability(
     .clk(clk),
     .rst_n(rst_n),
     .current_data(sensor_data_in.distance),
-    .temp_except(1'b0), // ¼öÁ¤: abs ´ë½Å temp_except
+    .temp_except(1'b0), // ï¿½ï¿½ï¿½ï¿½: abs ï¿½ï¿½ï¿½ temp_except
     .jump_error(jump_error_distance)
     );
     
-    // °Å¸® Stuck check µû·Î ¸¸µé±â
+    // ï¿½Å¸ï¿½ Stuck check ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     logic [7:0] prev_speed;
     
     always_ff @(posedge clk) begin
@@ -77,8 +75,8 @@ module Sensor_reiability(
             prev_speed <= Speed;
     end
     
-    logic speed_change; //Â÷·® ¼Óµµ º¯È­ÇÏ´ÂÁö
-    assign speed_change = (Speed != prev_speed); //sensor_data_in¿¡ Speed ÀÖ´ÂÁö È®ÀÎ ÇÊ¿ä
+    logic speed_change; //ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½È­ï¿½Ï´ï¿½ï¿½ï¿½
+    assign speed_change = (Speed != prev_speed); //sensor_data_inï¿½ï¿½ Speed ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Ê¿ï¿½
     
     logic distance_stuck_check_en;
     assign distance_stuck_check_en = (sensor_data_in.distance != 16'd20000) && speed_change;
@@ -89,13 +87,13 @@ module Sensor_reiability(
     .WIDTH(16),
     .HISTORY (10),
     .THRESHOLD(1)
-)u_stuck_check_distance(  //¼öÁ¤: °Å¸® ½Å·Úµµ ÆÇ´Ü¿¡ ´ëÇÑ ·ÎÁ÷ Àû¿ë
+)u_stuck_check_distance(  //ï¿½ï¿½ï¿½ï¿½: ï¿½Å¸ï¿½ ï¿½Å·Úµï¿½ ï¿½Ç´Ü¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     .clk(clk),
     .rst_n(rst_n),
     .current_data(sensor_data_in.distance),
     .new_sample(valid),
     .check_enable(distance_stuck_check_en),
-    .is_stuck(is_stuck_distance) // ¼öÁ¤: abs »èÁ¦
+    .is_stuck(is_stuck_distance) // ï¿½ï¿½ï¿½ï¿½: abs ï¿½ï¿½ï¿½ï¿½
     );
     
      noise_check #(
@@ -109,7 +107,7 @@ module Sensor_reiability(
     .noise_high(noise_high_distance)
     );
 
-// Á¢±Ù¼Óµµ reliability. ÀÇ¹®: È®ÀÎÇÊ¿ä
+// ï¿½ï¿½ï¿½Ù¼Óµï¿½ reliability. ï¿½Ç¹ï¿½: È®ï¿½ï¿½ï¿½Ê¿ï¿½
     range_check_signed #(
         .WIDTH(10), 
         .THRESHOLD_MAX(278), 
@@ -125,7 +123,7 @@ module Sensor_reiability(
 
     jump_check #(
         .WIDTH(10), 
-        .THRESHOLD(200) //½Ã¹Ä·¹ÀÌ¼Ç ÅëÇØ È®ÀÎ ÇÊ¿ä
+        .THRESHOLD(200) //ï¿½Ã¹Ä·ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Ê¿ï¿½
     )u_jump_approach_speed (
         .clk(clk), 
         .rst_n(rst_n), 
@@ -142,7 +140,7 @@ module Sensor_reiability(
         .clk(clk), 
         .rst_n(rst_n), 
         .new_sample(valid), 
-        .current_data(sensor_data_in.approach_speed), // »õ ½ÅÈ£ ¾È ¸¸µé°í °®´Ù¾´°ÅÀÓ.
+        .current_data(sensor_data_in.approach_speed), // ï¿½ï¿½ ï¿½ï¿½È£ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¾ï¿½ï¿½ï¿½ï¿½ï¿½.
         .check_enable(distance_stuck_check_en), 
         .is_stuck(is_stuck_approach_speed)
     );
@@ -214,7 +212,7 @@ module Sensor_reiability(
     logic [15:0] prev_gyro_z;
     logic direction_change;
     
-    always_ff @(posedge clk) begin           //·ÎÁ÷ Ãß°¡
+    always_ff @(posedge clk) begin           //ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         if(!rst_n)
             prev_gyro_z <= 16'd0;
         else if (valid)
@@ -272,7 +270,7 @@ module Sensor_reiability(
     );
     
  //accel_z 
-    logic accel_z_stuck_check_en; // ·ÎÁ÷ ¸¸µé¾îÁÖ±â
+    logic accel_z_stuck_check_en; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
     assign accel_z_stuck_check_en = (Speed != 8'b0);
     
     
@@ -300,7 +298,7 @@ module Sensor_reiability(
     .jump_error(jump_error_accel_z)
     );
     
-    stuck_check #( //¼Óµµ°¡ 0ÀÌ ¾Æ´Ò¶§ÀÎ °æ¿ì ¹Ý¿µÇØ.
+    stuck_check #( //ï¿½Óµï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½Æ´Ò¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ý¿ï¿½ï¿½ï¿½.
     .WIDTH(16),
     .HISTORY (10),
     .THRESHOLD(20)
@@ -550,18 +548,18 @@ module Sensor_reiability(
     );
     
 //temperature
-//³¯¾¾ jumpe check Á¶°Ç µû·Î ±¸Çö
+//ï¿½ï¿½ï¿½ï¿½ jumpe check ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
   
   logic [1:0] prev_weather;
   logic weather_change;
-  logic weather_change_next; //³¯¾¾°¡ º¯ÇÑ ±× ´ÙÀ½±îÁö ¿¹¿ÜÃ³¸®ÇØ¾ßµÇ´Ï±î.
+  logic weather_change_next; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½Ø¾ßµÇ´Ï±ï¿½.
   logic temp_except;
   
-  always_ff @(posedge clk) begin //·ÎÁ÷ µû·Î ¸¸µéÀ½
+  always_ff @(posedge clk) begin //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if(!rst_n)
         prev_weather <= 2'b0;
     else if (valid)
-        prev_weather <= sim_data_in.weather; //weather ¿©±â·Î µé¾î¿À´ÂÁö È®ÀÎ
+        prev_weather <= sim_data_in.weather; //weather ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     end
     
     assign weather_change = (sim_data_in.weather != prev_weather);
@@ -610,7 +608,7 @@ module Sensor_reiability(
     .noise_high(noise_high_temp)
     );
 
-//¿Âµµ °æ°í
+//ï¿½Âµï¿½ ï¿½ï¿½ï¿½
     temp_checker u_temp_checker( 
     .clk(clk),
     .rst_n(rst_n),

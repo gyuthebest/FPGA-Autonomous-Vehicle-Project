@@ -64,6 +64,8 @@ package types_pkg;
 
         logic hazard;
 
+        logic [1:0] situation;
+
     } sim_data_t;
 
 

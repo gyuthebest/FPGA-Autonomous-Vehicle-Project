@@ -515,6 +515,7 @@
     sim_data_out.manual_mode    = slv_reg8[0];
     sim_data_out.headlight      = slv_reg8[1];
     sim_data_out.hazard         = slv_reg8[2];
+    sim_data_out.situation      = slv_reg8[4:3];
 
     // slv_reg9
     sample_seq                     = slv_reg9;

@@ -25,7 +25,8 @@ module preprocessor(
     output processed_data_t processed_data_out,
     output processed_data_t prev_processed_data_out,
     output logic            valid_s1,
-    output logic [31:0]     sample_seq_s1 
+    output logic [31:0]     sample_seq_s1, 
+    output logic [31:0]     clk_cnt
 );
 
     //------------------------------------------------------------
@@ -52,6 +53,7 @@ module preprocessor(
     processed_data_t processed_data;
     processed_data_t prev_processed_data;
     logic [1:0]      drop_cnt;
+    logic [31:0]     clk_cnt;
 
     //------------------------------------------------------------
     // Next-State Logic
@@ -276,16 +278,6 @@ module preprocessor(
                 sensor_data_out.approach_speed -
                 prev_sensor_data_out.approach_speed;
 
-            //-------------------------
-            // Weather Change
-            //-------------------------
-        
-            if(sim_data_out.weather != sim_data_in.weather) begin
-                processed_data.weather_change = 1'b1;
-            end
-            else begin
-                processed_data.weather_change = 1'b0;
-            end
         end
     end
         
@@ -304,9 +296,14 @@ module preprocessor(
             drop_cnt                <= 2'b10;
             valid_s1                <= 1'b0;
             sample_seq_s1           <= 32'd0;
+            clk_cnt                 <= '0;
         end
         else begin
             
+            if (drop_cnt <= 2'b01) begin
+                clk_cnt <= valid_s0 ? 32'd0 : clk_cnt + 32'd1;
+            end
+
             //----------------------------------------------------
             // Update Only When New Sample Arrives
             //----------------------------------------------------
