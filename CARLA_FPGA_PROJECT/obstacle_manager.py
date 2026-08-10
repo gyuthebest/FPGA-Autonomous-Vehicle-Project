@@ -37,19 +37,28 @@ class ObstacleManager:
         self.wait_respawn = False
 
         # 다음 장애물 생성까지 대기시간
-        self.spawn_interval = 20.0
+        self.spawn_interval = 30.0
 
-        # 마지막 생성 시각 (처음 진입 시 즉시 생성되도록 20.0으로 초기화)
-        self.last_spawn_time = 20.0
+        # 마지막 생성 시각 (처음 진입 시 즉시 생성되도록 초기화)
+        self.last_spawn_time = 30.0
+        
+        self.destroy_batch = []
 
     ######################################################
 
     def destroy(self):
-
+        batch = []
         for actor in self.actors:
             try:
                 actor.set_autopilot(False)
-                actor.destroy()
+            except:
+                pass
+            batch.append(carla.command.DestroyActor(actor))
+
+        if batch:
+            try:
+                temp_client = carla.Client("127.0.0.1", 2000)
+                temp_client.apply_batch_sync(batch, False)
             except:
                 pass
 
@@ -76,11 +85,8 @@ class ObstacleManager:
                         actor,
                         dt
                     )
-                elif self.actor_state.get(actor.id) == "BUMP":
-                    self.update_bump_behavior(
-                        actor,
-                        dt
-                    )
+                elif self.actor_state.get(actor.id) in ("BUMP", "BUMP_HIT", "BUMP_DECAL"):
+                    self.update_bump_behavior(actor, dt)
             except:
                 pass
 
@@ -101,9 +107,9 @@ class ObstacleManager:
         if self.actor_timer[actor.id] > 20.0:
             try:
                 actor.set_autopilot(False)
-                actor.destroy()
             except:
                 pass
+            self.destroy_batch.append(carla.command.DestroyActor(actor))
 
             self.actors.remove(actor)
             self.actor_state.pop(actor.id, None)
@@ -118,6 +124,17 @@ class ObstacleManager:
     ):
 
         self.actor_timer[actor.id] += dt
+
+        if self.actor_timer[actor.id] > 20.0:
+            try:
+                actor.set_autopilot(False)
+            except:
+                pass
+            self.destroy_batch.append(carla.command.DestroyActor(actor))
+            self.actors.remove(actor)
+            self.actor_state.pop(actor.id, None)
+            self.actor_timer.pop(actor.id, None)
+            return
 
         state = self.actor_state[actor.id]
 
@@ -141,14 +158,25 @@ class ObstacleManager:
         self.actor_timer[actor.id] += dt
 
         if self.actor_timer[actor.id] > 20.0:
-            try:
-                actor.destroy()
-            except:
-                pass
+            self.destroy_batch.append(carla.command.DestroyActor(actor))
 
             self.actors.remove(actor)
             self.actor_state.pop(actor.id, None)
             self.actor_timer.pop(actor.id, None)
+            return
+
+        # 방지턱 충격(Impulse) 로직: 
+        # 자차가 방지턱 콘 근처(3미터 이내)에 접근하면 차를 강제로 위로 띄워버림
+        if self.actor_state.get(actor.id) == "BUMP":
+            dist = actor.get_location().distance(self.ego.get_location())
+            if dist < 3.0:
+                mass = self.ego.get_physics_control().mass
+                # 차량 질량에 비례하여 위쪽(z축)으로 강한 힘 부여 (초속 3m/s 정도의 점프)
+                impulse = carla.Vector3D(0, 0, mass * 3.0)
+                self.ego.add_impulse(impulse)
+                
+                # 한 번 튕겨오르면 이 콘에서는 다시 튕기지 않도록 상태 변경
+                self.actor_state[actor.id] = "BUMP_HIT"
 
     ######################################################
 
@@ -199,8 +227,10 @@ class ObstacleManager:
         self.last_spawn_time += dt
 
         if len(self.actors) == 0:
+            
+            current_interval = 15.0 if zone == "city" else self.spawn_interval
 
-            if self.last_spawn_time >= self.spawn_interval:
+            if self.last_spawn_time >= current_interval:
 
                 self.last_spawn_time = 0.0
 
@@ -218,6 +248,14 @@ class ObstacleManager:
         # ------------------------------------
 
         self.update_actor_behavior(dt)
+        
+        if hasattr(self, 'destroy_batch') and self.destroy_batch:
+            try:
+                temp_client = carla.Client("127.0.0.1", 2000)
+                temp_client.apply_batch_sync(self.destroy_batch, False)
+            except:
+                pass
+            self.destroy_batch.clear()
 
     ######################################################
 
@@ -286,6 +324,9 @@ class ObstacleManager:
                 ) % 360) - 180
             )
         )
+
+        if target_wp.is_intersection:
+            return
 
         transform = target_wp.transform
 
@@ -431,28 +472,30 @@ class ObstacleManager:
         transform
     ):
         """
-        static.prop.box01을 차선 폭만큼 여러 개 땅에 살짝 묻어 방지턱 효과를 내고,
-        시각적으로 눈에 띄게 하기 위해 그 위에 주황색 트래픽 콘을 세웁니다.
+        static.prop.box01을 이용해 바닥에 시각적인 방지턱을 만듭니다.
+        단, 차가 물리적으로 걸리지 않도록 바닥 깊숙이(z=-0.48) 파묻어서 페인트처럼 만듭니다.
+        차가 접근하면 update_bump_behavior에서 강제 Impulse를 줍니다.
+        (apply_batch_sync를 통해 한 번에 스폰하여 지터를 최소화)
         """
         box_bp = self.world.get_blueprint_library().find("static.prop.box01")
         cone_bp = self.world.get_blueprint_library().find("static.prop.trafficcone01")
         right_vector = transform.get_right_vector()
 
-        # 차선 폭(약 3.5m)을 덮기 위해 1m짜리 상자 4개를 이어 붙임
+        batch = []
+        states = []
+        is_cone = []
+
+        # 차선 폭(약 3.5m)을 덮기 위해 1m짜리 상자 4개를 이어 붙임 (시각 효과)
         for offset in [-1.5, -0.5, 0.5, 1.5]:
-            # 박스는 z=-0.42으로 두어 위로 0.08m(8cm) 튀어나오게 설정 (이 이상 높으면 범퍼가 충돌함)
             bump_loc = carla.Location(
                 x=transform.location.x + right_vector.x * offset,
                 y=transform.location.y + right_vector.y * offset,
-                z=transform.location.z - 0.42
+                z=transform.location.z - 0.48
             )
             bump_transform = carla.Transform(bump_loc, transform.rotation)
-            
-            actor = self.world.try_spawn_actor(box_bp, bump_transform)
-            if actor:
-                self.actors.append(actor)
-                self.actor_state[actor.id] = "BUMP"
-                self.actor_timer[actor.id] = 0.0
+            batch.append(carla.command.SpawnActor(box_bp, bump_transform))
+            states.append("BUMP_DECAL")
+            is_cone.append(False)
 
         # 시각적 인지를 위한 트래픽 콘(주황색)을 차량과 닿지 않게 차선 양끝(-2.0, 2.0)에만 배치
         for offset in [-2.0, 2.0]:
@@ -462,13 +505,26 @@ class ObstacleManager:
                 z=transform.location.z + 0.1
             )
             cone_transform = carla.Transform(cone_loc, transform.rotation)
-            
-            cone_actor = self.world.try_spawn_actor(cone_bp, cone_transform)
-            if cone_actor:
-                cone_actor.set_simulate_physics(True)  # 물리 엔진 켜서 부딪히면 날아가게 만듦
-                self.actors.append(cone_actor)
-                self.actor_state[cone_actor.id] = "BUMP"
-                self.actor_timer[cone_actor.id] = 0.0
+            batch.append(carla.command.SpawnActor(cone_bp, cone_transform))
+            states.append("BUMP")
+            is_cone.append(True)
+
+        # 6번의 RPC 통신 렉을 방지하기 위해 1번의 Batch 연산으로 묶어서 서버로 전송
+        try:
+            temp_client = carla.Client("127.0.0.1", 2000)
+            responses = temp_client.apply_batch_sync(batch, False)
+            for i, response in enumerate(responses):
+                if not response.error:
+                    actor_id = response.actor_id
+                    actor = self.world.get_actor(actor_id)
+                    if actor:
+                        if is_cone[i]:
+                            actor.set_simulate_physics(True)
+                        self.actors.append(actor)
+                        self.actor_state[actor_id] = states[i]
+                        self.actor_timer[actor_id] = 0.0
+        except:
+            pass
                 
         self.last_spawn_time = 0.0
 

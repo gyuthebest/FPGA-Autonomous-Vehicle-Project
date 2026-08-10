@@ -20,9 +20,20 @@ class KeyboardController:
 
         self.manual_mode = False
 
+        self.headlight_auto = True
+        self.hazard_auto = True
+        self.manual_headlight_state = False
+        self.manual_hazard_state = False
+
         # "FORWARD": W=가속, S=브레이크(정지 유지 시 후진 전환)
         # "REVERSE": S=후진가속, W=브레이크(정지 유지 시 전진 복귀)
         self.drive_mode = "FORWARD"
+        self.steer_val = 12.0  # 부드러운 조향을 위한 내부 상태 저장 (중앙=12)
+
+        self.camera_mode = "third_person"
+        self.camera_yaw = 0.0
+        self.camera_pitch = -10.0
+        self.right_click_held = False
 
     # ======================================================
     # System Events
@@ -51,6 +62,35 @@ class KeyboardController:
                     self.manual_mode = not self.manual_mode
                     print("[MODE]", "MANUAL" if self.manual_mode else "AUTO")
 
+                if event.key == pygame.K_y:
+                    self.hazard_auto = True
+                if event.key == pygame.K_o:
+                    self.headlight_auto = True
+                if event.key == pygame.K_h:
+                    self.hazard_auto = False
+                    self.manual_hazard_state = not self.manual_hazard_state
+                if event.key == pygame.K_l:
+                    self.headlight_auto = False
+                    self.manual_headlight_state = not self.manual_headlight_state
+
+                if event.key == pygame.K_c:
+                    self.camera_mode = "first_person" if self.camera_mode == "third_person" else "third_person"
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 3:  # Right click
+                    self.right_click_held = True
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 3:
+                    self.right_click_held = False
+
+            if event.type == pygame.MOUSEMOTION:
+                if self.right_click_held and self.camera_mode == "third_person":
+                    # 마우스 x이동 -> yaw 회전, y이동 -> pitch 조절
+                    dx, dy = event.rel
+                    self.camera_yaw += dx * 0.5
+                    self.camera_pitch = max(-80.0, min(20.0, self.camera_pitch - dy * 0.5))
+                    
         return "run"
 
     # ======================================================
@@ -59,16 +99,29 @@ class KeyboardController:
 
     def update(self, command, vehicle_speed_kmh):
 
-        command.manual_mode = self.manual_mode
-        command.autonomous_control = (not self.manual_mode)
-
-        if not self.manual_mode:
-            return
-
         keys = pygame.key.get_pressed()
 
         w = keys[pygame.K_w]
         s = keys[pygame.K_s]
+        a = keys[pygame.K_a]
+        d = keys[pygame.K_d]
+
+        # w,a,s,d 중 하나라도 누르면 즉시 수동 모드로 전환
+        if w or a or s or d:
+            self.manual_mode = True
+
+        command.manual_mode = self.manual_mode
+        command.autonomous_control = (not self.manual_mode)
+
+        command.headlight_auto = self.headlight_auto
+        command.hazard_auto = self.hazard_auto
+        command.manual_headlight_state = self.manual_headlight_state
+        command.manual_hazard_state = self.manual_hazard_state
+
+        if not self.manual_mode:
+            return
+
+        almost_stopped = vehicle_speed_kmh < 2.0
 
         almost_stopped = vehicle_speed_kmh < 2.0
 
@@ -113,13 +166,21 @@ class KeyboardController:
                 command.reverse = True
 
         # ----------------------------------------
-        # Steering
+        # Steering (Smooth)
         # ----------------------------------------
 
-        command.steering = VehicleCommand.CENTER_STEERING
+        steer_speed = 1.0  # 핸들을 꺾는 속도 감도 (작을수록 부드러움)
+        return_speed = 1.0 # 핸들이 중앙으로 풀리는 속도 감도
 
         if keys[pygame.K_a]:
-            command.steering = max(0, command.steering - 8)
+            self.steer_val = max(0.0, self.steer_val - steer_speed)
+        elif keys[pygame.K_d]:
+            self.steer_val = min(float(VehicleCommand.MAX_STEERING), self.steer_val + steer_speed)
+        else:
+            # Auto-center (키에서 손을 떼면 중앙 12로 서서히 복귀)
+            if self.steer_val > 12.0:
+                self.steer_val = max(12.0, self.steer_val - return_speed)
+            elif self.steer_val < 12.0:
+                self.steer_val = min(12.0, self.steer_val + return_speed)
 
-        if keys[pygame.K_d]:
-            command.steering = min(VehicleCommand.MAX_STEERING, command.steering + 8)
+        command.steering = int(self.steer_val)

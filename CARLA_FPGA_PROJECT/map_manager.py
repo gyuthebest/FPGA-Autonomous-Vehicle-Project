@@ -84,7 +84,7 @@ class MapManager:
             return 70
 
         if zone == self.HIGHWAY:
-            return 130
+            return 100
 
         return 50
 

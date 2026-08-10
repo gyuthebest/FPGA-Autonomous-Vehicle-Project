@@ -2,7 +2,6 @@ import random
 import carla
 import pygame
 import numpy as np
-import gc
 
 import utils
 from sensor_manager import SensorManager
@@ -45,29 +44,13 @@ def hud_color(text):
     return (0, 255, 0)
 
 
-_hud_cache = {}
-
 def draw_hud_column(screen, font, lines, x, y, line_height):
     for item in lines:
         if isinstance(item, tuple):
             text, color = item
         else:
             text, color = item, hud_color(item)
-            
-        if not text:
-            y += line_height
-            continue
-            
-        cache_key = (text, color)
-        if cache_key not in _hud_cache:
-            _hud_cache[cache_key] = font.render(text, True, color)
-            # 텍스트 캐시 용량이 커지면 절반 삭제 (메모리 누수 방지)
-            if len(_hud_cache) > 2000:
-                keys_to_delete = list(_hud_cache.keys())[:1000]
-                for k in keys_to_delete:
-                    del _hud_cache[k]
-
-        surface = _hud_cache[cache_key]
+        surface = font.render(text, True, color)
         screen.blit(surface, (x, y))
         y += line_height
     return y
@@ -117,7 +100,7 @@ def resample_pitch(base_array, ratio):
         
     return pygame.sndarray.make_sound(np.ascontiguousarray(resampled))
 
-def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manager, engine_pitch_cache_global):
+def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manager):
     """
     차량 스폰부터 세션 종료까지 한 번의 주행을 실행한다.
     반환값: 'restart' | 'quit'
@@ -127,8 +110,6 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
     camera = None
     obstacle_manager = None
     logger = None
-    
-    gc.disable()
 
     try:
         bp_lib = world.get_blueprint_library()
@@ -170,9 +151,10 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
                 raise FileNotFoundError(f"엔진 사운드 파일을 찾을 수 없습니다: {ENGINE_SOUND_PATH}")
 
             engine_channel = pygame.mixer.Channel(0)
-            last_engine_ratio_key = 1.0
-            if 1.0 in engine_pitch_cache_global:
-                engine_channel.play(engine_pitch_cache_global[1.0], loops=-1)
+            engine_base_array = load_engine_base_array()
+            engine_pitch_cache = {}
+            last_engine_ratio_key = None
+            engine_channel.play(resample_pitch(engine_base_array, 1.0), loops=-1)
             print("[Audio] Engine sound started successfully.")
 
         except Exception as e:
@@ -240,10 +222,120 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             environment = environment_manager.update(sensor, controller.upcoming_turn_speed_limit)
             perception = perception_manager.update()
 
-            # [FPGA Data Prep]
-            control = vehicle.get_control()
+#             scenario.update(1.0 / 30.0, sensor)
+# 
+#             # -------------------------------
+#             # Weather Cycle (30초마다 순환)
+#             # -------------------------------
+# 
+#             weather_timer += 1.0 / 30.0
+# 
+#             if weather_timer >= WEATHER_CYCLE_INTERVAL:
+#                 weather_timer = 0.0
+#                 weather_index = (weather_index + 1) % len(weather_cycle)
+#                 weather_cycle[weather_index]()
+# 
+#             simulation_time += 1.0 / 30.0
+
+            scenario.update(1.0 / 20.0, sensor)
+
+            # -------------------------------
+            # Weather Cycle (20Hz 업데이트에 맞춰 순환)
+            # -------------------------------
+
+            weather_timer += 1.0 / 20.0
+
+            if weather_timer >= WEATHER_CYCLE_INTERVAL:
+                weather_timer = 0.0
+                weather_index = (weather_index + 1) % len(weather_cycle)
+                weather_cycle[weather_index]()
+
+            simulation_time += 1.0 / 20.0
+            
+            # -------------------------------
+            # 신호등 강제 해킹 (접근 시 무조건 초록불)
+            # -------------------------------
+            if vehicle.is_at_traffic_light():
+                traffic_light = vehicle.get_traffic_light()
+                if traffic_light and traffic_light.get_state() != carla.TrafficLightState.Green:
+                    traffic_light.set_state(carla.TrafficLightState.Green)
+
+            screen.fill((0, 0, 0))
+
+            if camera.image is not None:
+                frame = camera.image
+                frame = frame[:, :, ::-1]
+                surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
+                screen.blit(surface, (0, 0))
+
             manual_command = VehicleCommand()
             keyboard.update(manual_command, sensor.speed)
+
+            ttc_result = ttc_logic.update(sensor, perception)
+            road_result = road_logic.update(environment, sensor)
+            vision_result = vision_logic.update(environment, sensor)
+            posture_result = posture_logic.update(sensor)
+
+            if keyboard.manual_mode:
+                command = manual_command
+            else:
+                command = fusion_logic.fuse(
+                    ttc=ttc_result,
+                    posture=posture_result,
+                    road=road_result,
+                    vision=vision_result
+                )
+
+            command.manual_mode = keyboard.manual_mode
+            command.autonomous_control = (not keyboard.manual_mode)
+            
+            # 자율주행 모드일 경우 fusion_logic이 새 객체를 만들며 조명 상태가 날아가므로, 키보드 컨트롤러의 상태를 다시 복사해줌
+            command.headlight_auto = keyboard.headlight_auto
+            command.hazard_auto = keyboard.hazard_auto
+            command.manual_headlight_state = keyboard.manual_headlight_state
+            command.manual_hazard_state = keyboard.manual_hazard_state
+
+#             obstacle_manager.update(1.0 / 30.0, ttc_result)
+            obstacle_manager.update(1.0 / 20.0, ttc_result)
+
+            controller.update(command, posture_result)
+
+            # ---------------- Engine Sound (RPM 기반 실시간 피치 조절) ----------------
+
+            if engine_channel is not None:
+                ratio = utils.clamp(controller.current_rpm / ENGINE_REFERENCE_RPM, 1.0, 8.0)
+                # 소리가 나지 않던 주 원인: 너무 미세한 RPM 변화(0.02)마다 사운드를 재시작(play)해서 버퍼가 재생되기도 전에 끊겼음.
+                # 이를 0.1 단위로 듬성듬성 양자화하여 끊김 현상 해결
+                ratio_key = round(ratio, 1)
+
+                if ratio_key != last_engine_ratio_key:
+                    last_engine_ratio_key = ratio_key
+
+                    if ratio_key not in engine_pitch_cache:
+                        engine_pitch_cache[ratio_key] = resample_pitch(engine_base_array, ratio_key)
+
+                        if len(engine_pitch_cache) > 30:
+                            engine_pitch_cache.pop(next(iter(engine_pitch_cache)))
+
+                    engine_channel.play(engine_pitch_cache[ratio_key], loops=-1)
+
+                engine_volume = 0.5 + 0.5 * (command.throttle / VehicleCommand.MAX_THROTTLE)
+                engine_channel.set_volume(engine_volume)
+
+            logger.log(
+                simulation_time,
+                sensor,
+                environment,
+                controller,
+                perception,
+                ttc_result,
+                road_result,
+                vision_result,
+                posture_result,
+                command
+            )
+
+            control = vehicle.get_control()
 
             # ========================================================
             # [FPGA AXI REGISTER PACKING - TEST]
@@ -299,12 +391,12 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             gear_val = to_unsigned(0 if control.reverse else controller.current_gear+1, 2)
             
             steering_val = to_signed(control.steer * 100, 8)
-            accelerator_val = to_unsigned(manual_command.throttle, 4)
-            brake_val = to_unsigned(manual_command.brake, 4)
+            accelerator_val = to_unsigned(command.throttle, 4)
+            brake_val = to_unsigned(command.brake, 4)
             
-            manual_mode = 1 if keyboard.manual_mode else 0
-            headlight = 1 if manual_command.headlight else 0
-            hazard = 1 if manual_command.hazard else 0
+            manual_mode = 1 if command.manual_mode else 0
+            headlight = 1 if command.headlight else 0
+            hazard = 1 if command.hazard else 0
 
             # --- AXI Register Packing ---
             slv_reg0 = (humidity << 24) | (accel_y << 12) | accel_x
@@ -326,120 +418,8 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             fpga_hud_warning = 0
             fpga_mrm = 0
             fpga_td_remain_sec = 11
-            fpga_headlight_auto_out = manual_command.headlight # 자율주행 모직이 판단한 라이트
-            fpga_hazard_auto_out = manual_command.hazard
-
-#             scenario.update(1.0 / 30.0, sensor)
-# 
-#             # -------------------------------
-#             # Weather Cycle (30초마다 순환)
-#             # -------------------------------
-# 
-#             weather_timer += 1.0 / 30.0
-# 
-#             if weather_timer >= WEATHER_CYCLE_INTERVAL:
-#                 weather_timer = 0.0
-#                 weather_index = (weather_index + 1) % len(weather_cycle)
-#                 weather_cycle[weather_index]()
-# 
-#             simulation_time += 1.0 / 30.0
-
-            scenario.update(1.0 / 20.0, sensor)
-
-            # -------------------------------
-            # Weather Cycle (20Hz 업데이트에 맞춰 순환)
-            # -------------------------------
-
-            weather_timer += 1.0 / 20.0
-
-            if weather_timer >= WEATHER_CYCLE_INTERVAL:
-                weather_timer = 0.0
-                weather_index = (weather_index + 1) % len(weather_cycle)
-                weather_cycle[weather_index]()
-
-            simulation_time += 1.0 / 20.0
-            
-            # -------------------------------
-            # 신호등 강제 해킹 (접근 시 무조건 초록불)
-            # -------------------------------
-            if vehicle.is_at_traffic_light():
-                traffic_light = vehicle.get_traffic_light()
-                if traffic_light and traffic_light.get_state() != carla.TrafficLightState.Green:
-                    traffic_light.set_state(carla.TrafficLightState.Green)
-                    
-            camera.update_transform(keyboard.camera_mode, keyboard.camera_yaw, keyboard.camera_pitch)
-
-            screen.fill((0, 0, 0))
-
-            if camera.image is not None:
-                frame = camera.image
-                frame = frame[:, :, ::-1]
-                surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
-                screen.blit(surface, (0, 0))
-
-            # (Moved to top for FPGA)
-            # (Moved to top for FPGA)
-
-            ttc_result = ttc_logic.update(sensor, perception)
-            road_result = road_logic.update(environment, sensor)
-            vision_result = vision_logic.update(environment, sensor)
-            posture_result = posture_logic.update(sensor)
-
-            if keyboard.manual_mode:
-                command = manual_command
-            else:
-                command = fusion_logic.fuse(
-                    ttc=ttc_result,
-                    posture=posture_result,
-                    road=road_result,
-                    vision=vision_result
-                )
-
-            command.manual_mode = keyboard.manual_mode
-            command.autonomous_control = (not keyboard.manual_mode)
-            
-            # 자율주행 모드일 경우 fusion_logic이 새 객체를 만들며 조명 상태가 날아가므로, 키보드 컨트롤러의 상태를 다시 복사해줌
-            command.headlight_auto = keyboard.headlight_auto
-            command.hazard_auto = keyboard.hazard_auto
-            command.manual_headlight_state = keyboard.manual_headlight_state
-            command.manual_hazard_state = keyboard.manual_hazard_state
-
-#             obstacle_manager.update(1.0 / 30.0, ttc_result)
-            obstacle_manager.update(1.0 / 20.0, ttc_result)
-
-            controller.update(command, posture_result)
-
-            # ---------------- Engine Sound (RPM 기반 실시간 피치 조절) ----------------
-
-            if engine_channel is not None:
-                ratio = utils.clamp(controller.current_rpm / ENGINE_REFERENCE_RPM, 1.0, 8.0)
-                # 소리가 나지 않던 주 원인: 너무 미세한 RPM 변화(0.02)마다 사운드를 재시작(play)해서 버퍼가 재생되기도 전에 끊겼음.
-                # 이를 0.1 단위로 듬성듬성 양자화하여 끊김 현상 해결
-                ratio_key = round(ratio, 1)
-
-                if ratio_key != last_engine_ratio_key:
-                    last_engine_ratio_key = ratio_key
-                    if ratio_key in engine_pitch_cache_global:
-                        engine_channel.play(engine_pitch_cache_global[ratio_key], loops=-1)
-
-                engine_volume = 0.5 + 0.5 * (command.throttle / VehicleCommand.MAX_THROTTLE)
-                engine_channel.set_volume(engine_volume)
-
-            logger.log(
-                simulation_time,
-                sensor,
-                environment,
-                controller,
-                perception,
-                ttc_result,
-                road_result,
-                vision_result,
-                posture_result,
-                command
-            )
-
-            # control = vehicle.get_control() (Moved to top)
-
+            fpga_headlight_auto_out = command.headlight # 자율주행 모직이 판단한 라이트
+            fpga_hazard_auto_out = command.hazard
             
             # --- Auto/Manual Light Override ---
             if command.headlight_auto:
@@ -600,6 +580,14 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
     finally:
         print("\nCleaning up session...")
 
+        try:
+            settings = world.get_settings()
+            settings.synchronous_mode = False
+            settings.fixed_delta_seconds = None
+            world.apply_settings(settings)
+        except:
+            pass
+
         if camera is not None:
             try:
                 camera.destroy()
@@ -629,9 +617,6 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
                 vehicle.destroy()
             except:
                 pass
-                
-        gc.enable()
-        gc.collect()
 
 
 def main():
@@ -641,28 +626,15 @@ def main():
         print("Connecting to CARLA...")
         print("=" * 60)
 
-        # 오디오 초기화 및 사운드 사전 연산
+        # 오디오 초기화 (윈도우 기본 드라이버 자동 선택)
         pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=2048)
         pygame.init()
         pygame.font.init()
         screen = pygame.display.set_mode((1280, 600))
         pygame.display.set_caption("CARLA FPGA Autonomous Driving")
-        
+
         font = pygame.font.SysFont("consolas", 13)
         clock = pygame.time.Clock()
-
-        engine_pitch_cache_global = {}
-        try:
-            print("[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)")
-            if not pygame.mixer.get_init():
-                pygame.mixer.init()
-            engine_base = load_engine_base_array()
-            for r_int in range(10, 81):
-                r = round(r_int / 10.0, 1)
-                engine_pitch_cache_global[r] = resample_pitch(engine_base, r)
-            print("[System] 70 engine pitch levels pre-rendered successfully.")
-        except Exception as e:
-            print("[System] Failed to pre-render engine sounds:", e)
 
         client = carla.Client(HOST, PORT)
         client.set_timeout(60.0)
@@ -728,7 +700,7 @@ def main():
         status = "restart"
 
         while status == "restart":
-            status = run_session(world, map_manager, screen, font, clock, keyboard, traffic_manager, engine_pitch_cache_global)
+            status = run_session(world, map_manager, screen, font, clock, keyboard, traffic_manager)
 
     except KeyboardInterrupt:
         print("\nUser Exit.")
@@ -740,15 +712,6 @@ def main():
         print(e)
 
     finally:
-        try:
-            if 'world' in locals() and world is not None:
-                settings = world.get_settings()
-                settings.synchronous_mode = False
-                settings.fixed_delta_seconds = None
-                world.apply_settings(settings)
-        except:
-            pass
-            
         pygame.quit()
         print("Finished.")
 

@@ -219,6 +219,12 @@ class SensorManager:
         # =============================
         # Day/Night Cycle + Lux (조도)
         # =============================
+        
+        # 날씨 변화에 즉각 반응하기 위해 매 프레임 파라미터를 읽어온다
+        current_weather = self.vehicle.get_world().get_weather()
+        self.cached_cloudiness = current_weather.cloudiness
+        self.cached_fog_density = current_weather.fog_density
+
         self.frame_count += 1
         if self.frame_count % self.SUN_UPDATE_INTERVAL_FRAMES == 0:
             current_time = time.time()
@@ -226,21 +232,23 @@ class SensorManager:
             day_period = 120.0
             sun_altitude = -2.0 + 92.0 * (0.5 + 0.5 * math.sin(elapsed * (2 * math.pi / day_period)))
 
-            weather = self.vehicle.get_world().get_weather()
-            weather.sun_altitude_angle = sun_altitude
-            self.vehicle.get_world().set_weather(weather)
+            current_weather.sun_altitude_angle = sun_altitude
+            self.vehicle.get_world().set_weather(current_weather)
 
             self.cached_sun_altitude = sun_altitude
-            self.cached_cloudiness = weather.cloudiness
-            self.cached_fog_density = weather.fog_density
 
         sun_factor = utils.clamp((self.cached_sun_altitude + 10.0) / 100.0, 0.0, 1.0)
-        base_lux = 150 + sun_factor * 24000
-        base_lux -= self.cached_cloudiness * 90
-        base_lux -= self.cached_fog_density * 60
-
-        noise = 0.0
-        self.lux = utils.clamp(base_lux + noise, 50, 130000)
+        
+        # 기본 조도 범위: 밤(30) ~ 맑은 한낮(130000)
+        base_lux = 30 + sun_factor * 129970
+        
+        # 구름과 안개에 따른 조도 감소 (구름 최대 80% 감소, 안개 최대 50% 감소)
+        cloud_factor = 1.0 - (self.cached_cloudiness / 100.0) * 0.8
+        fog_factor = 1.0 - (self.cached_fog_density / 100.0) * 0.5
+        
+        final_lux = base_lux * cloud_factor * fog_factor
+        
+        self.lux = utils.clamp(final_lux, 30, 130000)
 
     def destroy(self):
         if self.imu_sensor is not None:

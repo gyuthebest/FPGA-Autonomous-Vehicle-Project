@@ -61,6 +61,10 @@ class VehicleCommand:
 
         self.headlight = False
         self.hazard = False
+        self.headlight_auto = True
+        self.hazard_auto = True
+        self.manual_headlight_state = False
+        self.manual_hazard_state = False
 
         # --------------------------
         # Driving Mode

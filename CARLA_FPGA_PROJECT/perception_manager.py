@@ -103,11 +103,13 @@ class PerceptionManager:
         path = self.build_forward_path(ego_location, ego_forward)
 
         vehicles = self.world.get_actors().filter("vehicle.*")
+        pedestrians = self.world.get_actors().filter("walker.pedestrian.*")
+        actors_to_check = list(vehicles) + list(pedestrians)
 
         nearest_path_distance = None
         nearest_actor = None
 
-        for actor in vehicles:
+        for actor in actors_to_check:
 
             if actor.id == self.vehicle.id:
                 continue

@@ -57,15 +57,16 @@ class VehicleController:
     # Continuous Steering Scaling (속도 구간 경계에서
     # 조향 계수가 계단식으로 뚝 바뀌며 회전 중 요동을
     # 유발하던 문제를 없애기 위해 전부 선형보간으로 처리)
-    # ======================================================
+    # -----------------------------
+    # Tuning Parameters (Highway Curve Stable)
+    # -----------------------------
+    LOOKAHEAD_POINTS = [(0, 5.0), (20, 7.0), (50, 14.0), (80, 22.0), (100, 30.0), (120, 40.0), (150, 50.0)]
+    STEER_VELOCITY_POINTS = [(0, 0.06), (25, 0.06), (60, 0.05), (100, 0.04), (120, 0.03), (150, 0.02)]
+    STEER_GAIN_POINTS = [(0, 0.80), (30, 0.80), (60, 0.75), (100, 0.65), (120, 0.55), (150, 0.50)]
+    STEER_RATE_SCALE_POINTS = [(0, 1.0), (30, 1.0), (50, 0.90), (70, 0.80), (90, 0.75), (120, 0.65), (150, 0.60)]
 
-    LOOKAHEAD_POINTS = [(0, 5.0), (20, 5.0), (40, 7.0), (70, 10.0), (120, 14.0), (150, 18.0)]
-    STEER_VELOCITY_POINTS = [(0, 0.06), (25, 0.06), (60, 0.04), (120, 0.025), (150, 0.020)]
-    STEER_GAIN_POINTS = [(0, 0.70), (30, 0.70), (60, 0.65), (120, 0.55), (150, 0.50)]
-    STEER_RATE_SCALE_POINTS = [(0, 1.0), (30, 1.0), (50, 0.90), (70, 0.80), (90, 0.65), (120, 0.50), (150, 0.40)]
-
-    # 코너링 시 편안하다고 느끼는 최대 횡가속도 (m/s^2) - 교차로에서 더 빠른 속도로 부드럽게 돌게 하기 위해 5.0으로 상향
-    LATERAL_ACCEL_LIMIT = 5.0
+    # 코너링 시 편안하다고 느끼는 최대 횡가속도 (m/s^2)
+    LATERAL_ACCEL_LIMIT = 3.0
 
     # ======================================================
     # Vehicle Specification (SEAT Leon)
@@ -651,9 +652,8 @@ class VehicleController:
 
         curve_value = max(curve_now, curve_preview)
 
-        # 0.02 (반경 50m) 이상의 급격한 커브(명확한 우/좌회전 교차로 등)에 대해서만 임의 감속 허용
-        # 나머지 일반 완만한 도로/고속도로 커브는 FPGA의 위험도(Risk) 기반 로직에 맡김
-        if curve_value > 0.02:
+        # 고속도로의 완만한 커브에서도 사전에 부드럽게 감속하기 위해 임계값을 0.001로 하향
+        if curve_value > 0.001:
             target_turn_limit = math.sqrt(self.LATERAL_ACCEL_LIMIT / curve_value) * 3.6
             target_turn_limit = min(target_turn_limit, 999.0)
         else:

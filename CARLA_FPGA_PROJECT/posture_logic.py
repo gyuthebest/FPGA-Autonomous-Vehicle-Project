@@ -7,6 +7,7 @@ Posture Logic - 자세 위험 (Roll ㄱ / Yaw ㄴ / Lateral ㄷ)
 """
 
 from dataclasses import dataclass
+import math
 import utils
 
 from results import PostureResult
@@ -32,8 +33,11 @@ class PostureLogic:
 
         speed = sensor.speed
         accel_y = sensor.accel_y
-        gyro_x = sensor.gyro_x
-        gyro_z = sensor.gyro_z
+        
+        # CARLA IMU gyroscope is in rad/s, but our logic thresholds (30, 40, 60) expect deg/s.
+        gyro_x = math.degrees(sensor.gyro_x)
+        gyro_z = math.degrees(sensor.gyro_z)
+        
         rpm = sensor.rpm
 
         if speed < 15:

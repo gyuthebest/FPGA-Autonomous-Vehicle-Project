@@ -7,15 +7,18 @@ class CSVLogger:
 
     def __init__(self):
 
-        os.makedirs("logs", exist_ok=True)
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        logs_dir = os.path.join(base_dir, "logs")
+        os.makedirs(logs_dir, exist_ok=True)
 
-        filename = datetime.now().strftime(
-            "logs/drive_%Y%m%d_%H%M%S.csv"
-        )
+        filename = os.path.join(logs_dir, datetime.now().strftime(
+            "drive_%Y%m%d_%H%M%S.csv"
+        ))
 
         self.file = open(filename, "w", newline="")
-
         self.writer = csv.writer(self.file)
+        self.buffer = []
+        self.buffer_limit = 20
 
         self.writer.writerow([
             "Time",
@@ -104,7 +107,7 @@ class CSVLogger:
         command
     ):
 
-        self.writer.writerow([
+        row = [
 
             round(current_time, 2),
 
@@ -173,7 +176,15 @@ class CSVLogger:
             command.manual_mode,
             command.autonomous_control,
             command.emergency_stop,
-        ])
+        ]
+        
+        self.buffer.append(row)
+        if len(self.buffer) >= self.buffer_limit:
+            self.writer.writerows(self.buffer)
+            self.buffer.clear()
 
     def close(self):
+        if self.buffer:
+            self.writer.writerows(self.buffer)
+            self.buffer.clear()
         self.file.close()
