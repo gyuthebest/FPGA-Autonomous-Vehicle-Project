@@ -748,6 +748,8 @@ module risk_control #(
 
         else if(valid_in && sim_data_in.manual_mode) begin
             sim_data_out <= sim_data_in;
+            sim_data_out.headlight <= final_headlight;
+            sim_data_out.hazard <= final_hazard;
             sample_seq_out <= sample_seq_in;
             valid_out <= valid_in;
             risk_out.Ri_collision <= eff_tier_collision;
