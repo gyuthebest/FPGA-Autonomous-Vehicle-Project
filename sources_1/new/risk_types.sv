@@ -84,16 +84,16 @@ module risk_types #(
     always_comb begin
 
         // collision risk
-        if (sensor_data_in.app_speed <= 0)
+        if (sensor_data_in.approach_speed <= 0)
             collision_risk = 3'b000;
         else begin
-            if (sensor_data_in.distance <= (26'(TTC_1_4S) * sensor_data_in.app_speed) >> 10)
-                collision_risk = 3'b100; // Emergency
-            else if (sensor_data_in.distance <= (26'(TTC_2_0S) * sensor_data_in.app_speed) >> 10)
+            if (sensor_data_in.distance <= (sensor_data_in.approach_speed + (sensor_data_in.approach_speed >> 1)))
+                collision_risk = 3'b100; // Emergency. 근사하여 1.5초
+            else if (sensor_data_in.distance <= (sensor_data_in.approach_speed << 1))
                 collision_risk = 3'b011; // Critical
-            else if (sensor_data_in.distance <= (26'(TTC_3_0S) * sensor_data_in.app_speed) >> 10)
+            else if (sensor_data_in.distance <= ((sensor_data_in.approach_speed << 1) + sensor_data_in.approach_speed))
                 collision_risk = 3'b010; // Danger
-            else if (sensor_data_in.distance <= (26'(TTC_4_0S) * sensor_data_in.app_speed) >> 10)
+            else if (sensor_data_in.distance <= (sensor_data_in.approach_speed << 2))
                 collision_risk = 3'b001; // Caution
             else
                 collision_risk = 3'b000; // Safe
@@ -110,7 +110,7 @@ module risk_types #(
             road_risk_A = 2'b00; // Dry
 
 
-        if (sensor_data_in.speed_x < 833)
+        if (sim_data_in.speed_x < 833)
             road_risk_B = 2'b00; 
         else begin 
             if (abs_net_accel_z >= ACCEL_2_0G)
