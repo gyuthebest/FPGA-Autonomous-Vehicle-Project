@@ -1,8 +1,6 @@
 import types_pkg::*;
 
-module risk_types #(
-    parameter clk_freq = 100000000 // 100MHz
-)(
+module risk_types (
     input logic clk,
     input logic rst_n,         
     input logic [31:0] sample_seq_in,  
