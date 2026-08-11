@@ -1,6 +1,6 @@
 import types_pkg::*;
 
-module risk_control #(
+module risk_control_2 #(
     parameter int CLK_FREQ = 100000000   // 100MHz 가정
 ) (
     input logic clk,
@@ -74,34 +74,24 @@ module risk_control #(
 
 
     logic making_col_inv, making_col_deg;
-    logic [1:0] col_conf_cnt;
     logic making_rs_inv, making_rs_deg;
-    logic [1:0] rs_conf_cnt;
     logic making_ri_inv, making_ri_deg;
-    logic [1:0] ri_conf_cnt;
     logic making_vi_inv, making_vi_deg;
-    logic [1:0] vi_conf_cnt;
     logic making_roll_inv, making_roll_deg;
-    logic [1:0] roll_conf_cnt;
     logic making_yaw_inv, making_yaw_deg;
-    logic [1:0] yaw_conf_cnt;
     logic making_accy_inv, making_accy_deg;
-    logic [1:0] accy_conf_cnt;
     logic making_pitch_inv, making_pitch_deg;
-    logic [1:0] pitch_conf_cnt;
     logic making_long_inv, making_long_deg;
-    logic [1:0] long_conf_cnt;
 
     // 위험도 요소별 신뢰도 조합
     always_comb begin
         // Collision
         making_col_inv = (rel_in.distance.state == INVALID) || (rel_in.approach_speed.state == INVALID);
         making_col_deg = (rel_in.distance.state == DEGRADED) || (rel_in.approach_speed.state == DEGRADED);
-        col_conf_cnt = rel_in.distance.consistency + rel_in.approach_speed.consistency;
 
-        if (making_col_inv || col_conf_cnt == 2) 
+        if (making_col_inv) 
             Re_collision = INVALID;
-        else if (making_col_deg || col_conf_cnt >= 1) 
+        else if (making_col_deg) 
             Re_collision = DEGRADED;
         else 
             Re_collision = NORMAL;
@@ -110,11 +100,10 @@ module risk_control #(
         // Road Surface
         making_rs_inv = (rel_in.temperature.state == INVALID) || (rel_in.humidity.state == INVALID);
         making_rs_deg = (rel_in.temperature.state == DEGRADED) || (rel_in.humidity.state == DEGRADED);
-        rs_conf_cnt = rel_in.temperature.consistency + rel_in.humidity.consistency;
 
-        if (making_rs_inv || rs_conf_cnt == 2)
+        if (making_rs_inv)
             Re_road_A = INVALID;
-        else if (making_rs_deg || rs_conf_cnt >= 1)
+        else if (making_rs_deg)
             Re_road_A = DEGRADED;
         else 
             Re_road_A = NORMAL;
@@ -122,11 +111,10 @@ module risk_control #(
         // Road Impact
         making_ri_inv = (rel_in.accel_z.state == INVALID);
         making_ri_deg = (rel_in.accel_z.state == DEGRADED);
-        ri_conf_cnt = rel_in.accel_z.consistency;
 
         if (making_ri_inv) 
             Re_road_B = INVALID;
-        else if (making_ri_deg || ri_conf_cnt == 1) 
+        else if (making_ri_deg) 
             Re_road_B = DEGRADED;
         else 
             Re_road_B = NORMAL;
@@ -135,11 +123,10 @@ module risk_control #(
         // Vision_A
         making_vi_inv = (rel_in.lux.state == INVALID);
         making_vi_deg = (rel_in.lux.state == DEGRADED);
-        vi_conf_cnt = rel_in.lux.consistency;
 
         if (making_vi_inv) 
             Re_vision_A = INVALID;
-        else if (making_vi_deg || vi_conf_cnt == 1) 
+        else if (making_vi_deg) 
             Re_vision_A = DEGRADED;
         else 
             Re_vision_A = NORMAL;
@@ -147,11 +134,10 @@ module risk_control #(
         // Roll
         making_roll_inv = (rel_in.gyro_x.state == INVALID);
         making_roll_deg = (rel_in.gyro_x.state == DEGRADED);
-        roll_conf_cnt = rel_in.gyro_x.consistency;
 
         if (making_roll_inv) 
             Re_posture_A = INVALID;
-        else if (making_roll_deg || roll_conf_cnt == 1) 
+        else if (making_roll_deg) 
             Re_posture_A = DEGRADED;
         else 
             Re_posture_A = NORMAL;
@@ -160,11 +146,10 @@ module risk_control #(
         // Yaw
         making_yaw_inv = (rel_in.gyro_z.state == INVALID);
         making_yaw_deg = (rel_in.gyro_z.state == DEGRADED);
-        yaw_conf_cnt = rel_in.gyro_z.consistency;
 
         if (making_yaw_inv) 
             Re_posture_B = INVALID;
-        else if (making_yaw_deg || yaw_conf_cnt == 1) 
+        else if (making_yaw_deg) 
             Re_posture_B = DEGRADED;
         else 
             Re_posture_B = NORMAL;
@@ -172,11 +157,10 @@ module risk_control #(
         // Lateral(accel_y)
         making_accy_inv = (rel_in.accel_y.state == INVALID);
         making_accy_deg = (rel_in.accel_y.state == DEGRADED);
-        accy_conf_cnt = rel_in.accel_y.consistency;
 
         if (making_accy_inv) 
             Re_posture_C = INVALID;
-        else if (making_accy_deg || accy_conf_cnt == 1) 
+        else if (making_accy_deg) 
             Re_posture_C = DEGRADED;
         else 
             Re_posture_C = NORMAL;
@@ -185,11 +169,10 @@ module risk_control #(
         // 제어 미사용, 경고에만 사용: Pitch
         making_pitch_inv = (rel_in.gyro_y.state == INVALID);
         making_pitch_deg = (rel_in.gyro_y.state == DEGRADED);
-        pitch_conf_cnt = rel_in.gyro_y.consistency;
 
         if (making_pitch_inv) 
             Re_pitch = INVALID;
-        else if (making_pitch_deg || pitch_conf_cnt == 1) 
+        else if (making_pitch_deg) 
             Re_pitch = DEGRADED;
         else 
             Re_pitch = NORMAL;
@@ -197,11 +180,10 @@ module risk_control #(
         // 제어 미사용, 경고에만 사용: Longitudinal
         making_long_inv = (rel_in.accel_x.state == INVALID);
         making_long_deg = (rel_in.accel_x.state == DEGRADED);
-        long_conf_cnt = rel_in.accel_x.consistency;
 
         if (making_long_inv) 
             Re_longitudinal = INVALID;
-        else if (making_long_deg || long_conf_cnt == 1) 
+        else if (making_long_deg) 
             Re_longitudinal = DEGRADED;
         else 
             Re_longitudinal = NORMAL;
@@ -281,8 +263,7 @@ module risk_control #(
 
     logic [CNT_WIDTH - 1:0] cnt_05;
 
-    logic signed [8:0] delta_steering;
-    assign delta_steering = sim_data_in.steering - sim_data_out.steering;
+    
 
     logic [12:0] spd_limit_90;
     logic [12:0] spd_limit_80;
@@ -486,9 +467,9 @@ module risk_control #(
             1'b1: begin
                 posture_A_accelerator = 4'd0;
 
-                if (delta_steering > 100)
+                if (sim_data_in.delta_steering > 100)
                     posture_A_steering = sim_data_out.steering + 100;
-                else if(delta_steering < -100)
+                else if(sim_data_in.delta_steering < -100)
                     posture_A_steering = sim_data_out.steering - 100;
             end
 
@@ -500,18 +481,18 @@ module risk_control #(
                 if (sim_data_in.accelerator > 4'd8)
                     posture_B_accelerator = 4'd8;
 
-                if (delta_steering > 140)
+                if (sim_data_in.delta_steering > 140)
                     posture_B_steering = sim_data_out.steering + 140;
-                else if(delta_steering < -140)
+                else if(sim_data_in.delta_steering < -140)
                     posture_B_steering = sim_data_out.steering - 140;
             end
 
             2'b10: begin
                     posture_B_accelerator = 4'd0;
 
-                if (delta_steering > 100)
+                if (sim_data_in.delta_steering > 100)
                     posture_B_steering = sim_data_out.steering + 100;
-                else if(delta_steering < -100)
+                else if(sim_data_in.delta_steering < -100)
                     posture_B_steering = sim_data_out.steering - 100;
             end
 
@@ -523,18 +504,18 @@ module risk_control #(
                 if (sim_data_in.accelerator > 4'd7)
                     posture_C_accelerator = 4'd7;
 
-                if (delta_steering > 160)
+                if (sim_data_in.delta_steering > 160)
                     posture_C_steering = sim_data_out.steering + 160;
-                else if(delta_steering < -160)
+                else if(sim_data_in.delta_steering < -160)
                     posture_C_steering = sim_data_out.steering - 160;
             end
 
             2'b10: begin
                     posture_C_accelerator = 4'd0;
 
-                if (delta_steering > 120)
+                if (sim_data_in.delta_steering > 120)
                     posture_C_steering = sim_data_out.steering + 120;
-                else if(delta_steering < -120)
+                else if(sim_data_in.delta_steering < -120)
                     posture_C_steering = sim_data_out.steering - 120;
             end
 
