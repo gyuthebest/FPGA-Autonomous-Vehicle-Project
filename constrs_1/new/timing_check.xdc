@@ -1,0 +1,1 @@
+set CLK_PERIOD 10.000        # 100 MHz ±‚¡ÿ
