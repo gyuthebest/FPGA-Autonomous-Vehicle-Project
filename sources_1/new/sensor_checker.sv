@@ -65,7 +65,8 @@ module each_sensor_check #(
     logic cond_b;
     logic testable;
     logic [1:0] timeout_drop;
-    logic [DW-1:0] delta_sum;
+    localparam int SUM_W = DW + $clog2(HISTORY + 1);
+    logic [SUM_W-1:0] delta_sum;
     logic [HISTORY-1:0][DW-1:0] delta_history;
     logic [HISTORY-1:0] flip_history;
 
@@ -167,6 +168,7 @@ module each_sensor_check #(
     always_ff @(posedge clk) begin
         if (!rst_n) begin
             timeout_cnt <= '0;
+            timeout_drop <= '0;
         end
         else begin
             if (raw_timeout) timeout_drop <= DROP_N;
@@ -191,7 +193,9 @@ module each_sensor_check #(
         end
         else begin
             if (valid_s1) begin
-                if (timeout_mask_1s) begin
+                // Skip only the first sample after a timeout because its
+                // delta spans the missing interval; collect normal samples.
+                if (!timeout_mask_1s) begin
                     delta_history <= {delta_history[HISTORY-2:0],(processed_data[DW-1] ? -processed_data : processed_data)};
                     flip_history  <= {flip_history[HISTORY-2:0],(prev_processed_data[DW-1] != processed_data[DW-1])};
                 end

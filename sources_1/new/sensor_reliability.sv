@@ -2,7 +2,10 @@
 
 import types_pkg::*;
 
-module sensor_reliability (
+module sensor_reliability #(
+    parameter int unsigned CLK_FREQ_HZ    = 100000000,
+    parameter int unsigned SAMPLE_RATE_HZ = 20
+) (
     input clk,//
     input rst_n,//
     input valid_s1,//
@@ -45,7 +48,8 @@ module sensor_reliability (
     localparam int NU = 1, ND = 1, NN = 3;      // Noise     q* = 50 %
     localparam int TU = 1, TD = 2, TN = 10;     // Timeout   q* = 67 %
 
-    localparam int UPDATE_CLK_X2 = 20;          // 샘플 주기 2배 (미확정 — 실측 필요)
+    // Timeout after two expected 20 Hz sample periods (100 ms at 100 MHz).
+    localparam int UPDATE_CLK_X2 = (2 * CLK_FREQ_HZ) / SAMPLE_RATE_HZ;
     localparam int DROP_N        = 2;
     localparam int HISTORY_LEN   = 10;          // noise 윈도우 = N_debounce
 
@@ -133,6 +137,12 @@ module sensor_reliability (
     assign cons_err[CH_HUM]  = 1'b0;
     assign cons_err[CH_LUX]  = 1'b0;
 
+    // All channels share the same sample clock, so any first recovery sample
+    // resets the predictor. Approach-speed consistency directly controls its
+    // predictor recovery path and the 20-second hold timer below.
+    assign timeout_mask_1s = |tm1;
+    assign consistency_mask_1s_approach_speed = cons_err_approach_speed[0];
+
     //==========================================================================
     // Packing  --  reliability_state_t
     //==========================================================================
@@ -151,7 +161,8 @@ module sensor_reliability (
         pack_ch.timeout     = t;
         pack_ch.noise       = n;
         pack_ch.consistency = c;
-        pack_ch.state       = (r | t | (s+c == 2)) ? 2'b10 : (j | n | (s+c == 1)) ? 2'b01 : 2'b00;
+        pack_ch.state       = (r || t || (s && c)) ? 2'b10 :
+                              (j || n || (s ^ c))  ? 2'b01 : 2'b00;
     endfunction
 
     always_comb begin
@@ -169,6 +180,7 @@ module sensor_reliability (
     end
 
     always_comb begin
+        stuck_mask_1s_or_20s = '0;
         stuck_mask_1s_or_20s[CH_DIST]  = range_err[CH_APSP] | jump_err[CH_APSP] | stuck_err[CH_APSP] | noise_err[CH_APSP]| cons_err[CH_APSP] | timeout_err[CH_APSP] | stuck_mask_20s[CH_APSP]; //stuck_mask_20s 추가
         stuck_mask_1s_or_20s[CH_APSP]  = range_err[CH_DIST] | jump_err[CH_DIST] | stuck_err[CH_DIST] | noise_err[CH_DIST]| cons_err[CH_DIST] | timeout_err[CH_DIST] | stuck_mask_20s[CH_DIST]; //stuck_mask_20s 추가
         stuck_mask_1s_or_20s[CH_AX]    = 1'b0;
@@ -200,7 +212,7 @@ module sensor_reliability (
     // mask_20s -- stuck, consistency
     //==========================================================================
     mask_20s #(
-        .CLK_FREQ(100000000)
+        .CLK_FREQ(CLK_FREQ_HZ)
     ) u_mask_20s_distance (
         .clk(clk), .rst_n(rst_n),
         .stuck_err(stuck_err[CH_DIST]),
@@ -210,7 +222,7 @@ module sensor_reliability (
     );
 
     mask_20s #(
-        .CLK_FREQ(100000000)
+        .CLK_FREQ(CLK_FREQ_HZ)
     ) u_mask_20s_approach_speed (
         .clk(clk), .rst_n(rst_n),
         .stuck_err(stuck_err[CH_APSP]),

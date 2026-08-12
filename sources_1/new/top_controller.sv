@@ -4,7 +4,9 @@ import types_pkg::*;
 
 module top_controller #(
     parameter integer C_S_AXI_DATA_WIDTH = 32,
-    parameter integer C_S_AXI_ADDR_WIDTH = 6
+    parameter integer C_S_AXI_ADDR_WIDTH = 6,
+    parameter integer CLK_FREQ_HZ        = 100000000,
+    parameter integer SAMPLE_RATE_HZ     = 20
 )(
     //------------------------------------------------------------
     // AXI Clock / Reset
@@ -132,7 +134,7 @@ module top_controller #(
     logic            timeout_mask_1s;
     logic            consistency_mask_1s_approach_speed;
     logic            consistency_mask_20s_approach_speed;
-    pred_data_t      prev_processed_data_out;
+    processed_data_t prev_processed_data_out;
     logic            consistency_mask_1;
     logic            consistency_mask_2;
     logic            consistency_mask_3;
@@ -174,7 +176,10 @@ module top_controller #(
     reliability_state_t               reliability_out;
     
 
-    sensor_reliability u_sensor_reliability (
+    sensor_reliability #(
+        .CLK_FREQ_HZ    (CLK_FREQ_HZ),
+        .SAMPLE_RATE_HZ (SAMPLE_RATE_HZ)
+    ) u_sensor_reliability (
         .clk                (S_AXI_ACLK),//
         .rst_n              (S_AXI_ARESETN),//
         .clk_cnt (clk_cnt_s1), //수정
@@ -239,7 +244,9 @@ module top_controller #(
     logic mrm;
     logic [3:0] td_remain_sec;     
 
-    risk_control u_risk_control (
+    risk_control_2 #(
+        .CLK_FREQ (CLK_FREQ_HZ)
+    ) u_risk_control (
         .clk                (S_AXI_ACLK),//
         .rst_n              (S_AXI_ARESETN),//
         

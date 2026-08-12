@@ -92,6 +92,8 @@ module risk_control_2 #(
     logic making_pitch_inv, making_pitch_deg;
     logic making_long_inv, making_long_deg;
     logic signed [7:0] prev_steering;
+    logic valid_out_risk;
+    logic valid_out_rel;
 
     assign valid_out_rel_risk[1] = valid_out_rel;
     assign valid_out_rel_risk[0] = valid_out_risk;
@@ -259,6 +261,7 @@ module risk_control_2 #(
     logic [3:0] col_brake, road_B_brake;
     logic [1:0] col_gear;
     logic signed [7:0] posture_A_steering, posture_B_steering, posture_C_steering;
+    logic signed [8:0] steering_delta;
     logic col_hazard, vision_A_headlight, vision_B_headlight, vision_B_hazard;
 
     logic [3:0] final_accelerator;
@@ -310,6 +313,8 @@ module risk_control_2 #(
         posture_A_steering = sim_data_in.steering;
         posture_B_steering = sim_data_in.steering;
         posture_C_steering = sim_data_in.steering;
+        steering_delta = $signed({sim_data_in.steering[7], sim_data_in.steering}) -
+                         $signed({prev_steering[7], prev_steering});
 
         col_hazard = 1'b0;
         vision_B_hazard = 1'b0;
@@ -480,10 +485,10 @@ module risk_control_2 #(
             1'b1: begin
                 posture_A_accelerator = 4'd0;
 
-                if (sim_data_in.delta_steering - prev_steering > 100)
-                    posture_A_steering = sim_data_out.steering + 100;
-                else if(sim_data_in.steering - prev_steering < -100)
-                    posture_A_steering = sim_data_out.steering - 100;
+                if (steering_delta > 9'sd100)
+                    posture_A_steering = prev_steering + 8'sd100;
+                else if (steering_delta < -9'sd100)
+                    posture_A_steering = prev_steering - 8'sd100;
             end
 
             default: ;
@@ -494,19 +499,19 @@ module risk_control_2 #(
                 if (sim_data_in.accelerator > 4'd8)
                     posture_B_accelerator = 4'd8;
 
-                if (sim_data_in.steering - prev_steering > 140)
-                    posture_B_steering = sim_data_out.steering + 140;
-                else if(sim_data_in.steering - prev_steering < -140)
-                    posture_B_steering = sim_data_out.steering - 140;
+                if (steering_delta > 9'sd140)
+                    posture_B_steering = prev_steering + 9'sd140;
+                else if (steering_delta < -9'sd140)
+                    posture_B_steering = prev_steering - 9'sd140;
             end
 
             2'b10: begin
                     posture_B_accelerator = 4'd0;
 
-                if (sim_data_in.steering - prev_steering > 100)
-                    posture_B_steering = sim_data_out.steering + 100;
-                else if(sim_data_in.steering - prev_steering < -100)
-                    posture_B_steering = sim_data_out.steering - 100;
+                if (steering_delta > 9'sd100)
+                    posture_B_steering = prev_steering + 8'sd100;
+                else if (steering_delta < -9'sd100)
+                    posture_B_steering = prev_steering - 8'sd100;
             end
 
             default: ;
@@ -517,19 +522,19 @@ module risk_control_2 #(
                 if (sim_data_in.accelerator > 4'd7)
                     posture_C_accelerator = 4'd7;
 
-                if (sim_data_in.steering - prev_steering > 160)
-                    posture_C_steering = sim_data_out.steering + 160;
-                else if(sim_data_in.steering - prev_steering < -160)
-                    posture_C_steering = sim_data_out.steering - 160;
+                if (steering_delta > 9'sd160)
+                    posture_C_steering = prev_steering + 9'sd160;
+                else if (steering_delta < -9'sd160)
+                    posture_C_steering = prev_steering - 9'sd160;
             end
 
             2'b10: begin
                     posture_C_accelerator = 4'd0;
 
-                if (sim_data_in.steering - prev_steering > 120)
-                    posture_C_steering = sim_data_out.steering + 120;
-                else if(sim_data_in.steering - prev_steering < -120)
-                    posture_C_steering = sim_data_out.steering - 120;
+                if (steering_delta > 9'sd120)
+                    posture_C_steering = prev_steering + 8'sd120;
+                else if (steering_delta < -9'sd120)
+                    posture_C_steering = prev_steering - 8'sd120;
             end
 
             default: ;
@@ -707,13 +712,16 @@ module risk_control_2 #(
     always_ff @(posedge clk) begin
         if (!rst_n) begin
             prev_steering <= '0;
+            sim_data_out <= '0;
+            sensor_data_out <= '0;
+            rel_out <= '0;
             sim_data_out.accelerator <= '0;
             sim_data_out.brake <= 4'd5;
             sim_data_out.steering <= '0;
             sim_data_out.gear <= 2'd0;
             sim_data_out.headlight <= 1'b0;
             sim_data_out.hazard <= 1'b0;
-            sim_data_out.manual_mode <= sim_data_in.manual_mode; 
+            sim_data_out.manual_mode <= 1'b0;
             sim_data_out.speed_limit <= 13'b0; 
             sample_seq_out_risk <= '0;
             sample_seq_out_rel <= '0;
@@ -746,7 +754,7 @@ module risk_control_2 #(
             
             if (valid_in) begin
                 sample_seq_out_risk <= sample_seq_in;
-                sample_seq_out_rel <= sample_seq_in_rel;
+                sensor_data_out <= sensor_data_in;
                 prev_steering <= sim_data_in.steering;
                 
                 if (sim_data_in.manual_mode) begin
@@ -796,6 +804,11 @@ module risk_control_2 #(
                     if(Re_posture_B != INVALID) last_valid_Ri_posture_B <= eff_tier_posture_B;
                     if(Re_posture_C != INVALID) last_valid_Ri_posture_C <= eff_tier_posture_C;
                 end
+            end
+
+            if (valid_in_rel) begin
+                sample_seq_out_rel <= sample_seq_in_rel;
+                rel_out <= rel_in;
             end
         end
     end

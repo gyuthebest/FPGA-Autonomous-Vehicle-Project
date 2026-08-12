@@ -71,10 +71,9 @@ module preprocessor (
         end
     end
 
-    sensor_data_t    prev_sensor_data_out,
+    sensor_data_t    prev_sensor_data_out;
     processed_data_t processed_data;
     processed_data_t prev_processed_data;
-    logic [31:0]     clk_cnt;
 
     always_comb begin
 
@@ -497,6 +496,7 @@ module preprocessor (
     logic signed [13:0] speed_x_prev [W];
     logic signed [13:0] speed_y_prev [W];
     logic signed [13:0] speed_z_prev [W];
+    logic [7:0] win;
 
     always_ff @(posedge clk) begin
         if (!rst_n) begin
@@ -549,8 +549,6 @@ module preprocessor (
             end
         end
     end
-
-    logic [7:0] win;
 
     always_ff @(posedge clk) begin
 
