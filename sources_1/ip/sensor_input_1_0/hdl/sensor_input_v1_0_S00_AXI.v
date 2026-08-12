@@ -26,8 +26,7 @@
         input sim_data_t sim_data_in,
         input logic [31:0] sample_seq_risk,
         input logic [31:0] sample_seq_rel,
-        input logic valid_risk,
-        input logic valid_rel,
+        input logic [1:0] valid_out_rel_risk,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -447,7 +446,7 @@
     assign read_reg6 = { 2'b0, sim_data_in.weather, sim_data_in.accelerator, sim_data_in.speed_z[7:0], sensor_data_in.lux };
     assign read_reg7 = { 2'b0, sim_data_in.gear, sim_data_in.rpm, sim_data_in.brake, sim_data_in.steering[4:0], sim_data_in.speed_limit[7:0], sensor_data_in.temperature };
     assign read_reg8 = { 26'b0, sim_data_in.situation, sim_data_in.hazard, sim_data_in.headlight, sim_data_in.manual_mode };
-    assign read_reg9 = { 14'b0, valid_rel, valid_risk, risk_in.Ri_posture_C, risk_in.Ri_posture_B, risk_in.Ri_posture_A, risk_in.Ri_vision_B, risk_in.Ri_vision_A, risk_in.Ri_road_B, risk_in.Ri_road_A, risk_in.Ri_collision };
+    assign read_reg9 = { 14'b0, valid_out_rel_risk[1], valid_out_rel_risk[0], risk_in.Ri_posture_C, risk_in.Ri_posture_B, risk_in.Ri_posture_A, risk_in.Ri_vision_B, risk_in.Ri_vision_A, risk_in.Ri_road_B, risk_in.Ri_road_A, risk_in.Ri_collision };
     assign read_reg10 = { 10'b0, rel_in.lux.state, rel_in.humidity.state, rel_in.temperature.state, rel_in.gyro_z.state, rel_in.gyro_y.state, rel_in.gyro_x.state, rel_in.accel_z.state, rel_in.accel_y.state, rel_in.accel_x.state, rel_in.approach_speed.state, rel_in.distance.state };
     assign read_reg11 = sample_seq_risk;
     assign read_reg12 = sample_seq_rel;

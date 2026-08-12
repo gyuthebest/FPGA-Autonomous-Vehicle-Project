@@ -3,26 +3,26 @@
 import types_pkg::*;
 
 module sensor_reliability (
-    input clk,
-    input rst_n,
-    input valid_s1,
-    input [31:0] sample_seq_in,
-    input [31:0] clk_cnt,
-    input sensor_data_t sensor_data_in,
-    input processed_data_t processed_data_in,
-    input processed_data_t prev_processed_data_in,
-    input pred_data_t pred_data_in,
-    input consistency_mask_1,
-    input consistency_mask_2,
-    input consistency_mask_3,
-    input [2:0] situation,
-    output logic timeout_mask_1s,
-    output logic consistency_mask_1s_approach_speed,
-    output logic consistency_mask_20s_approach_speed, // 20s 추가
+    input clk,//
+    input rst_n,//
+    input valid_s1,//
+    input [31:0] sample_seq_in,//
+    input [31:0] clk_cnt, //
+    input sensor_data_t sensor_data_in,//
+    input processed_data_t processed_data_in,//
+    input processed_data_t prev_processed_data_in,//
+    input pred_data_t pred_data_in,//
+    input consistency_mask_1,//
+    input consistency_mask_2,//
+    input consistency_mask_3,//
+    input [2:0] situation, //
+    output logic timeout_mask_1s,//
+    output logic consistency_mask_1s_approach_speed,//
+    output logic consistency_mask_20s_approach_speed, // 20s 추가//
 
-    output logic [31:0] sample_seq_out_rel,
-    output logic valid_out_rel,
-    output reliability_state_t reliability_out
+    output logic [31:0] sample_seq_out_rel,//
+    output logic valid_out_rel,//
+    output reliability_state_t reliability_out//
 );
 
     //==========================================================================

@@ -3,33 +3,35 @@ import types_pkg::*;
 module risk_control_2 #(
     parameter int CLK_FREQ = 100000000   // 100MHz 가정
 ) (
-    input logic clk,
-    input logic rst_n,
+    input logic clk,//
+    input logic rst_n,//
 
-    input logic valid_in,
-    input logic valid_in_rel,
-    input logic [31:0] sample_seq_in,
-    input sensor_data_t sensor_data_in,
-    input sim_data_t sim_data_in,
+    input logic valid_in,//
+    input logic valid_in_rel,///
+    input logic [31:0] sample_seq_in,//
+    input logic [31:0] sample_seq_in_rel, //수정 //
+    input sensor_data_t sensor_data_in,//
+    input sim_data_t sim_data_in,//
 
 
-    input reliability_state_t rel_in,
-    input risk_t risk_in,
-
+    input reliability_state_t rel_in,//
+    input risk_t risk_in,//
+//
    
     
 
-    output logic [31:0] sample_seq_out_risk,
+    output logic [31:0] sample_seq_out_risk,//
+    output logic [31:0] sample_seq_out_rel, //수정
     //output logic valid_out_risk,
     //output logic valid_out_rel,
 
-    output logic [1:0] valid_out_rel_risk,
+    output logic [1:0] valid_out_rel_risk, //
     
-    output risk_t risk_out,
-    output reliability_state_t rel_out,
+    output risk_t risk_out,//
+    output reliability_state_t rel_out,//
 
-    output sensor_data_t sensor_data_out,
-    output sim_data_t sim_data_out,
+    output sensor_data_t sensor_data_out,//
+    output sim_data_t sim_data_out,//
 
     output logic transition_demand,
     output logic hud_warning,
@@ -89,6 +91,7 @@ module risk_control_2 #(
     logic making_accy_inv, making_accy_deg;
     logic making_pitch_inv, making_pitch_deg;
     logic making_long_inv, making_long_deg;
+    logic signed [7:0] prev_steering;
 
     assign valid_out_rel_risk[1] = valid_out_rel;
     assign valid_out_rel_risk[0] = valid_out_risk;
@@ -477,9 +480,9 @@ module risk_control_2 #(
             1'b1: begin
                 posture_A_accelerator = 4'd0;
 
-                if (sim_data_in.delta_steering > 100)
+                if (sim_data_in.delta_steering - prev_steering > 100)
                     posture_A_steering = sim_data_out.steering + 100;
-                else if(sim_data_in.delta_steering < -100)
+                else if(sim_data_in.steering - prev_steering < -100)
                     posture_A_steering = sim_data_out.steering - 100;
             end
 
@@ -491,18 +494,18 @@ module risk_control_2 #(
                 if (sim_data_in.accelerator > 4'd8)
                     posture_B_accelerator = 4'd8;
 
-                if (sim_data_in.delta_steering > 140)
+                if (sim_data_in.steering - prev_steering > 140)
                     posture_B_steering = sim_data_out.steering + 140;
-                else if(sim_data_in.delta_steering < -140)
+                else if(sim_data_in.steering - prev_steering < -140)
                     posture_B_steering = sim_data_out.steering - 140;
             end
 
             2'b10: begin
                     posture_B_accelerator = 4'd0;
 
-                if (sim_data_in.delta_steering > 100)
+                if (sim_data_in.steering - prev_steering > 100)
                     posture_B_steering = sim_data_out.steering + 100;
-                else if(sim_data_in.delta_steering < -100)
+                else if(sim_data_in.steering - prev_steering < -100)
                     posture_B_steering = sim_data_out.steering - 100;
             end
 
@@ -514,18 +517,18 @@ module risk_control_2 #(
                 if (sim_data_in.accelerator > 4'd7)
                     posture_C_accelerator = 4'd7;
 
-                if (sim_data_in.delta_steering > 160)
+                if (sim_data_in.steering - prev_steering > 160)
                     posture_C_steering = sim_data_out.steering + 160;
-                else if(sim_data_in.delta_steering < -160)
+                else if(sim_data_in.steering - prev_steering < -160)
                     posture_C_steering = sim_data_out.steering - 160;
             end
 
             2'b10: begin
                     posture_C_accelerator = 4'd0;
 
-                if (sim_data_in.delta_steering > 120)
+                if (sim_data_in.steering - prev_steering > 120)
                     posture_C_steering = sim_data_out.steering + 120;
-                else if(sim_data_in.delta_steering < -120)
+                else if(sim_data_in.steering - prev_steering < -120)
                     posture_C_steering = sim_data_out.steering - 120;
             end
 
@@ -703,6 +706,7 @@ module risk_control_2 #(
     // -------------------------------------------------------------
     always_ff @(posedge clk) begin
         if (!rst_n) begin
+            prev_steering <= '0;
             sim_data_out.accelerator <= '0;
             sim_data_out.brake <= 4'd5;
             sim_data_out.steering <= '0;
@@ -712,6 +716,7 @@ module risk_control_2 #(
             sim_data_out.manual_mode <= sim_data_in.manual_mode; 
             sim_data_out.speed_limit <= 13'b0; 
             sample_seq_out_risk <= '0;
+            sample_seq_out_rel <= '0;
             
             // valid 초기화
             valid_out_risk <= 1'b0;
@@ -741,6 +746,8 @@ module risk_control_2 #(
             
             if (valid_in) begin
                 sample_seq_out_risk <= sample_seq_in;
+                sample_seq_out_rel <= sample_seq_in_rel;
+                prev_steering <= sim_data_in.steering;
                 
                 if (sim_data_in.manual_mode) begin
                     sim_data_out <= sim_data_in;

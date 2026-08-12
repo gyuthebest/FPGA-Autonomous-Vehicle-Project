@@ -3,35 +3,35 @@
 import types_pkg::*;
 
 module preprocessor (
-    input  logic clk,
-    input  logic rst_n,
+    input  logic clk,//
+    input  logic rst_n,//
 
     //------------------------------------------------------------
     // Inputs
     //------------------------------------------------------------
 
-    input  sensor_data_t   sensor_data_in,
-    input  sim_data_t      sim_data_in,
-    input  logic [31:0]    sample_seq_in,
-    input  logic           timeout_mask_1s,
-    input  logic           consistency_mask_1s_approach_speed,
-    input  logic           consistency_mask_20s_approach_speed,
+    input  sensor_data_t   sensor_data_in, //
+    input  sim_data_t      sim_data_in, //
+    input  logic [31:0]    sample_seq_in, //
+    input  logic           timeout_mask_1s, //
+    input  logic           consistency_mask_1s_approach_speed, //
+    input  logic           consistency_mask_20s_approach_speed, //
 
     //------------------------------------------------------------
     // Outputs
     //------------------------------------------------------------
 
-    output sensor_data_t    sensor_data_out,
-    output sim_data_t       sim_data_out,
-    output processed_data_t processed_data_out,
-    output processed_data_t prev_processed_data_out,
-    output pred_data_t      pred_data_out,
-    output logic            valid_s1,
-    output logic [31:0]     sample_seq_out,
-    output logic [31:0]     clk_cnt,
-    output logic            consistency_mask_1,
-    output logic            consistency_mask_2,
-    output logic            consistency_mask_3
+    output sensor_data_t    sensor_data_out, //
+    output sim_data_t       sim_data_out, //
+    output processed_data_t processed_data_out, //
+    output processed_data_t prev_processed_data_out, //
+    output pred_data_t      pred_data_out, //
+    output logic            valid_s1, //
+    output logic [31:0]     sample_seq_out, //
+    output logic [31:0]     clk_cnt, //
+    output logic            consistency_mask_1, //
+    output logic            consistency_mask_2, //
+    output logic            consistency_mask_3 //
 );
     localparam HISTORY = 10;
     localparam int S_DIST  = 40;

@@ -70,8 +70,7 @@ module top_controller #(
     reliability_state_t rel_out;
     logic [31:0]  sample_seq_risk;
     logic [31:0]  sample_seq_rel;
-    logic         valid_risk;
-    logic         valid_rel;
+    logic [1:0]   valid_out_rel_risk;
 
     sensor_input_v1_0_S00_AXI #(
         .C_S_AXI_DATA_WIDTH (C_S_AXI_DATA_WIDTH),
@@ -89,8 +88,7 @@ module top_controller #(
         .sim_data_in     (sim_data_out),
         .sample_seq_risk (sample_seq_risk),
         .sample_seq_rel  (sample_seq_rel),
-        .valid_risk      (valid_risk),
-        .valid_rel       (valid_rel),
+        .valid_out_rel_risk (valid_out_rel_risk),
 
         // AXI interface
         .S_AXI_ACLK      (S_AXI_ACLK),
@@ -124,27 +122,47 @@ module top_controller #(
     //---------------------------
     // Preprocessor 인스턴스화
     //---------------------------
-    sensor_data_t    sensor_data_s0;
-    sim_data_t       sim_data_s0;
-    processed_data_t process_data_s0;
+    sensor_data_t    sensor_data_s1;
+    sim_data_t       sim_data_s1;
+    processed_data_t process_data_s1;
     logic [31:0]     sample_seq_s1;
     logic            valid_s1;
     logic [31:0]     clk_cnt_s1;
+    pred_data_t      pred_data_s1;
+    logic            timeout_mask_1s;
+    logic            consistency_mask_1s_approach_speed;
+    logic            consistency_mask_20s_approach_speed;
+    pred_data_t      prev_processed_data_out;
+    logic            consistency_mask_1;
+    logic            consistency_mask_2;
+    logic            consistency_mask_3;
+
+
     
     preprocessor u_preprocessor (
         .clk                (S_AXI_ACLK),
         .rst_n              (S_AXI_ARESETN),
+
+        .timeout_mask_1s (timeout_mask_1s),
+        .consistency_mask_1s_approach_speed (consistency_mask_1s_approach_speed), 
+        .consistency_mask_20s_approach_speed (consistency_mask_20s_approach_speed), 
         
         .sensor_data_in     (sensor_data_axi),
         .sim_data_in        (sim_data_axi),
-        .sample_seq         (sample_seq_axi),
+        .sample_seq_in         (sample_seq_axi),
         
-        .sensor_data_out    (sensor_data_s0),
-        .sim_data_out       (sim_data_s0),
-        .processed_data_out (process_data_s0),
-        .sample_seq_s1      (sample_seq_s1),
+        .sensor_data_out    (sensor_data_s1),
+        .sim_data_out       (sim_data_s1),
+        .processed_data_out (process_data_s1),
+        .sample_seq_out      (sample_seq_s1),
         .valid_s1           (valid_s1),
-        .clk_cnt_s1         (clk_cnt_s1)
+        .clk_cnt         (clk_cnt_s1),
+
+        .pred_data_out (pred_data_s1),
+        .prev_processed_data_out (prev_processed_data_out),
+        .consistency_mask_1 (consistency_mask_1),
+        .consistency_mask_2 (consistency_mask_2),
+        .consistency_mask_3 (consistency_mask_3)
     );
 
     //---------------------------
@@ -153,19 +171,34 @@ module top_controller #(
     reliability_state_t rel_out_s1;
     logic [31:0]        sample_seq_out_rel;
     logic               valid_out_rel;
+    reliability_state_t               reliability_out;
+    
 
     sensor_reliability u_sensor_reliability (
-        .clk                (S_AXI_ACLK),
-        .rst_n              (S_AXI_ARESETN),
+        .clk                (S_AXI_ACLK),//
+        .rst_n              (S_AXI_ARESETN),//
+        .clk_cnt (clk_cnt_s1), //수정
         
-        .sensor_data_in     (sensor_data_s0),
-        .processed_data_in  (process_data_s0),
-        .valid_s1           (valid_s1),
-        .sample_seq_in      (sample_seq_s1),
+        .sensor_data_in     (sensor_data_s1),//
+        .processed_data_in  (process_data_s1),//
+        .prev_processed_data_in (prev_processed_data_out), //
+        .valid_s1           (valid_s1),//
+        .sample_seq_in      (sample_seq_s1),//
+        .pred_data_in       (pred_data_s1), // 
+
+        .consistency_mask_1 (consistency_mask_1),
+        .consistency_mask_2 (consistency_mask_2),
+        .consistency_mask_3 (consistency_mask_3),
+        .situation (sim_data_s1.situation),
+        .timeout_mask_1s (timeout_mask_1s), 
+        .consistency_mask_1s_approach_speed (consistency_mask_1s_approach_speed), 
+        .consistency_mask_20s_approach_speed (consistency_mask_20s_approach_speed),
+
         
-        .rel_out            (rel_out_s1),
-        .sample_seq_out     (sample_seq_out_rel),
-        .valid_out          (valid_out_rel)
+        
+        .sample_seq_out_rel     (sample_seq_out_rel),//
+        .valid_out_rel          (valid_out_rel),//
+        .reliability_out        (reliability_out)//
     );
 
     //---------------------------
@@ -177,47 +210,60 @@ module top_controller #(
     logic [31:0]    sample_seq_out_risk_types;
     logic           valid_out_risk_types;
 
+
+    
+
     risk_types u_risk_types (
-        .clk                (S_AXI_ACLK),
-        .rst_n              (S_AXI_ARESETN),
+        .clk                (S_AXI_ACLK),//
+        .rst_n              (S_AXI_ARESETN),//
         
-        .sim_data_in        (sim_data_s0),
-        .sensor_data_in     (sensor_data_s0),
-        .processed_data_in  (process_data_s0),
-        .valid_in           (valid_s1),
-        .sample_seq_in      (sample_seq_s1),
+        .sim_data_in        (sim_data_s1),//
+        .sensor_data_in     (sensor_data_s1),//
         
-        .risk_out           (risk_out_s1),
-        .sim_data_out       (sim_data_risk_s1),
-        .sensor_data_out    (sensor_data_risk_s1),
-        .sample_seq_out     (sample_seq_out_risk_types),
-        .valid_out          (valid_out_risk_types)
+        .valid_in           (valid_s1),//
+        .sample_seq_in      (sample_seq_s1),//
+        
+        .risk_out           (risk_out_s1),//
+        .sim_data_out       (sim_data_risk_s1),//
+        .sensor_data_out    (sensor_data_risk_s1),//
+        .sample_seq_out     (sample_seq_out_risk_types),//
+        .valid_out          (valid_out_risk_types)//
     );
 
     //---------------------------
     // Risk Control 2 인스턴스화
     //---------------------------
+
+    logic transition_demand;
+    logic hud_warning;
+    logic mrm;
+    logic [3:0] td_remain_sec;     
+
     risk_control u_risk_control (
-        .clk                (S_AXI_ACLK),
-        .rst_n              (S_AXI_ARESETN),
+        .clk                (S_AXI_ACLK),//
+        .rst_n              (S_AXI_ARESETN),//
         
-        .risk_in            (risk_out_s1),
-        .rel_in             (rel_out_s1),
-        .sim_data_in        (sim_data_risk_s1),
-        .sensor_data_in     (sensor_data_risk_s1),
-        .sample_seq_in      (sample_seq_out_risk_types),
-        .valid_in           (valid_out_risk_types),
-        .valid_in_rel       (valid_out_rel),
-        .sample_seq_in_rel  (sample_seq_out_rel),
+        .risk_in            (risk_out_s1),//
+        .rel_in             (reliability_out),//
+        .sim_data_in        (sim_data_risk_s1),//
+        .sensor_data_in     (sensor_data_risk_s1),//
+        .sample_seq_in      (sample_seq_out_risk_types),//
+        .valid_in           (valid_out_risk_types),//
+        .valid_in_rel       (valid_out_rel),//
+        .sample_seq_in_rel  (sample_seq_out_rel),//
         
-        .sensor_data_out    (sensor_data_out),
-        .sim_data_out       (sim_data_out),
-        .risk_out           (risk_out),
-        .rel_out            (rel_out),
-        .sample_seq_out     (sample_seq_risk),
-        .sample_seq_out_rel (sample_seq_rel),
-        .valid_out          (valid_risk),
-        .valid_out_rel      (valid_rel)
+        .sensor_data_out    (sensor_data_out),//
+        .sim_data_out       (sim_data_out),//
+        .risk_out           (risk_out),//
+        .rel_out            (rel_out),//
+        .sample_seq_out_risk     (sample_seq_risk), //
+        .sample_seq_out_rel (sample_seq_rel),//
+        .valid_out_rel_risk (valid_out_rel_risk), //
+
+        .transition_demand (transition_demand),
+        .hud_warning        (hud_warning),
+        .mrm                (mrm),
+        .td_remain_sec      (td_remain_sec)
     );
     
 endmodule

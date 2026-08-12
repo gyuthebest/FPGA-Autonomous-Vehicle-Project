@@ -131,7 +131,7 @@ module each_sensor_check #(
             default: cond_b = 1'b1;
         endcase
 
-        testable = con_b & ~stuck_mask;
+        testable = cond_b & ~stuck_mask;
         
         if (valid_s1) begin
             if (timeout_mask_1s) raw_stuck = 2'b10;

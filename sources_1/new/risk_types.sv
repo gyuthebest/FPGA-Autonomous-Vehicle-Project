@@ -1,19 +1,19 @@
 import types_pkg::*;
 
 module risk_types (
-    input logic clk,
-    input logic rst_n,         
-    input logic [31:0] sample_seq_in,  
-    input logic valid_in,
+    input logic clk,//
+    input logic rst_n,         //
+    input logic [31:0] sample_seq_in,  //
+    input logic valid_in,//
 
-    input sensor_data_t sensor_data_in,
-    input sim_data_t sim_data_in,
+    input sensor_data_t sensor_data_in,//
+    input sim_data_t sim_data_in,//
     
-    output sensor_data_t sensor_data_out,
-    output sim_data_t sim_data_out,
-    output logic [31:0] sample_seq_out,
-    output logic valid_out,
-    output risk_t risk_out
+    output sensor_data_t sensor_data_out,//
+    output sim_data_t sim_data_out,//
+    output logic [31:0] sample_seq_out,//
+    output logic valid_out,//
+    output risk_t risk_out//
 
 );
 
