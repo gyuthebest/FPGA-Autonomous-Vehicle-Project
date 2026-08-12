@@ -7,6 +7,7 @@ module risk_control_2 #(
     input logic rst_n,
 
     input logic valid_in,
+    input logic valid_in_rel,
     input logic [31:0] sample_seq_in,
     input sensor_data_t sensor_data_in,
     input sim_data_t sim_data_in,
@@ -15,9 +16,15 @@ module risk_control_2 #(
     input reliability_state_t rel_in,
     input risk_t risk_in,
 
-    output logic valid_out,
-    output logic [31:0] sample_seq_out,
+   
+    
 
+    output logic [31:0] sample_seq_out_risk,
+    //output logic valid_out_risk,
+    //output logic valid_out_rel,
+
+    output logic [1:0] valid_out_rel_risk,
+    
     output risk_t risk_out,
     output reliability_state_t rel_out,
 
@@ -82,6 +89,9 @@ module risk_control_2 #(
     logic making_accy_inv, making_accy_deg;
     logic making_pitch_inv, making_pitch_deg;
     logic making_long_inv, making_long_deg;
+
+    assign valid_out_rel_risk[1] = valid_out_rel;
+    assign valid_out_rel_risk[0] = valid_out_risk;
 
     // 위험도 요소별 신뢰도 조합
     always_comb begin
@@ -636,6 +646,9 @@ module risk_control_2 #(
     logic [2:0] td_invalid_duration;
     logic td_locked;        
 
+    // -------------------------------------------------------------
+    // 1초 단위 타이머 및 TD 로직
+    // -------------------------------------------------------------
     always_ff @(posedge clk) begin
         if (!rst_n) begin
             sec_cnt <= '0;
@@ -649,12 +662,10 @@ module risk_control_2 #(
             td_locked <= 1'b0;
             td_remain_sec <= 4'd11;
         end 
-        else if (valid_in) begin
-            // 1초 단위 타이머 생성
+        else begin
+           
             if (sec_cnt >= ONE_SEC_CYCLES - 1) begin
                 sec_cnt <= '0;
-
-                
                 // INVALID 5초 유지 조건 검사
                 if (td_condition) begin
                     if (td_invalid_duration < 3'd5)
@@ -664,13 +675,10 @@ module risk_control_2 #(
                         td_locked <= 1'b1;
                 end 
                 else begin
-
                     if (!td_locked) begin
                         td_invalid_duration <= '0;
                     end
                 end
-
-                
                 // 10초 카운트다운 로직
                 if (td_condition || td_locked) begin
                     if (td_remain_sec == 4'd11) begin
@@ -684,14 +692,15 @@ module risk_control_2 #(
                         td_remain_sec <= 4'd11;
                     end
                 end
-
             end 
             else begin
                 sec_cnt <= sec_cnt + 1;
             end
         end
     end
-
+    // -------------------------------------------------------------
+    // 데이터 갱신 및 제어 로직
+    // -------------------------------------------------------------
     always_ff @(posedge clk) begin
         if (!rst_n) begin
             sim_data_out.accelerator <= '0;
@@ -702,9 +711,11 @@ module risk_control_2 #(
             sim_data_out.hazard <= 1'b0;
             sim_data_out.manual_mode <= sim_data_in.manual_mode; 
             sim_data_out.speed_limit <= 13'b0; 
-            sample_seq_out <= '0;
-            valid_out <= 1'b0;
-
+            sample_seq_out_risk <= '0;
+            
+            // valid 초기화
+            valid_out_risk <= 1'b0;
+            valid_out_rel <= 1'b0;
             risk_out.Ri_collision <= '0;
             risk_out.Ri_road_A <= '0;
             risk_out.Ri_road_B <= '0;
@@ -713,8 +724,6 @@ module risk_control_2 #(
             risk_out.Ri_posture_A <= '0;
             risk_out.Ri_posture_B <= '0;
             risk_out.Ri_posture_C <= '0;
-
-
             last_valid_Ri_collision <= NORMAL;
             last_valid_Ri_road_A <= NORMAL;
             last_valid_Ri_road_B <= NORMAL;
@@ -722,92 +731,64 @@ module risk_control_2 #(
             last_valid_Ri_posture_A <= NORMAL;
             last_valid_Ri_posture_B <= NORMAL;
             last_valid_Ri_posture_C <= NORMAL;
-
             cnt_05 <= COUNT_05_FREQ;
             can_downshift <= 1'b1;
         end
-
-        else if(valid_in && sim_data_in.manual_mode) begin
-            sim_data_out <= sim_data_in;
-            sim_data_out.headlight <= final_headlight;
-            sim_data_out.hazard <= final_hazard;
-            sample_seq_out <= sample_seq_in;
-            valid_out <= valid_in;
-            risk_out.Ri_collision <= eff_tier_collision;
-            risk_out.Ri_road_A <= eff_tier_road_A;
-            risk_out.Ri_road_B <= eff_tier_road_B;
-            risk_out.Ri_vision_A <= eff_tier_vision_A;
-            risk_out.Ri_vision_B <= eff_tier_vision_B;
-            risk_out.Ri_posture_A <= eff_tier_posture_A;
-            risk_out.Ri_posture_B <= eff_tier_posture_B;
-            risk_out.Ri_posture_C <= eff_tier_posture_C;
-
-            if(Re_collision != INVALID) 
-                last_valid_Ri_collision <= eff_tier_collision;
-            if(Re_road_A != INVALID)
-                last_valid_Ri_road_A <= eff_tier_road_A;
-            if(Re_road_B != INVALID)
-                last_valid_Ri_road_B <= eff_tier_road_B;
-            if(Re_vision_A != INVALID)
-                last_valid_Ri_vision_A <= eff_tier_vision_A;
-            if(Re_posture_A != INVALID)
-                last_valid_Ri_posture_A <= eff_tier_posture_A;
-            if(Re_posture_B != INVALID)
-                last_valid_Ri_posture_B <= eff_tier_posture_B;
-            if(Re_posture_C != INVALID)
-                last_valid_Ri_posture_C <= eff_tier_posture_C;
-        end
-
-
-        else if (valid_in && !sim_data_in.manual_mode) begin
-            sim_data_out.accelerator <= final_accelerator;
-            sim_data_out.brake <= final_brake;
-            sim_data_out.steering <= final_steering;
-            sim_data_out.gear <= final_gear;
-            sim_data_out.headlight <= final_headlight;
-            sim_data_out.hazard <= final_hazard;
-            sim_data_out.manual_mode <= sim_data_in.manual_mode;
-            sim_data_out.speed_limit <= final_speed_limit;
-            sample_seq_out <= sample_seq_in;
-            valid_out <= valid_in;
-
-            cnt_05 <= COUNT_05_FREQ;
-
-            risk_out.Ri_collision <= eff_tier_collision;
-            risk_out.Ri_road_A <= eff_tier_road_A;
-            risk_out.Ri_road_B <= eff_tier_road_B;
-            risk_out.Ri_vision_A <= eff_tier_vision_A;
-            risk_out.Ri_vision_B <= eff_tier_vision_B;
-            risk_out.Ri_posture_A <= eff_tier_posture_A;
-            risk_out.Ri_posture_B <= eff_tier_posture_B;
-            risk_out.Ri_posture_C <= eff_tier_posture_C;
-
-            if(Re_collision != INVALID) 
-                last_valid_Ri_collision <= eff_tier_collision;
-            if(Re_road_A != INVALID)
-                last_valid_Ri_road_A <= eff_tier_road_A;
-            if(Re_road_B != INVALID)
-                last_valid_Ri_road_B <= eff_tier_road_B;
-            if(Re_vision_A != INVALID)
-                last_valid_Ri_vision_A <= eff_tier_vision_A;
-            if(Re_posture_A != INVALID)
-                last_valid_Ri_posture_A <= eff_tier_posture_A;
-            if(Re_posture_B != INVALID)
-                last_valid_Ri_posture_B <= eff_tier_posture_B;
-            if(Re_posture_C != INVALID)
-                last_valid_Ri_posture_C <= eff_tier_posture_C;
-
-            // 다운쉬프트 타이머
-            if (final_gear < sim_data_out.gear) begin
-                cnt_05 <= '0;
-                can_downshift <= 1'b0;
-            end 
-            else if (cnt_05 < COUNT_05_FREQ) begin
-                cnt_05 <= cnt_05 + 1;
-                can_downshift <= 1'b0;
-            end 
-            else begin
-                can_downshift <= 1'b1;
+        else begin
+            
+            valid_out_risk <= valid_in;
+            valid_out_rel  <= valid_in_rel;
+            
+            if (valid_in) begin
+                sample_seq_out_risk <= sample_seq_in;
+                
+                if (sim_data_in.manual_mode) begin
+                    sim_data_out <= sim_data_in;
+                    sim_data_out.headlight <= final_headlight;
+                    sim_data_out.hazard <= final_hazard;
+                    
+                    risk_out.Ri_collision <= eff_tier_collision;
+                    risk_out.Ri_road_A <= eff_tier_road_A;
+                    risk_out.Ri_road_B <= eff_tier_road_B;
+                    risk_out.Ri_vision_A <= eff_tier_vision_A;
+                    risk_out.Ri_vision_B <= eff_tier_vision_B;
+                    risk_out.Ri_posture_A <= eff_tier_posture_A;
+                    risk_out.Ri_posture_B <= eff_tier_posture_B;
+                    risk_out.Ri_posture_C <= eff_tier_posture_C;
+                    if(Re_collision != INVALID) last_valid_Ri_collision <= eff_tier_collision;
+                    if(Re_road_A != INVALID)    last_valid_Ri_road_A <= eff_tier_road_A;
+                    if(Re_road_B != INVALID)    last_valid_Ri_road_B <= eff_tier_road_B;
+                    if(Re_vision_A != INVALID)  last_valid_Ri_vision_A <= eff_tier_vision_A;
+                    if(Re_posture_A != INVALID) last_valid_Ri_posture_A <= eff_tier_posture_A;
+                    if(Re_posture_B != INVALID) last_valid_Ri_posture_B <= eff_tier_posture_B;
+                    if(Re_posture_C != INVALID) last_valid_Ri_posture_C <= eff_tier_posture_C;
+                end
+                else begin 
+                    sim_data_out.accelerator <= final_accelerator;
+                    sim_data_out.brake <= final_brake;
+                    sim_data_out.steering <= final_steering;
+                    sim_data_out.gear <= final_gear;
+                    sim_data_out.headlight <= final_headlight;
+                    sim_data_out.hazard <= final_hazard;
+                    sim_data_out.manual_mode <= sim_data_in.manual_mode;
+                    sim_data_out.speed_limit <= final_speed_limit;
+                    cnt_05 <= COUNT_05_FREQ;
+                    risk_out.Ri_collision <= eff_tier_collision;
+                    risk_out.Ri_road_A <= eff_tier_road_A;
+                    risk_out.Ri_road_B <= eff_tier_road_B;
+                    risk_out.Ri_vision_A <= eff_tier_vision_A;
+                    risk_out.Ri_vision_B <= eff_tier_vision_B;
+                    risk_out.Ri_posture_A <= eff_tier_posture_A;
+                    risk_out.Ri_posture_B <= eff_tier_posture_B;
+                    risk_out.Ri_posture_C <= eff_tier_posture_C;
+                    if(Re_collision != INVALID) last_valid_Ri_collision <= eff_tier_collision;
+                    if(Re_road_A != INVALID)    last_valid_Ri_road_A <= eff_tier_road_A;
+                    if(Re_road_B != INVALID)    last_valid_Ri_road_B <= eff_tier_road_B;
+                    if(Re_vision_A != INVALID)  last_valid_Ri_vision_A <= eff_tier_vision_A;
+                    if(Re_posture_A != INVALID) last_valid_Ri_posture_A <= eff_tier_posture_A;
+                    if(Re_posture_B != INVALID) last_valid_Ri_posture_B <= eff_tier_posture_B;
+                    if(Re_posture_C != INVALID) last_valid_Ri_posture_C <= eff_tier_posture_C;
+                end
             end
         end
     end

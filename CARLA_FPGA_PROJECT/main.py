@@ -82,7 +82,7 @@ ENGINE_REFERENCE_RPM = 800
 def load_engine_base_array():
     """
     엔진 루프 음원을 로드해 float 배열로 반환한다.
-    (리샘플링 연산은 float 상태에서 하고, Sound 생성 시점에 int16으로 변환)
+    (리샘플링 연산은 float 상태에서 하고, Sound 생성 시점에 int16으로 변환 )
     """
     base_sound = pygame.mixer.Sound(ENGINE_SOUND_PATH)
     array = pygame.sndarray.array(base_sound)
@@ -127,6 +127,7 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
     camera = None
     obstacle_manager = None
     logger = None
+    ramp_actors = []
     
     gc.disable()
 
@@ -144,6 +145,12 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
 
         vehicle = world.spawn_actor(vehicle_bp, spawn)
         vehicle.set_autopilot(False)
+
+        # --- [ROLL TEST] 차량 서스펜션 세팅 (조금 더 부드럽게) ---
+        physics_control = vehicle.get_physics_control()
+        physics_control.suspension_stiffness = 0.5  # 더 부드럽게 (적당한 롤링 허용)
+        physics_control.suspension_damping_rate = 0.2
+        vehicle.apply_physics_control(physics_control)
 
         camera = CameraManager(world, vehicle)
         sensor = SensorManager(vehicle)
@@ -210,6 +217,12 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         vision_logic = VisionLogic()
         fusion_logic = FusionLogic()
 
+        # [FPGA Situation Logic State Variables]
+        prev_distance = 250.0
+        prev_weather = -1
+        
+        last_ramp_time = -20.0  # 시작하자마자 바로 한 번 생성되도록
+
         print("Vehicle Spawned.")
         print()
         print("========== CONTROL ==========")
@@ -228,6 +241,42 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
 
             if status in ("quit", "restart"):
                 return status
+
+            # --- [ROLL TEST] 20초마다 정면 우측에 경사로 스폰 ---
+            if simulation_time - last_ramp_time >= 20.0:
+                last_ramp_time = simulation_time
+                try:
+                    ramp_bp = bp_lib.filter('static.prop.container')[0]
+                    carla_map = world.get_map()
+                    ego_loc = vehicle.get_location()
+                    spawn_wp = carla_map.get_waypoint(ego_loc)
+                    # 현재 차가 달리는 차선 기준 40m 앞
+                    next_wps = spawn_wp.next(40.0)
+                    
+                    if next_wps:
+                        target_wp = next_wps[0]
+                        ramp_transform = target_wp.transform
+                        right_vec = ramp_transform.get_right_vector()
+                        
+                        # 차로폭 절반(우측)만 덮도록 우측으로 1.2m 시프트
+                        ramp_transform.location.x += right_vec.x * 1.2
+                        ramp_transform.location.y += right_vec.y * 1.2
+                        
+                        # 컨테이너를 아주 깊게 바닥에 묻어서 윗면만 15~20cm 튀어나오게 만듦
+                        # (거대한 벽이 아니라 길고 평평한 단상이 되어 우측 바퀴가 쉽게 올라탐)
+                        ramp_transform.location.z -= 1.05
+                        ramp_transform.rotation.pitch = 0.0
+                        ramp_transform.rotation.roll = 0.0
+                        
+                        # 바닥 충돌로 인한 스폰 실패를 막기 위해 공중에 스폰 후 강제 이동
+                        safe_transform = carla.Transform(ramp_transform.location, ramp_transform.rotation)
+                        safe_transform.location.z += 20.0
+                        ramp = world.spawn_actor(ramp_bp, safe_transform)
+                        ramp.set_transform(ramp_transform)
+                        
+                        ramp_actors.append(ramp)
+                except Exception as e:
+                    print(f"[Warning] Dynamic Ramp spawn failed: {e}")
 
             world.tick()
 
@@ -305,6 +354,26 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             manual_mode = 1 if keyboard.manual_mode else 0
             headlight = 1 if manual_command.headlight else 0
             hazard = 1 if manual_command.hazard else 0
+            # --- Situation Logic (3-bit) ---
+            # 000: Stopped, 001: Obstacle, 010: Posture, 011: Weather, 100: Normal
+            current_weather = environment.weather
+            current_distance = sensor.distance
+            
+            if current_weather != prev_weather and prev_weather != -1:
+                situation_val = 3  # 011 (Weather changed)
+            elif abs(sensor.gyro_y) > 0.340 or abs(sensor.gyro_z) > 0.340:  # Assuming 1.5m sensor height (340 mrad/s limit)
+                situation_val = 2  # 010 (Rapid posture change)
+            elif prev_distance > 200.0 and current_distance <= 200.0:
+                situation_val = 1  # 001 (Obstacle suddenly appeared)
+            elif abs(sensor.speed_x) <= 0.278:
+                situation_val = 0  # 000 (Stopped, <= 1km/h)
+            else:
+                situation_val = 4  # 100 (Normal driving)
+                
+            prev_weather = current_weather
+            prev_distance = current_distance
+            
+            situation_packed = to_unsigned(situation_val, 3)
 
             # --- AXI Register Packing ---
             slv_reg0 = (humidity << 24) | (accel_y << 12) | accel_x
@@ -315,7 +384,9 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             slv_reg5 = (incline_y << 16) | incline_x
             slv_reg6 = (distance << 16) | incline_z
             slv_reg7 = (speed_limit << 18) | lux
-            slv_reg8 = (steering_val << 19) | (brake_val << 15) | (accelerator_val << 11) | temperature
+            
+            # NOTE: situation_packed is placed in slv_reg8 at bits [29:27]
+            slv_reg8 = (situation_packed << 27) | (steering_val << 19) | (brake_val << 15) | (accelerator_val << 11) | temperature
             
             slv_reg9 = to_unsigned(sample_seq, 32)
 
@@ -627,6 +698,12 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         if vehicle is not None:
             try:
                 vehicle.destroy()
+            except:
+                pass
+                
+        for ramp in ramp_actors:
+            try:
+                ramp.destroy()
             except:
                 pass
                 

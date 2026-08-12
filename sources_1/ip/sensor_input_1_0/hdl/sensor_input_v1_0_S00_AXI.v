@@ -19,6 +19,15 @@
         output sensor_data_t sensor_data_out,
         output sim_data_t    sim_data_out,
         output logic [31:0]  sample_seq,
+
+        input risk_t risk_in,
+        input reliability_state_t rel_in,
+        input sensor_data_t sensor_data_in,
+        input sim_data_t sim_data_in,
+        input logic [31:0] sample_seq_risk,
+        input logic [31:0] sample_seq_rel,
+        input logic valid_risk,
+        input logic valid_rel,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -425,6 +434,24 @@
 	    end
 	end    
 
+	logic [31:0] read_reg0, read_reg1, read_reg2, read_reg3, read_reg4;
+    logic [31:0] read_reg5, read_reg6, read_reg7, read_reg8, read_reg9;
+    logic [31:0] read_reg10, read_reg11, read_reg12;
+
+    assign read_reg0 = { {4{sensor_data_in.accel_y[11]}}, sensor_data_in.accel_y, {4{sensor_data_in.accel_x[11]}}, sensor_data_in.accel_x };
+    assign read_reg1 = { sensor_data_in.gyro_x, {4{sensor_data_in.accel_z[11]}}, sensor_data_in.accel_z };
+    assign read_reg2 = { sensor_data_in.gyro_z, sensor_data_in.gyro_y };
+    assign read_reg3 = { sim_data_in.incline_y, sim_data_in.incline_x };
+    assign read_reg4 = { sim_data_in.speed_y[7:0], sim_data_in.speed_x[7:0], sim_data_in.incline_z };
+    assign read_reg5 = { 7'b0, sensor_data_in.humidity, sensor_data_in.approach_speed[9:0], sensor_data_in.distance };
+    assign read_reg6 = { 2'b0, sim_data_in.weather, sim_data_in.accelerator, sim_data_in.speed_z[7:0], sensor_data_in.lux };
+    assign read_reg7 = { 2'b0, sim_data_in.gear, sim_data_in.rpm, sim_data_in.brake, sim_data_in.steering[4:0], sim_data_in.speed_limit[7:0], sensor_data_in.temperature };
+    assign read_reg8 = { 26'b0, sim_data_in.situation, sim_data_in.hazard, sim_data_in.headlight, sim_data_in.manual_mode };
+    assign read_reg9 = { 14'b0, valid_rel, valid_risk, risk_in.Ri_posture_C, risk_in.Ri_posture_B, risk_in.Ri_posture_A, risk_in.Ri_vision_B, risk_in.Ri_vision_A, risk_in.Ri_road_B, risk_in.Ri_road_A, risk_in.Ri_collision };
+    assign read_reg10 = { 10'b0, rel_in.lux.state, rel_in.humidity.state, rel_in.temperature.state, rel_in.gyro_z.state, rel_in.gyro_y.state, rel_in.gyro_x.state, rel_in.accel_z.state, rel_in.accel_y.state, rel_in.accel_x.state, rel_in.approach_speed.state, rel_in.distance.state };
+    assign read_reg11 = sample_seq_risk;
+    assign read_reg12 = sample_seq_rel;
+
 	// Implement memory mapped register select and read logic generation
 	// Slave register read enable is asserted when valid address is available
 	// and the slave is ready to accept the read address.
@@ -433,16 +460,19 @@
 	begin
 	      // Address decoding for reading registers
 	      case ( axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
-	        4'h0   : reg_data_out <= slv_reg0;
-	        4'h1   : reg_data_out <= slv_reg1;
-	        4'h2   : reg_data_out <= slv_reg2;
-	        4'h3   : reg_data_out <= slv_reg3;
-	        4'h4   : reg_data_out <= slv_reg4;
-	        4'h5   : reg_data_out <= slv_reg5;
-	        4'h6   : reg_data_out <= slv_reg6;
-	        4'h7   : reg_data_out <= slv_reg7;
-	        4'h8   : reg_data_out <= slv_reg8;
-	        4'h9   : reg_data_out <= slv_reg9;
+	        4'h0   : reg_data_out <= read_reg0;
+	        4'h1   : reg_data_out <= read_reg1;
+	        4'h2   : reg_data_out <= read_reg2;
+	        4'h3   : reg_data_out <= read_reg3;
+	        4'h4   : reg_data_out <= read_reg4;
+	        4'h5   : reg_data_out <= read_reg5;
+	        4'h6   : reg_data_out <= read_reg6;
+	        4'h7   : reg_data_out <= read_reg7;
+	        4'h8   : reg_data_out <= read_reg8;
+	        4'h9   : reg_data_out <= read_reg9;
+	        4'ha   : reg_data_out <= read_reg10;
+	        4'hb   : reg_data_out <= read_reg11;
+	        4'hc   : reg_data_out <= read_reg12;
 	        default : reg_data_out <= 0;
 	      endcase
 	end
@@ -484,29 +514,29 @@
     sensor_data_out.gyro_z         = $signed(slv_reg2[31:16]);
 
     // slv_reg3
-    sensor_data_out.incline_x      = $signed(slv_reg3[15:0]);
-    sensor_data_out.incline_y      = $signed(slv_reg3[31:16]);
+    sim_data_out.incline_x      = $signed(slv_reg3[15:0]);
+    sim_data_out.incline_y      = $signed(slv_reg3[31:16]);
 
     // slv_reg4
-    sensor_data_out.incline_z      = $signed(slv_reg4[15:0]);
-    sensor_data_out.speed_x        = slv_reg4[23:16];
-    sensor_data_out.speed_y        = slv_reg4[31:24];
+    sim_data_out.incline_z      = $signed(slv_reg4[15:0]);
+    sim_data_out.speed_x        = $signed({slv_reg4[23:16], 6'b0});
+    sim_data_out.speed_y        = $signed({slv_reg4[31:24], 6'b0});
 
     // slv_reg5
     sensor_data_out.distance       = slv_reg5[14:0];
-    sensor_data_out.approach_speed = $signed(slv_reg5[24:15]);
+    sensor_data_out.approach_speed = $signed({slv_reg5[24:15], 3'b0});
     sensor_data_out.humidity       = slv_reg5[31:25];
 
     // slv_reg6
     sensor_data_out.lux            = slv_reg6[17:0];
-    sensor_data_out.speed_z        = slv_reg6[25:18];
+    sim_data_out.speed_z        = $signed({slv_reg6[25:18], 6'b0});
     sim_data_out.accelerator    = slv_reg6[29:26];
     sim_data_out.weather        = slv_reg6[31:30];
 
     // slv_reg7
     sensor_data_out.temperature    = $signed(slv_reg7[10:0]);
-    sim_data_out.speed_limit    = slv_reg7[18:11];
-    sim_data_out.steering       = slv_reg7[23:19];
+    sim_data_out.speed_limit    = {slv_reg7[18:11], 5'b0};
+    sim_data_out.steering       = $signed({slv_reg7[23:19], 3'b0});
     sim_data_out.brake          = slv_reg7[27:24];
     sim_data_out.rpm            = slv_reg7[29:28];
     sim_data_out.gear           = slv_reg7[31:30];
@@ -515,7 +545,7 @@
     sim_data_out.manual_mode    = slv_reg8[0];
     sim_data_out.headlight      = slv_reg8[1];
     sim_data_out.hazard         = slv_reg8[2];
-    sim_data_out.situation      = slv_reg8[4:3];
+    sim_data_out.situation      = slv_reg8[5:3];
 
     // slv_reg9
     sample_seq                     = slv_reg9;

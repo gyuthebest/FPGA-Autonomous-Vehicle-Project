@@ -1,8 +1,6 @@
 import types_pkg::*;
 
-module risk_types #(
-    parameter clk_freq = 100000000 // 100MHz
-)(
+module risk_types (
     input logic clk,
     input logic rst_n,         
     input logic [31:0] sample_seq_in,  
@@ -10,7 +8,6 @@ module risk_types #(
 
     input sensor_data_t sensor_data_in,
     input sim_data_t sim_data_in,
-    input processed_data_t processed_data_in,
     
     output sensor_data_t sensor_data_out,
     output sim_data_t sim_data_out,
@@ -20,10 +17,7 @@ module risk_types #(
 
 );
 
-    localparam logic signed [12:0] TTC_4_0S = 13'd4096;
-    localparam logic signed [12:0] TTC_3_0S = 13'd3072;
-    localparam logic signed [12:0] TTC_2_0S = 13'd2048;
-    localparam logic signed [12:0] TTC_1_4S = 13'd1434;
+    
 
     localparam logic [11:0] ACCEL_0_5G = 12'd490;
     localparam logic [11:0] ACCEL_0_8G = 12'd784;
@@ -185,13 +179,16 @@ module risk_types #(
             risk_out.Ri_posture_C <= '0;
    
         end
+
         else begin
-            sim_data_out <= sim_data_in;
+            valid_out <= valid_in;
+
+            if (valid_in) begin
+                sim_data_out <= sim_data_in;
 
             sensor_data_out <= sensor_data_in;
            
             sample_seq_out <= sample_seq_in;
-            valid_out <= valid_in;
 
             risk_out.Ri_collision <= collision_risk;
             risk_out.Ri_road_A <= road_risk_A;
@@ -201,7 +198,9 @@ module risk_types #(
             risk_out.Ri_posture_A <= posture_risk_A;
             risk_out.Ri_posture_B <= posture_risk_B;
             risk_out.Ri_posture_C <= posture_risk_C;
-            
+
+            end
+
         end
     end
 
