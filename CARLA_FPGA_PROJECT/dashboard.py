@@ -283,6 +283,8 @@ def _risk_lines(fpga_result, control_panel):
 
 
 def _fpga_status(control_panel, fpga_result, actuation_active):
+    if not control_panel.fpga_in_loop:
+        return "FPGA NONE · PL OUT OF LOOP", (155, 175, 198)
     if not control_panel.apply_fpga_output:
         return "FPGA BYPASS · CARLA NORMAL DRIVE", (155, 175, 198)
     if not control_panel.intervention_scenario_active:

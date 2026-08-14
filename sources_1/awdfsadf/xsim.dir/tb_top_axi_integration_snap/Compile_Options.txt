@@ -1,1 +1,0 @@
--debug "typical" -top "tb_top_axi_integration" -snapshot "tb_top_axi_integration_snap" 

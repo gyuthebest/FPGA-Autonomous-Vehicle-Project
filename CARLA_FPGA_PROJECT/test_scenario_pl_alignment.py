@@ -170,6 +170,37 @@ class ScenarioPLAlignmentTest(unittest.TestCase):
         panel.apply_fpga_output = False
         self.assertFalse(should_apply_fpga_output(panel, result))
 
+    def test_fpga_mode_cycles_armed_bypass_none(self):
+        """제어판 FPGA 버튼은 ARMED -> BYPASS -> NONE 을 순환한다.
+
+        NONE 은 PL 을 루프에서 빼는 상태로, BYPASS 와 달리 UDP 자체를 보내지
+        않는다(main.py 가 fpga_in_loop 로 판단).  그래야 왕복 지연·지터가
+        주행 루프에 섞이지 않은 순수 CARLA 기준선을 얻는다.
+        """
+        import control_panel as cp
+
+        self.assertEqual(cp.FPGA_MODE_ORDER,
+                         (cp.FPGA_MODE_ARMED, cp.FPGA_MODE_BYPASS,
+                          cp.FPGA_MODE_NONE))
+
+        expected = {
+            cp.FPGA_MODE_ARMED:  (True, True),    # (차량 반영, 루프 안)
+            cp.FPGA_MODE_BYPASS: (False, True),
+            cp.FPGA_MODE_NONE:   (False, False),
+        }
+        panel = cp.ControlPanel.__new__(cp.ControlPanel)
+        for mode, (applies, in_loop) in expected.items():
+            panel.fpga_mode = mode
+            self.assertEqual(panel.apply_fpga_output, applies, mode)
+            self.assertEqual(panel.fpga_in_loop, in_loop, mode)
+
+        # 기존 진입점(CARLA_APPLY_FPGA=0)은 BYPASS 를 만든다. NONE 은 이
+        # 경로로 만들 수 없어야 한다 -- 별개의 상태이기 때문이다.
+        panel.apply_fpga_output = False
+        self.assertEqual(panel.fpga_mode, cp.FPGA_MODE_BYPASS)
+        panel.apply_fpga_output = True
+        self.assertEqual(panel.fpga_mode, cp.FPGA_MODE_ARMED)
+
 
 def _waypoint(yaw, is_junction=False):
     return SimpleNamespace(

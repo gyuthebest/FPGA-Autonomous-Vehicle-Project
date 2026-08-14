@@ -60,6 +60,19 @@ U_CONS, D_CONS, N_CONS = 1, 3, 8
 HISTORY_LEN = 10
 DROP_N = 2
 
+# (b) 지속 고착 격상.
+# stuck 은 자기 consistency 를 마스킹하므로((a) 참조) (s && c) 로는 더 이상
+# INVALID 가 될 수 없다.  그러면 완전히 얼어붙은 센서가 영원히 DEGRADED 에
+# 머물러 안전 구멍이 된다.  그래서 고착이 확정 임계의 N 배만큼 지속되면
+# stuck 단독으로 INVALID 로 올린다.
+#   gyro/accel/distance      : STUCK_N=10 -> 30 표본 = 1.5 초
+#   temperature/humidity/lux : STUCK_N=15 -> 45 표본 = 2.25 초
+# 안전 파라미터이므로 실주행 근거가 모이면 조정한다.
+STUCK_HARD_MULTIPLIER = 3
+
+# 표본 주기 (20 Hz). PLModel.step() 이 시간을 흘릴 때 쓰는 기본값.
+NOMINAL_SAMPLE_PERIOD_NS = 50_000_000
+
 S_DIST, C_DIST = 40, 1
 S_APSP, C_APSP = 1, 20
 S_ACC, C_ACC = 1, 10
@@ -233,6 +246,10 @@ class EachSensorCheck:
         self.range_error = False
         self.jump_error = False
         self.stuck_error = False
+        self.stuck_hard = False   # 지속 고착
+        self.jump_hard = False    # 지속 jump
+        self.noise_hard = False   # 지속 noise
+        self.noise_cnt = 0        # noise 는 조합 판정이라 지속 카운터를 따로 둔다
         self.noise_error = False
         self.timeout_error = False
         self.timeout_mask_1s = False
@@ -285,19 +302,30 @@ class EachSensorCheck:
         elif abs(delta - prev_delta) <= spec.jump_threshold:
             self.jump_cnt = _decay(self.jump_cnt, JD)
         elif not jump_mask:
-            self.jump_cnt = _clamp_sat(self.jump_cnt, JN, JU)
+            self.jump_cnt = _clamp_sat(self.jump_cnt, JN * STUCK_HARD_MULTIPLIER, JU)
         self.jump_error = self.jump_cnt >= JN
+        self.jump_hard = self.jump_cnt >= JN * STUCK_HARD_MULTIPLIER
 
         # ---- stuck ----
         cond_b = True if spec.channel_type_2 == 0 else abs(trig) >= spec.stuck_threshold
         testable = cond_b and not stuck_mask
+        # 포화 상한은 STUCK_N 그대로 둔다.  stuck 은 지속 격상 대상이 아니므로
+        # 상한을 올릴 이유가 없고, 올리면 복구만 느려진다
+        # (consistency 에서 같은 이유로 4.87% -> 5.48% 가 됐던 사례 참조).
+        stuck_ceiling = spec.stuck_n
         if mask_1s:
             pass
         elif delta != 0:
             self.stuck_cnt = _decay(self.stuck_cnt, spec.stuck_d)
         elif testable:
-            self.stuck_cnt = _clamp_sat(self.stuck_cnt, spec.stuck_n, spec.stuck_u)
+            self.stuck_cnt = _clamp_sat(self.stuck_cnt, stuck_ceiling, spec.stuck_u)
         self.stuck_error = self.stuck_cnt >= spec.stuck_n
+        self.stuck_hard = self.stuck_cnt >= stuck_ceiling
+        # (a) 값이 안 변한 표본에서는 consistency 를 누적하지 않는다.
+        # 확정된 stuck_error 가 아니라 원인 신호(delta == 0)에 거는 이유는
+        # 경쟁 조건 때문이다. consistency 는 N_CONS=8 표본, stuck 은
+        # STUCK_N=10 표본에 확정되므로 consistency 가 먼저 설 수 있다.
+        self.frozen = (delta == 0)
 
         # ---- noise ----
         if not mask_1s:
@@ -310,8 +338,18 @@ class EachSensorCheck:
                 self.delta_history.pop(0)
                 self.flip_history.pop(0)
             self.prev_delta_sign = sign
+        # 크기와 부호 반전을 AND 로 묶는다.  부호 반전만으로는 정상 IMU 와
+        # 잡음 센서를 구분하지 못한다 (sensor_checker.sv 의 같은 식 참조).
         self.noise_error = (sum(self.delta_history) > spec.noise_1 * HISTORY_LEN
-                            or sum(self.flip_history) > spec.noise_2)
+                            and sum(self.flip_history) > spec.noise_2)
+        # noise 는 디바운스 카운터가 없는 조합 판정이라 지속 여부를 따로 센다.
+        # 다른 검사와 같은 배수를 쓰되 기준은 noise 창 길이(10표본)다.
+        noise_ceiling = HISTORY_LEN * STUCK_HARD_MULTIPLIER
+        if self.noise_error:
+            self.noise_cnt = min(self.noise_cnt + 1, noise_ceiling)
+        else:
+            self.noise_cnt = max(self.noise_cnt - 1, 0)
+        self.noise_hard = self.noise_cnt >= noise_ceiling
 
 
 # ---------------------------------------------------------------------------
@@ -326,16 +364,23 @@ class ConsistencyCheck:
         self.threshold = threshold
         self.count = 0
         self.error = False
+        self.hard = False        # 확정 임계의 N 배만큼 지속
 
     def step(self, sensor_data: int, pred_data: int,
              timeout_mask_2s: bool, mask: bool) -> None:
+        # 포화 상한은 N_CONS 그대로 둔다.  consistency 는 지속 격상 대상이
+        # 아니므로(_resolve_states 참조) 상한을 올릴 이유가 없고, 올리면
+        # 복구가 느려져 DEGRADED 구간만 길어진다.
+        # 실측: 상한 24 로 올렸을 때 accel_x 4.87% -> 5.48%.
+        ceiling = N_CONS
         if timeout_mask_2s:
             pass                                   # 증거 유지
         elif abs(sensor_data * self.scale - pred_data) <= self.threshold:
             self.count = _decay(self.count, D_CONS)
         elif not mask:
-            self.count = _clamp_sat(self.count, N_CONS, U_CONS)
+            self.count = _clamp_sat(self.count, ceiling, U_CONS)
         self.error = self.count >= N_CONS
+        self.hard = self.count >= ceiling
 
 
 # ---------------------------------------------------------------------------
@@ -448,7 +493,14 @@ class Preprocessor:
         self.pred["accel_z_2"] = _trunc(grav_z, 12)
         self.pred["gyro_x"] = _trunc(self.delta["incline_x"] * C_GYR, 28)
         self.pred["gyro_y"] = _trunc(self.delta["incline_y"] * C_GYR, 28)
-        self.pred["gyro_z"] = _trunc(self.delta["incline_z"] * C_GYR, 28)
+        # yaw 는 ±18000(±180.00 deg)에서 되감기므로 차분을 최단 경로로 접는다.
+        # preprocessor.sv 의 delta_incline_z_wrapped 와 같아야 한다.
+        d_incl_z = self.delta["incline_z"]
+        if d_incl_z > 18000:
+            d_incl_z -= 36000
+        elif d_incl_z < -18000:
+            d_incl_z += 36000
+        self.pred["gyro_z"] = _trunc(d_incl_z * C_GYR, 28)
         self.pred["gyro_x_2"] = 0
         self.pred["gyro_y_2"] = 0
         self.pred["gyro_z_2"] = 0
@@ -482,14 +534,37 @@ CONSISTENCY_RELATIONS = (
     (15, "accel_y",        S_ACC,  TH_ACC_TILT,   "accel_y_3",      "m5"),
     (5,  "accel_z",        S_ACC,  TH_ACC,        "accel_z_1",      "m1"),
     (11, "accel_z",        S_ACC,  TH_ACC_STOP,   "accel_z_2",      "m4"),
-    (6,  "gyro_x",         S_GYR,  TH_GYR,        "gyro_x",         "m2"),
+    # 6/7/8 의 S 가 절반인 것은 센서 비교항이 중점의 '합' 이기 때문이다.
+    # relation_sensor_value() 참조.
+    (6,  "gyro_x",     S_GYR // 2, TH_GYR,        "gyro_x",         "m2"),
     (12, "gyro_x",         S_ACC,  TH_GYR_STOP,   "gyro_x_2",       "m4"),
-    (7,  "gyro_y",         S_GYR,  TH_GYR,        "gyro_y",         "m2"),
+    (7,  "gyro_y",     S_GYR // 2, TH_GYR,        "gyro_y",         "m2"),
     (13, "gyro_y",         S_ACC,  TH_GYR_STOP,   "gyro_y_2",       "m4"),
-    (8,  "gyro_z",         S_GYR,  TH_GYR,        "gyro_z",         "m2"),
+    (8,  "gyro_z",     S_GYR // 2, TH_GYR,        "gyro_z",         "m2"),
     (14, "gyro_z",         S_ACC,  TH_GYR_STOP,   "gyro_z_2",       "m4"),
     (17, "gyro_z",         S_ACC,  TH_GYR_STEER,  "gyro_z_3",       "m3"),
 )
+
+GYRO_MIDPOINT_RELATIONS = (6, 7, 8)
+GYRO_SIGN_FLIP_RELATIONS = (6, 7)
+
+
+def relation_sensor_value(number: int, channel: str, sample, delta) -> int:
+    """관계식의 센서 비교항.  sensor_reliability.sv 의 gyro_cmp_* 와 같아야 한다.
+
+    관계식 6/7/8 만 순시 gyro 대신 중점의 '합' (gyro[t] + gyro[t-1]) 을 쓴다.
+    기준값 (incline[t]-incline[t-1])*C_GYR 이 구간 평균 각속도이기 때문이며,
+    합을 그대로 쓰는 대신 S 를 절반으로 준다.
+    gyro[t-1] = gyro[t] - delta_gyro 이므로 합 = 2*gyro[t] - delta_gyro 다.
+
+    관계식 6/7 은 여기에 부호까지 뒤집는다.  CARLA rotation.roll/pitch 의
+    부호 규약이 IMU gyro x/y 축과 반대이기 때문이다 (yaw 는 일치).
+    """
+    if number not in GYRO_MIDPOINT_RELATIONS:
+        return sample.get(channel, 0)
+    midpoint_sum = 2 * sample.get(channel, 0) - delta.get(channel, 0)
+    return -midpoint_sum if number in GYRO_SIGN_FLIP_RELATIONS else midpoint_sum
+
 
 # consistency_check 인스턴스의 비교 폭 (sensor_reliability.sv 의 WIDTH 파라미터).
 # 센서값과 기준값 모두 이 폭의 signed 로 잘려서 비교된다.
@@ -599,8 +674,12 @@ class SensorReliability:
 
         for number, channel, _scale, _th, pred_key, mask_key in CONSISTENCY_RELATIONS:
             width = RELATION_WIDTH[number]
+            # consistency 누적은 막지 않는다.  중복 계수는 상태 판정 단계에서
+            # 걸러낸다(_resolve_states 의 c_independent).  그래야 cons_err 비트가
+            # 진단 정보로 남아 클럭 추적·로그에서 원인을 볼 수 있다.
             self.cons[number].step(
-                sensor_data=_trunc(sample.get(channel, 0), width),
+                sensor_data=_trunc(
+                    relation_sensor_value(number, channel, sample, delta), width),
                 pred_data=_trunc(pred.get(pred_key, 0), width),
                 timeout_mask_2s=tm2[channel],
                 mask=masks[mask_key],
@@ -616,6 +695,11 @@ class SensorReliability:
 
     def consistency_error(self, channel: str) -> bool:
         return any(self.cons[number].error
+                   for number, ch, *_rest in CONSISTENCY_RELATIONS if ch == channel)
+
+    def consistency_hard(self, channel: str) -> bool:
+        """관계식 불일치가 확정 임계의 N 배만큼 지속됐나."""
+        return any(self.cons[number].hard
                    for number, ch, *_rest in CONSISTENCY_RELATIONS if ch == channel)
 
     def _resolve_states(self, sample) -> None:
@@ -634,10 +718,55 @@ class SensorReliability:
                     and sample.get("approach_speed") == 0):
                 r = j = s = n = c = False
 
+            # ---- consistency 중복 계수 제거 --------------------------------
+            # range/jump/stuck 이 서면 그 채널 값은 이미 손상된 것이고,
+            # 기준값과의 잔차가 커지는 것은 논리적 필연이다.  그 상황의
+            # consistency 는 새 증거가 아니라 같은 고장을 두 번 센 것이다.
+            #
+            # 반대로 다른 넷이 깨끗한데 consistency 만 서면, 그것은 넷이
+            # 구조적으로 못 보는 고장(바이어스/스케일/드리프트/축 뒤바뀜)을
+            # 잡은 것이다.  실주행 캡처에서 accel_x 가 정확히 이 경우였다
+            # (range/jump/stuck/noise 0.00%, 관계식 3 만 4.9%).
+            #
+            # 그래서 consistency 는 다른 검사가 전부 깨끗할 때만 증거로 센다.
+            c_independent = c and not (r or j or s or n or t)
+
+            # ---- 소프트 고장의 지속 격상 ------------------------------------
+            # 이전 설계는 (s && c) 를 INVALID 로 삼았으나, 그 전제인
+            # "stuck 과 consistency 는 독립적 증거" 가 위와 같이 성립하지
+            # 않는다.  전제가 틀린 항을 억지로 살리는 대신, 원리가 맞는
+            # 규칙으로 바꾼다: **일시적 소프트 고장은 DEGRADED, 오래
+            # 지속되면 INVALID.**  네 검사에 균일하게 적용한다.
+            # stuck 은 DEGRADED 다.
+            # 오르내림의 원인은 "stuck 이 DEGRADED 라서"가 아니라 consistency 가
+            # 뒤따라 확정됐다 풀렸다 하면서 (s^c) 와 (s&&c) 사이를 오갔기
+            # 때문이다.  위의 c_independent 로 그 연쇄를 끊었으므로 stuck 은
+            # DEGRADED 에 안정적으로 머무른다.
+            soft = j or n or s or c_independent
+            # consistency 는 지속 격상에서 제외한다.
+            #
+            # 근거: 관계식 3(accel_x)은 속도를 2표본 차분해 가속도를 추정하는
+            # 방식의 한계로 정상 주행에서도 4.9% 만성 오탐이 있다.  만성
+            # 오탐에 지속 격상을 걸면 DEGRADED 오탐이 INVALID 오탐으로
+            # 증폭된다.  실측: accel_x 4.87%(INVALID 0) -> 5.48%(INVALID 135).
+            #
+            # jump/noise/stuck 은 같은 캡처에서 확정률 0.00% 이므로 격상해도
+            # 오탐이 늘지 않는다.  기준값 모델(관계식 3)이 고쳐지면 그때
+            # consistency 도 격상 대상에 넣는다.
+            # stuck 은 지속 격상 대상이 아니다.  사용자 결정에 따라 고착은
+            # 지속되더라도 DEGRADED 로 유지한다.
+            soft_hard = check.jump_hard or check.noise_hard
+
+            if (name == "distance"
+                    and sample.get("distance") == DISTANCE_SENTINEL
+                    and sample.get("approach_speed") == 0):
+                soft = False
+                soft_hard = False
+
             if self.pack_rule == PACK_RULE_STRUCTURAL:
-                if r or t or (s and c):
+                if r or t or soft_hard:
                     self.state[name] = INVALID
-                elif j or n or (s != c):
+                elif soft:
                     self.state[name] = DEGRADED
                 else:
                     self.state[name] = NORMAL
@@ -682,7 +811,9 @@ def classify_risk(sample: Dict[str, int]) -> Risk:
     closing = sample.get("approach_speed", 0)
     if closing <= 0:
         risk.collision = 0
-    elif distance <= closing + (closing >> 1):
+    # Emergency 경계는 TTC 1.4초.  risk_types.sv 와 같은 시프트 근사를 쓴다.
+    #   1 + 1/4 + 1/8 + 1/32 = 1.40625  (오차 +0.45 %)
+    elif distance <= (closing + (closing >> 2) + (closing >> 3) + (closing >> 5)):
         risk.collision = 4
     elif distance <= closing << 1:
         risk.collision = 3
@@ -763,7 +894,10 @@ RISK_GROUP_CHANNELS = {
 RISK_GROUP_N = {"collision": 5, "road_A": 4, "road_B": 4, "vision_A": 4,
                 "posture_A": 2, "posture_B": 3, "posture_C": 3}
 
-# INVALID 일 때의 바닥 tier (N -> floor)
+# INVALID 일 때의 바닥 tier (N -> floor).
+# 2026-08-15 부터 쓰이지 않는다.  INVALID 는 TD/MRM 이 담당하고
+# risk_control 은 원시 tier 를 그대로 통과시킨다 (calc_effective_tier 참조).
+# 되돌릴 수 있도록 값만 남겨 둔다.
 INVALID_FLOOR = {2: 1, 3: 1, 4: 2, 5: 2}
 
 # TD 발동 조건에 들어가는 그룹 (축소운행 불가)
@@ -787,15 +921,16 @@ def calc_effective_tier(raw: int, last_valid: int, rel_state: int, n: int) -> in
     DEGRADED : 한 단계 올리되 N-2 를 넘지 않는다 (원시보다 낮아지지 않는다)
     INVALID  : 마지막 유효 tier 를 한 단계 올린 값과 바닥값 중 큰 쪽
     """
-    if rel_state == NORMAL:
-        return raw
     if rel_state == DEGRADED:
         pre = min(raw + 1, n - 2)
         return max(raw, pre)
-    floor_tier = INVALID_FLOOR[n]
-    pre = min(last_valid + 1, n - 2)
-    last_deg = max(last_valid, pre)
-    return max(last_deg, floor_tier)
+    # NORMAL  : 원시 tier 그대로.
+    # INVALID : 원시 tier 그대로.  INVALID 는 TD/MRM 이 담당하므로
+    #   risk_control 에서 별도의 상향이나 바닥값을 적용하지 않는다.
+    #   이전에는 바닥값(N=5 이면 2)을 적용해, 센서가 INVALID 로 확정되는
+    #   즉시 충돌 tier 가 2가 되어 제동이 걸렸고 TD 10초와 MRM 이 시작되기도
+    #   전에 차가 멈췄다.  hud_warning / td_condition 은 영향받지 않는다.
+    return raw
 
 
 class RiskControl:
@@ -818,6 +953,13 @@ class RiskControl:
         self.eff["vision_B"] = 0
         self.hud_warning = False
         self.td_condition = False
+        self.prev_steering = 0
+        # risk_control.sv 의 can_downshift 는 리셋 후 1 로 시작해 이 설계에서는
+        # 다시 0 이 되지 않는다 (cnt_05 재적재만 한다).  모델도 동일하게 둔다.
+        self.can_downshift = True
+        self.control = {}
+        # MRM 다운시프트는 1회성이다 (arbitrate 참조).
+        self.mrm_downshift_done = False
 
     # -- 매 표본 --------------------------------------------------------
     def step(self, risk: "Risk", state: Dict[str, int],
@@ -881,6 +1023,214 @@ class RiskControl:
     def transition_demand(self) -> bool:
         return self.td_remain_sec <= 10
 
+    # -- 최종 제어 중재 (risk_control.sv 305-655행) -----------------------
+    def arbitrate(self, sim: Dict[str, int]) -> Dict[str, int]:
+        """유효 tier 로부터 최종 제어 명령을 만든다.
+
+        risk_control.sv 의 조합 논리를 그대로 옮겼다.  각 위험 요소가 자기
+        몫의 제어값을 내고, 마지막에 가속은 최소값, 제동은 마찰 상한 블렌딩,
+        제한속도는 최소값으로 중재한다.
+
+        sim 은 PL 이 받은 sim_data_in (raw 정수) 이다.
+        """
+        acc_in = sim.get("accelerator", 0)
+        brake_in = sim.get("brake", 0)
+        steer_in = sim.get("steering", 0)
+        gear_in = sim.get("gear", 0)
+        rpm = sim.get("rpm", 0)
+        speed_x = sim.get("speed_x", 0)
+        limit = sim.get("speed_limit", 0)
+
+        # risk_control.sv 294-298행. 정수 곱/시프트까지 동일해야 한다.
+        spd90 = (limit * 922) >> 10
+        spd80 = (limit * 819) >> 10
+        spd70 = (limit * 717) >> 10
+        spd60 = (limit * 614) >> 10
+        spd50 = limit >> 1
+
+        e = self.eff
+        col_acc = road_A_acc = road_B_acc = acc_in
+        vis_A_acc = vis_B_acc = acc_in
+        pos_A_acc = pos_B_acc = pos_C_acc = acc_in
+        col_brake = road_B_brake = brake_in
+        col_gear = gear_in
+        pos_A_steer = pos_B_steer = pos_C_steer = steer_in
+        col_hazard = vis_B_hazard = False
+        vis_A_head = vis_B_head = False
+        road_A_lim = road_B_lim = vis_A_lim = vis_B_lim = limit
+
+        steering_delta = steer_in - self.prev_steering
+        # 충돌 tier 다운시프트: RPM <= 3999 (rpm_to_level 기준 level <= 1) 이고
+        # 최소 기어가 1단이므로 gear_in > 1 일 때만 내린다.
+        # 사양의 "0.5s delay 이후 1단 더" (tier 3/4) 는 RTL 과 함께 미구현이다.
+        downshift = rpm <= 1 and self.can_downshift and gear_in > 1
+
+        # --- 충돌 ---------------------------------------------------------
+        col = e.get("collision", 0)
+        if col == 1:
+            col_acc = 0
+        elif col == 2:
+            col_acc = 0
+            col_brake = 2 if speed_x <= 1111 else (3 if speed_x <= 2222 else 4)
+            if downshift:
+                col_gear = gear_in - 1
+        elif col == 3:
+            col_acc = 0
+            col_brake = 4 if speed_x <= 1111 else (6 if speed_x <= 2222 else 8)
+            if downshift:
+                col_gear = gear_in - 1
+            col_hazard = True
+        elif col == 4:
+            col_acc = 0
+            col_brake = 10
+            if downshift:
+                col_gear = gear_in - 1
+            col_hazard = True
+
+        # --- 노면 (road_A) -------------------------------------------------
+        for tier, cap, lim in ((1, 8, spd90), (2, 6, spd70), (3, 4, spd50)):
+            if e.get("road_A", 0) == tier:
+                if acc_in > cap:
+                    road_A_acc = cap
+                if speed_x > 0 and speed_x > lim:
+                    road_A_acc = 0
+                road_A_lim = lim
+
+        # --- 노면 충격 (road_B) --------------------------------------------
+        for tier, cap, lim in ((1, 9, spd80), (2, 7, spd60), (3, 5, spd50)):
+            if e.get("road_B", 0) == tier:
+                if acc_in > cap:
+                    road_B_acc = cap
+                if speed_x > 0 and speed_x > lim:
+                    road_B_acc = 0
+                road_B_brake = 2
+                road_B_lim = lim
+
+        # --- 시야 (조도) ----------------------------------------------------
+        vis_a = e.get("vision_A", 0)
+        if vis_a in (1, 2):
+            vis_A_head = True
+        elif vis_a == 3:
+            if speed_x > 0 and speed_x > spd90:
+                vis_A_acc = 0
+            vis_A_head = True
+            vis_A_lim = spd90
+
+        # --- 시야 (날씨) — 신뢰도 미반영, 원시 tier 를 그대로 쓴다 -----------
+        vis_b = e.get("vision_B", 0)
+        if vis_b == 1:
+            if acc_in > 8:
+                vis_B_acc = 8
+            if speed_x > 0 and speed_x > spd90:
+                vis_B_acc = 0
+            vis_B_lim = spd90
+            vis_B_head = True
+        elif vis_b == 2:
+            if acc_in > 8:
+                vis_B_acc = 8
+            if speed_x > 0 and speed_x > spd70:
+                vis_B_acc = 0
+            vis_B_lim = spd70
+            vis_B_head = True
+            vis_B_hazard = True
+        elif vis_b == 3:
+            if acc_in > 5:
+                vis_B_acc = 5
+            if speed_x > 0 and speed_x > spd60:
+                vis_B_acc = 0
+            vis_B_lim = spd60
+            vis_B_head = True
+
+        # --- 자세 (roll / yaw / lateral) ------------------------------------
+        def clamp_steer(limit_delta: int) -> int:
+            if steering_delta > limit_delta:
+                return self.prev_steering + limit_delta
+            if steering_delta < -limit_delta:
+                return self.prev_steering - limit_delta
+            return steer_in
+
+        if e.get("posture_A", 0) == 1:
+            pos_A_acc = 0
+            pos_A_steer = clamp_steer(100)
+
+        pos_b = e.get("posture_B", 0)
+        if pos_b == 1:
+            if acc_in > 8:
+                pos_B_acc = 8
+            pos_B_steer = clamp_steer(140)
+        elif pos_b == 2:
+            pos_B_acc = 0
+            pos_B_steer = clamp_steer(100)
+
+        pos_c = e.get("posture_C", 0)
+        if pos_c == 1:
+            if acc_in > 7:
+                pos_C_acc = 7
+            pos_C_steer = clamp_steer(160)
+        elif pos_c == 2:
+            pos_C_acc = 0
+            pos_C_steer = clamp_steer(120)
+
+        # --- 중재 ------------------------------------------------------------
+        final_acc = min(col_acc, road_A_acc, road_B_acc, vis_A_acc,
+                        vis_B_acc, pos_A_acc, pos_B_acc, pos_C_acc)
+
+        blended = blend_brake(e.get("road_A", 0), e.get("posture_C", 0),
+                              col_brake, road_B_brake)
+        final_brake = blended["final_brake"]
+
+        # 조향: 현재 조향값에서 가장 적게 움직이는 후보를 고른다
+        # (risk_control.sv 610-635행).
+        diff_in = abs(steer_in - self.prev_steering)
+        diff_a = abs(pos_A_steer - self.prev_steering)
+        diff_b = abs(pos_B_steer - self.prev_steering)
+        diff_c = abs(pos_C_steer - self.prev_steering)
+        if diff_a <= diff_b:
+            d1, s1 = diff_a, pos_A_steer
+        else:
+            d1, s1 = diff_b, pos_B_steer
+        if diff_c <= diff_in:
+            d2, s2 = diff_c, pos_C_steer
+        else:
+            d2, s2 = diff_in, steer_in
+        final_steer = s1 if d1 <= d2 else s2
+
+        final_limit = min(road_A_lim, road_B_lim, vis_A_lim, vis_B_lim)
+        final_gear = min(col_gear, gear_in)
+        final_head = vis_A_head or vis_B_head
+        final_hazard = col_hazard or vis_B_hazard
+
+        # --- MRM 오버라이드 -------------------------------------------------
+        # 사양(UNECE R157):
+        #   1. Hazard ON        2. Brake level 3      3. 기어 1단 내리기
+        #   -> 1/2/3 을 동시에 수행. 그 결과 차량이 완전 정차하면
+        #   4. 정차 유지        5. 수동 개입 시 manual mode 로 주행
+        #
+        # **3번은 1회성이다.**  MRM 이 서는 순간 한 번만 내리고, 그 뒤의 변속은
+        # Python 자율주행 로직(속도에 맞는 기어 단수)에 맡긴다.  매 표본
+        # gear-1 을 내보내면 "계속 내리라"는 뜻이 되어 사양과 다르다.
+        if self.mrm:
+            final_acc = 0
+            final_brake = 3
+            final_hazard = True
+            if not self.mrm_downshift_done:
+                # rpm 조건을 걸지 않는다.  사양은 "MRM 이면 1단 내린다" 이고,
+                # 정차 과정에서 rpm 이 언제 조건을 만족할지에 의존하면
+                # 다운시프트가 아예 일어나지 않을 수 있다.
+                if final_gear > 0:
+                    final_gear = final_gear - 1
+                self.mrm_downshift_done = True
+        else:
+            self.mrm_downshift_done = False
+
+        self.prev_steering = final_steer
+        return {
+            "accelerator": final_acc, "brake": final_brake,
+            "steering": final_steer, "gear": final_gear,
+            "speed_limit": final_limit,
+            "headlight": final_head, "hazard": final_hazard,
+        }
+
     def risk_word(self) -> int:
         """read_reg9 의 하위 16비트 (sensor_input_v1_0_S00_AXI.v 454행 순서)."""
         return ((self.eff["collision"] & 0x7)
@@ -933,6 +1283,14 @@ class ModelOutput:
     transition_demand: bool = False
     mrm: bool = False
     td_remain_sec: int = TD_IDLE
+    # 최종 제어 명령 (risk_control.sv sim_data_out). 보드의 REG13/REG14 와 대조한다.
+    final_accelerator: int = 0
+    final_brake: int = 0
+    final_steering: int = 0
+    final_gear: int = 0
+    final_speed_limit: int = 0
+    final_headlight: bool = False
+    final_hazard: bool = False
 
 
 class PLModel:
@@ -975,7 +1333,15 @@ class PLModel:
             check.tick_timeout(raw_timeout=True, valid=False)
 
     def step(self, sample: Dict[str, int], sample_seq: int = 0,
-             situation: int = 0) -> ModelOutput:
+             situation: int = 0, delta_ns: Optional[int] = None) -> ModelOutput:
+        # TD/MRM 타이머는 1초 실시간 기준이라 시간을 흘려 주어야 동작한다.
+        # 예전에는 advance_time() 을 호출부가 따로 불러야 했고, 실제로는
+        # compare_golden_vs_pl 만 부르고 있어서 나머지 도구(pl_capture_metrics,
+        # board_smoke_test 등)에서는 TD 가 영원히 카운트다운하지 않았다.
+        # 기본값으로 표본 주기(50 ms)를 흘리고, 실제 송신 시각이 있는
+        # 호출부는 delta_ns 로 정확한 값을 넘긴다.
+        self.advance_time(NOMINAL_SAMPLE_PERIOD_NS if delta_ns is None
+                          else delta_ns)
         # preprocessor 가 쓰는 마스크는 직전 표본까지의 신뢰도 결과다.
         # (RTL 에서 sensor_reliability -> preprocessor 는 레지스터 경유 되먹임)
         self.pre.step(
@@ -994,6 +1360,7 @@ class PLModel:
         risk = classify_risk(sample)
         self.ctl.step(risk, self.rel.state,
                       manual_mode=bool(sample.get("manual_mode", 0)))
+        control = self.ctl.arbitrate(sample)
         self.sample_count += 1
         return ModelOutput(
             sample_seq=sample_seq,
@@ -1016,4 +1383,11 @@ class PLModel:
             transition_demand=self.ctl.transition_demand,
             mrm=self.ctl.mrm,
             td_remain_sec=self.ctl.td_remain_sec,
+            final_accelerator=control["accelerator"],
+            final_brake=control["brake"],
+            final_steering=control["steering"],
+            final_gear=control["gear"],
+            final_speed_limit=control["speed_limit"],
+            final_headlight=control["headlight"],
+            final_hazard=control["hazard"],
         )

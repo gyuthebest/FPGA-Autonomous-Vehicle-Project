@@ -22,6 +22,15 @@ SENSORS: Tuple[Tuple[str, str], ...] = (
     ("lux", "Illuminance"),
 )
 
+# FPGA 개입 모드 (control_panel.fpga_mode).  버튼을 누르면 이 순서로 순환한다.
+FPGA_MODE_ARMED = "armed"     # PL 에 송신 + 개입 조건에서 차량에 반영
+FPGA_MODE_BYPASS = "bypass"   # PL 에 송신하되 차량에는 미반영 (개루프 캡처)
+FPGA_MODE_NONE = "none"       # PL 을 루프에서 제외 (UDP 미송신, 순수 CARLA 기준선)
+FPGA_MODE_ORDER = (FPGA_MODE_ARMED, FPGA_MODE_BYPASS, FPGA_MODE_NONE)
+FPGA_MODE_LABEL = {FPGA_MODE_ARMED: "ARMED",
+                   FPGA_MODE_BYPASS: "BYPASS",
+                   FPGA_MODE_NONE: "NONE"}
+
 ALL_CHECKS = ("range", "jump", "stuck", "noise", "consistency", "timeout")
 CONSISTENCY_SENSORS = {
     "distance", "approach_speed", "accel_x", "accel_y", "accel_z",
@@ -31,6 +40,12 @@ CONSISTENCY_SENSORS = {
 # 200 m 초과 값은 표현 가능하며 정상적으로 range fault를 만든다.  이전에는
 # build_input_words가 200.0 m에서 포화시켜 이 경로를 막고 있었을 뿐이다.
 RANGE_SENSORS = set(dict(SENSORS))
+
+# distance 계열 고장을 주입할 때 세우는 표적 접근속도(m/s).
+# sensor_reliability.sv u_chk_distance 의 STUCK_THRESHOLD = 20 raw(0.20 m/s)
+# 보다 커야 distance stuck 검사가 testable 이 된다.  raw 24 는 AXI 의
+# 10비트<<3 양자화(LSB 8)에 정확히 떨어진다.
+DISTANCE_FAULT_CLOSING_SPEED = 0.24
 
 RISK_SECTIONS: Tuple[Tuple[str, str], ...] = (
     ("collision", "Collision"),
@@ -89,6 +104,13 @@ class FaultInjector:
         if key in self.sensor_faults:
             self.sensor_faults.remove(key)
             self._stuck_values.pop(sensor_name, None)
+            # distance 계열 고장이 모두 꺼지면 고정해 둔 기준 거리도 버린다.
+            # 남겨 두면 다음 주입이 옛 거리에서 시작한다.
+            if not any(
+                name == "distance" or (name == "approach_speed" and chk == "stuck")
+                for name, chk in self.sensor_faults
+            ):
+                self._stuck_values.pop("_distance_baseline", None)
             return False
         if check == "timeout":
             self.sensor_faults = {
@@ -136,12 +158,37 @@ class FaultInjector:
         # CARLA's no-target protocol value (200 m, 0 m/s closing) masks every
         # distance diagnostic in PL by design.  A distance-fault button must
         # therefore establish a valid tracked-target baseline first.
+        #
+        # The closing speed must clear the distance channel's stuck trigger,
+        # u_chk_distance STUCK_THRESHOLD = 20 raw (0.20 m/s).  The former
+        # 0.08 m/s baseline was 8 raw, below that threshold, so injecting
+        # distance:stuck silently disabled the very checker it was meant to
+        # exercise (measured: testable on 0 of 71 samples).  0.24 m/s is
+        # 24 raw, and 24 survives the AXI 10-bit<<3 quantisation exactly.
         if any(
             name == "distance" or (name == "approach_speed" and check == "stuck")
             for name, check in self.sensor_faults
         ):
-            sensor.distance = min(float(sensor.distance), 80.0)
-            sensor.approach_speed = 0.08
+            # 기준 거리를 주입 구간 내내 **고정**한다.
+            #
+            # 이전에는 매 프레임 min(현재거리, 80.0) 을 다시 계산했다.  그런데
+            # 레이더는 표적을 놓치면 무표적 sentinel(200 m = 20000) 로 돌아가고,
+            # 그 다음 프레임에 다시 80 m 로 끌어내려진다.  결과가 이랬다.
+            #
+            #   20000 -> 8000 : delta 12000 -> distance jump 확정
+            #   8000  -> 20000: sentinel 마스크로 전 진단 무효화 -> NORMAL
+            #
+            # 그래서 stuck 은 STUCK_N=10 에 도달하기 직전에 계속 리셋됐고
+            # (실측: 캡처 20260814_234027 전 구간에서 stuck 확정 0회, cnt 는
+            # 9/5 까지 올랐다가 리셋), 화면 상태가 NORMAL <-> DEGRADED <->
+            # INVALID 로 흔들렸다.  주입한 것이 고착이 아니었던 것이다.
+            #
+            # stuck 의 정의가 "값이 변하지 않는다" 이므로 주입 구간에서는
+            # 실제로 변하지 않아야 한다.  첫 프레임의 값을 잡아 두고 계속 쓴다.
+            sensor.distance = self._stuck_values.setdefault(
+                "_distance_baseline", min(float(sensor.distance), 80.0)
+            )
+            sensor.approach_speed = DISTANCE_FAULT_CLOSING_SPEED
         self._baseline = {
             name: float(getattr(sensor, name)) for name, _label in SENSORS
         }
@@ -259,8 +306,9 @@ class FaultInjector:
         sign = -1.0 if self._frame & 1 else 1.0
         if name == "distance":
             # The corrected PL trigger uses the non-zero closing-speed value,
-            # not its delta. Keep the independent reference valid and stable.
-            sensor.approach_speed = 0.08
+            # not its delta. Keep the independent reference valid and stable,
+            # and above STUCK_THRESHOLD so the checker is actually testable.
+            sensor.approach_speed = DISTANCE_FAULT_CLOSING_SPEED
         elif name == "approach_speed":
             # Keep the reference moving without tripping the distance jump
             # diagnostic that would mask this cross-channel stuck test.
@@ -278,9 +326,17 @@ class ControlPanel:
         self.open = False
         self.tab = "sensor"
         self.selected_sensor = "distance"
-        # ARMED by default.  main.py still keeps normal CARLA autonomous
-        # control unless a deliberate sensor-fault/risk scenario is active.
-        self.apply_fpga_output = True
+        # FPGA 모드는 세 상태를 순환한다.
+        #   ARMED  : PL 에 프레임을 보내고, 개입 조건에서 출력을 차량에 반영
+        #   BYPASS : 프레임은 계속 보내되 출력을 차량에 반영하지 않는다
+        #            (개루프 캡처. PL 판정은 로그·화면에 계속 나온다)
+        #   NONE   : PL 을 루프에서 완전히 뺀다. UDP 를 아예 보내지 않아
+        #            왕복 지연·지터가 주행 루프에 영향을 주지 않는다.
+        #            순수 CARLA 기본 주행이 기준선이 된다.
+        #
+        # 고장 주입과 위험도 시나리오는 **세 모드 모두에서 센서에 반영된다.**
+        # 같은 조건에 FPGA 유무만 바꿔 비교하기 위해서다.
+        self.fpga_mode = FPGA_MODE_ARMED
         self.injector = FaultInjector()
         self.risk_section = "collision"
         self.collision_request = 0
@@ -301,6 +357,29 @@ class ControlPanel:
         self._dragging_slider: Optional[str] = None
         self._font: Optional[pygame.font.Font] = None
         self._small_font: Optional[pygame.font.Font] = None
+
+    @property
+    def apply_fpga_output(self) -> bool:
+        """PL 출력을 차량에 반영해도 되는 모드인가 (ARMED 만 True).
+
+        기존 코드(main.should_apply_fpga_output, dashboard 등)가 이 이름을
+        쓰고 있어 모드에서 유도되는 속성으로 남긴다.
+        """
+        return self.fpga_mode == FPGA_MODE_ARMED
+
+    @apply_fpga_output.setter
+    def apply_fpga_output(self, value: bool) -> None:
+        """환경변수 CARLA_APPLY_FPGA=0 같은 기존 진입점을 위한 설정자.
+
+        NONE 은 이 경로로 만들 수 없다.  UDP 자체를 끊는 별개의 상태이므로
+        fpga_mode 를 직접 지정해야 한다.
+        """
+        self.fpga_mode = FPGA_MODE_ARMED if value else FPGA_MODE_BYPASS
+
+    @property
+    def fpga_in_loop(self) -> bool:
+        """PL 에 프레임을 보내야 하는가.  NONE 이면 보내지 않는다."""
+        return self.fpga_mode != FPGA_MODE_NONE
 
     def set_fpga_result(self, result) -> None:
         if result is not None:
@@ -347,8 +426,11 @@ class ControlPanel:
                 elif action == "weather":
                     self.weather = value
                 elif action == "fpga_apply":
-                    self.apply_fpga_output = not self.apply_fpga_output
-                    print(f"[CONTROL] Apply FPGA output: {'ON' if self.apply_fpga_output else 'OFF'}")
+                    index = FPGA_MODE_ORDER.index(self.fpga_mode)
+                    self.fpga_mode = FPGA_MODE_ORDER[
+                        (index + 1) % len(FPGA_MODE_ORDER)]
+                    print(f"[CONTROL] FPGA mode: "
+                          f"{FPGA_MODE_LABEL[self.fpga_mode]}")
                 elif action == "clear":
                     self.clear_scenarios()
                     print("[INJECT] all injections and scenarios cleared")
@@ -456,8 +538,8 @@ class ControlPanel:
         self._button(screen, pygame.Rect(x + tab_w + 8, y, tab_w, 30), "RISK CONTROL",
                      self.tab == "risk", "tab", "risk")
         self._button(screen, pygame.Rect(panel.right - 238, y, 140, 30),
-                     f"FPGA: {'ARMED' if self.apply_fpga_output else 'BYPASS'}",
-                     self.apply_fpga_output, "fpga_apply", "")
+                     f"FPGA: {FPGA_MODE_LABEL[self.fpga_mode]}",
+                     self.fpga_mode == FPGA_MODE_ARMED, "fpga_apply", "")
         self._button(screen, pygame.Rect(panel.right - 90, y, 78, 30),
                      "CLEAR", False, "clear", "")
         y += 42

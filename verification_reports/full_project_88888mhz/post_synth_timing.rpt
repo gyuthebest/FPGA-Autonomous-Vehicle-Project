@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
-| Date              : Fri Aug 14 15:11:44 2026
+| Date              : Sat Aug 15 02:55:52 2026
 | Host              : JH_HP running 64-bit major release  (build 9200)
 | Command           : report_timing_summary -file C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/full_project_88888mhz/post_synth_timing.rpt
 | Design            : design_1_wrapper
@@ -137,7 +137,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-     -0.533       -4.803                     17                19255       -0.079     -259.668                   5348                19255        4.125        0.000                       0                  6663  
+     -0.533       -4.803                     17                19215       -0.079     -258.403                   5342                19215        4.125        0.000                       0                  6676  
 
 
 Timing constraints are not met.
@@ -160,7 +160,7 @@ clk_pl_0  {0.000 5.625}      11.250          88.889
 
 Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-clk_pl_0           -0.533       -4.803                     17                19255       -0.079     -259.668                   5348                19255        4.125        0.000                       0                  6663  
+clk_pl_0           -0.533       -4.803                     17                19215       -0.079     -258.403                   5342                19215        4.125        0.000                       0                  6676  
 
 
 ------------------------------------------------------------------------------------------------
@@ -192,7 +192,7 @@ From Clock:  clk_pl_0
   To Clock:  clk_pl_0
 
 Setup :           17  Failing Endpoints,  Worst Slack       -0.533ns,  Total Violation       -4.803ns
-Hold  :         5348  Failing Endpoints,  Worst Slack       -0.079ns,  Total Violation     -259.668ns
+Hold  :         5342  Failing Endpoints,  Worst Slack       -0.079ns,  Total Violation     -258.403ns
 PW    :            0  Failing Endpoints,  Worst Slack        4.125ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
@@ -226,7 +226,7 @@ Slack (VIOLATED) :        -0.533ns  (required time - arrival time)
                          net (fo=1, unplaced)         0.178     0.178    design_1_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
                          BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.029     0.207 r  design_1_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-                         net (fo=6724, unplaced)      2.584     2.791    design_1_i/top_controller_0/inst/u_axi_slave/S_AXI_ACLK
+                         net (fo=6732, unplaced)      2.584     2.791    design_1_i/top_controller_0/inst/u_axi_slave/S_AXI_ACLK
                          FDRE                                         r  design_1_i/top_controller_0/inst/u_axi_slave/slv_reg3_reg[5]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_FDRE_C_Q)         0.093     2.884 f  design_1_i/top_controller_0/inst/u_axi_slave/slv_reg3_reg[5]/Q
@@ -240,7 +240,7 @@ Slack (VIOLATED) :        -0.533ns  (required time - arrival time)
                          LUT6 (Prop_LUT6_I0_O)        0.100     4.076 r  design_1_i/top_controller_0/inst/u_axi_slave/g0_b0__3_i_7/O
                          net (fo=11, unplaced)        0.249     4.325    design_1_i/top_controller_0/inst/u_axi_slave/g0_b0__3_i_7_n_0
                          LUT5 (Prop_LUT5_I4_O)        0.040     4.365 r  design_1_i/top_controller_0/inst/u_axi_slave/g0_b0__3_i_1/O
-                         net (fo=81, unplaced)        0.242     4.607    design_1_i/top_controller_0/inst/u_axi_slave_n_576
+                         net (fo=81, unplaced)        0.242     4.607    design_1_i/top_controller_0/inst/u_axi_slave_n_604
                          LUT5 (Prop_LUT5_I0_O)        0.171     4.778 r  design_1_i/top_controller_0/inst/g0_b1__3/O
                          net (fo=6, unplaced)         0.236     5.014    design_1_i/top_controller_0/inst/g0_b1__3_n_0
                          LUT6 (Prop_LUT6_I5_O)        0.039     5.053 r  design_1_i/top_controller_0/inst/g0_b1__4__0/O
@@ -332,7 +332,7 @@ Slack (VIOLATED) :        -0.533ns  (required time - arrival time)
                          net (fo=1, unplaced)         0.140    11.390    design_1_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
                          BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.027    11.417 r  design_1_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-                         net (fo=6724, unplaced)      2.439    13.856    design_1_i/top_controller_0/inst/u_preprocessor/S_AXI_ACLK
+                         net (fo=6732, unplaced)      2.439    13.856    design_1_i/top_controller_0/inst/u_preprocessor/S_AXI_ACLK
                          FDRE                                         r  design_1_i/top_controller_0/inst/u_preprocessor/pred_data_out_reg[pred_accel_y_1][11]/C
                          clock pessimism              0.040    13.896    
                          clock uncertainty           -0.182    13.714    
@@ -372,7 +372,7 @@ Slack (VIOLATED) :        -0.079ns  (arrival time - required time)
                          net (fo=1, unplaced)         0.094     0.094    design_1_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
                          BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.017     0.111 r  design_1_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-                         net (fo=6724, unplaced)      1.114     1.225    design_1_i/top_controller_0/inst/u_axi_slave/S_AXI_ACLK
+                         net (fo=6732, unplaced)      1.114     1.225    design_1_i/top_controller_0/inst/u_axi_slave/S_AXI_ACLK
                          FDRE                                         r  design_1_i/top_controller_0/inst/u_axi_slave/axi_rdata_reg[0]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_FDRE_C_Q)         0.038     1.263 r  design_1_i/top_controller_0/inst/u_axi_slave/axi_rdata_reg[0]/Q
@@ -386,7 +386,7 @@ Slack (VIOLATED) :        -0.079ns  (arrival time - required time)
                          net (fo=1, unplaced)         0.120     0.120    design_1_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
                          BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.018     0.138 r  design_1_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-                         net (fo=6724, unplaced)      1.259     1.397    design_1_i/ps8_0_axi_periph/s00_couplers/auto_pc/inst/gen_axilite.gen_b2s_conv.axilite_b2s/RD.r_channel_0/rd_data_fifo_0/aclk
+                         net (fo=6732, unplaced)      1.259     1.397    design_1_i/ps8_0_axi_periph/s00_couplers/auto_pc/inst/gen_axilite.gen_b2s_conv.axilite_b2s/RD.r_channel_0/rd_data_fifo_0/aclk
                          SRLC32E                                      r  design_1_i/ps8_0_axi_periph/s00_couplers/auto_pc/inst/gen_axilite.gen_b2s_conv.axilite_b2s/RD.r_channel_0/rd_data_fifo_0/memory_reg[31][0]_srl32/CLK
                          clock pessimism             -0.027     1.370    
                          SRLC32E (Hold_SRLC32E_CLK_D)

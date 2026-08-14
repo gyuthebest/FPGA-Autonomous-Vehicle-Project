@@ -29,6 +29,7 @@ import sys
 
 from pl_model import (
     CHANNEL_ORDER, CONSISTENCY_RELATIONS, PLModel, RELATION_WIDTH, _trunc,
+    relation_sensor_value,
 )
 from compare_golden_vs_pl import decode_input_words
 
@@ -93,7 +94,9 @@ def analyse(capture: Path, skip: int = 20) -> dict:
 
         for number, channel, scale, threshold, pred_key, mask_key in CONSISTENCY_RELATIONS:
             width = RELATION_WIDTH[number]
-            residual = abs(_trunc(sample.get(channel, 0), width) * scale
+            sensor_term = relation_sensor_value(number, channel, sample,
+                                                model.pre.delta)
+            residual = abs(_trunc(sensor_term, width) * scale
                            - _trunc(model.pre.pred.get(pred_key, 0), width))
             if out.cons_err[number]:
                 cons_confirmed[number] += 1

@@ -93,16 +93,16 @@ vlog -work xil_defaultlib  -v2k5 "+incdir+../../../../FPGA_project.gen/sources_1
 "../../../bd/design_1/ip/design_1_auto_pc_0/sim/design_1_auto_pc_0.v" \
 
 vlog -work xil_defaultlib  -sv2k12 "+incdir+../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/ec67/hdl" "+incdir+../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/abef/hdl" "+incdir+C:/Xilinx/Vivado/2022.2/data/xilinx_vip/include" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/types_pkg.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/mask_20s.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/preprocessor.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/risk_control.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/risk_types.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/sensor_reliability.sv" \
-"../../../bd/design_1/ipshared/765a/sources_1/new/top_controller.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/types_pkg.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/consistency_checker.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/mask_20s.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/preprocessor.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/risk_control.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/risk_types.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/sensor_checker.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/sensor_reliability.sv" \
+"../../../bd/design_1/ipshared/2fe1/sources_1/new/top_controller.sv" \
 "../../../bd/design_1/ip/design_1_top_controller_0_0/sim/design_1_top_controller_0_0.sv" \
 
 vlog -work xil_defaultlib  -v2k5 "+incdir+../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/ec67/hdl" "+incdir+../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/abef/hdl" "+incdir+C:/Xilinx/Vivado/2022.2/data/xilinx_vip/include" \

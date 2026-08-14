@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
-| Date         : Fri Aug 14 15:19:02 2026
+| Date         : Sat Aug 15 03:04:43 2026
 | Host         : JH_HP running 64-bit major release  (build 9200)
 | Command      : report_utilization -file C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/full_project_88888mhz/implemented_utilization.rpt
 | Design       : design_1_wrapper
@@ -33,16 +33,16 @@ Table of Contents
 +----------------------------+------+-------+------------+-----------+-------+
 |          Site Type         | Used | Fixed | Prohibited | Available | Util% |
 +----------------------------+------+-------+------------+-----------+-------+
-| CLB LUTs                   | 8768 |     0 |          0 |     47232 | 18.56 |
-|   LUT as Logic             | 8702 |     0 |          0 |     47232 | 18.42 |
+| CLB LUTs                   | 9060 |     0 |          0 |     47232 | 19.18 |
+|   LUT as Logic             | 8994 |     0 |          0 |     47232 | 19.04 |
 |   LUT as Memory            |   66 |     0 |          0 |     28800 |  0.23 |
 |     LUT as Distributed RAM |    0 |     0 |            |           |       |
 |     LUT as Shift Register  |   66 |     0 |            |           |       |
-| CLB Registers              | 6377 |     0 |          0 |     94464 |  6.75 |
-|   Register as Flip Flop    | 6377 |     0 |          0 |     94464 |  6.75 |
+| CLB Registers              | 6391 |     0 |          0 |     94464 |  6.77 |
+|   Register as Flip Flop    | 6391 |     0 |          0 |     94464 |  6.77 |
 |   Register as Latch        |    0 |     0 |          0 |     94464 |  0.00 |
-| CARRY8                     |  897 |     0 |          0 |      8820 | 10.17 |
-| F7 Muxes                   |   29 |     0 |          0 |     35280 |  0.08 |
+| CARRY8                     |  934 |     0 |          0 |      8820 | 10.59 |
+| F7 Muxes                   |   30 |     0 |          0 |     35280 |  0.09 |
 | F8 Muxes                   |   12 |     0 |          0 |     17640 |  0.07 |
 | F9 Muxes                   |    0 |     0 |          0 |      8820 |  0.00 |
 +----------------------------+------+-------+------------+-----------+-------+
@@ -63,8 +63,8 @@ Table of Contents
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 27    |          Yes |         Set |            - |
-| 6350  |          Yes |       Reset |            - |
+| 28    |          Yes |         Set |            - |
+| 6363  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -74,25 +74,25 @@ Table of Contents
 +--------------------------------------------+------+-------+------------+-----------+-------+
 |                  Site Type                 | Used | Fixed | Prohibited | Available | Util% |
 +--------------------------------------------+------+-------+------------+-----------+-------+
-| CLB                                        | 1689 |     0 |          0 |      8820 | 19.15 |
-|   CLBL                                     | 1100 |     0 |            |           |       |
-|   CLBM                                     |  589 |     0 |            |           |       |
-| LUT as Logic                               | 8702 |     0 |          0 |     47232 | 18.42 |
-|   using O5 output only                     |   79 |       |            |           |       |
-|   using O6 output only                     | 6592 |       |            |           |       |
-|   using O5 and O6                          | 2031 |       |            |           |       |
+| CLB                                        | 1782 |     0 |          0 |      8820 | 20.20 |
+|   CLBL                                     | 1142 |     0 |            |           |       |
+|   CLBM                                     |  640 |     0 |            |           |       |
+| LUT as Logic                               | 8994 |     0 |          0 |     47232 | 19.04 |
+|   using O5 output only                     |   82 |       |            |           |       |
+|   using O6 output only                     | 6776 |       |            |           |       |
+|   using O5 and O6                          | 2136 |       |            |           |       |
 | LUT as Memory                              |   66 |     0 |          0 |     28800 |  0.23 |
 |   LUT as Distributed RAM                   |    0 |     0 |            |           |       |
 |   LUT as Shift Register                    |   66 |     0 |            |           |       |
 |     using O5 output only                   |    0 |       |            |           |       |
 |     using O6 output only                   |   58 |       |            |           |       |
 |     using O5 and O6                        |    8 |       |            |           |       |
-| CLB Registers                              | 6377 |     0 |          0 |     94464 |  6.75 |
-|   Register driven from within the CLB      | 3606 |       |            |           |       |
-|   Register driven from outside the CLB     | 2771 |       |            |           |       |
-|     LUT in front of the register is unused | 1768 |       |            |           |       |
-|     LUT in front of the register is used   | 1003 |       |            |           |       |
-| Unique Control Sets                        |  192 |       |          0 |     17640 |  1.09 |
+| CLB Registers                              | 6391 |     0 |          0 |     94464 |  6.77 |
+|   Register driven from within the CLB      | 3585 |       |            |           |       |
+|   Register driven from outside the CLB     | 2806 |       |            |           |       |
+|     LUT in front of the register is unused | 1971 |       |            |           |       |
+|     LUT in front of the register is used   |  835 |       |            |           |       |
+| Unique Control Sets                        |  186 |       |          0 |     17640 |  1.05 |
 +--------------------------------------------+------+-------+------------+-----------+-------+
 * * Note: Available Control Sets calculated as Slices * 2, Review the Control Sets Report for more information regarding control sets.
 
@@ -116,8 +116,8 @@ Table of Contents
 +----------------+------+-------+------------+-----------+-------+
 |    Site Type   | Used | Fixed | Prohibited | Available | Util% |
 +----------------+------+-------+------------+-----------+-------+
-| DSPs           |   25 |     0 |          0 |       240 | 10.42 |
-|   DSP48E2 only |   25 |       |            |           |       |
+| DSPs           |   24 |     0 |          0 |       240 | 10.00 |
+|   DSP48E2 only |   24 |       |            |           |       |
 +----------------+------+-------+------------+-----------+-------+
 
 
@@ -193,19 +193,19 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     | 6350 |            Register |
-| LUT2     | 2752 |                 CLB |
-| LUT3     | 2094 |                 CLB |
-| LUT1     | 1628 |                 CLB |
-| LUT6     | 1505 |                 CLB |
-| LUT4     | 1465 |                 CLB |
-| LUT5     | 1289 |                 CLB |
-| CARRY8   |  897 |                 CLB |
+| FDRE     | 6363 |            Register |
+| LUT2     | 2892 |                 CLB |
+| LUT3     | 2097 |                 CLB |
+| LUT6     | 1640 |                 CLB |
+| LUT1     | 1639 |                 CLB |
+| LUT4     | 1536 |                 CLB |
+| LUT5     | 1326 |                 CLB |
+| CARRY8   |  934 |                 CLB |
 | SRLC32E  |   49 |                 CLB |
-| MUXF7    |   29 |                 CLB |
-| FDSE     |   27 |            Register |
+| MUXF7    |   30 |                 CLB |
+| FDSE     |   28 |            Register |
 | SRL16E   |   25 |                 CLB |
-| DSP48E2  |   25 |          Arithmetic |
+| DSP48E2  |   24 |          Arithmetic |
 | MUXF8    |   12 |                 CLB |
 | BUFGCE   |    2 |               Clock |
 | PS8      |    1 |            Advanced |

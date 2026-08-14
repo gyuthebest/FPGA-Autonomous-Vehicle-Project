@@ -18,7 +18,6 @@ sources_1\verification\run_offline_verification.bat
 | tb_pl_full_verification | 88 PASS / 0 FAIL |
 | tb_carla_axi_replay | 5 samples / 0 FAIL |
 | tb_risk_reliability_matrix | 121 PASS / 0 FAIL |
-| 골든 모델 vs RTL (turn/straight/brake_ice) | 3960 비교 항목 / 0 불일치 |
 | verify_sensor_noise | 10개 항목 PASS |
 | test_scenario_pl_alignment | 17 PASS |
 
@@ -74,33 +73,23 @@ python CARLA_FPGA_PROJECT\main.py
 
 산출물: `CARLA_FPGA_PROJECT/logs/pl_verification/pl_capture_<timestamp>.csv`
 
-## 4단계 — 골든 모델 대조 (핵심 판정)
+## 4단계 — 전송 계층 판정
 
 ```bash
-python CARLA_FPGA_PROJECT\compare_golden_vs_pl.py --board CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_<timestamp>.csv
+python CARLA_FPGA_PROJECToard_smoke_test.py --replay <capture.csv>
 ```
 
-**이 단계가 "FPGA가 우리 로직을 그대로 반영했는가"의 판정이다.**
+지터 없이 재생해 **전 프레임 응답 / sequence 정합 / 왕복 지연**을 본다.
+이 단계가 판정하는 것은 UDP·AXI·PL 파이프라인의 전송 무결성까지다.
 
-보드가 AXI로 내보내는 신뢰도 워드(read_reg10, 채널 11개 x 2비트)를 골든
-모델의 판정과 표본마다 대조한다. `PASS`면 실보드 신뢰도 판정이 소프트웨어
-기준 구현과 완전히 일치한다는 뜻이다.
+**신뢰도·위험도 판정이 옳은지는 이 단계로 알 수 없다.** 예전에는 Python
+참조 모델과 대조했으나 그 모델은 폐기됐다(`HANDOFF.md` 3절).
+알고리즘 정오는 사용자가 직접 판정한다.
 
-**불일치가 나오면** 원인은 셋 중 하나이며 반드시 규명한다.
+전송 계층에서 불일치가 나오면 원인은 둘 중 하나다.
 
-1. RTL이 의도한 알고리즘과 다르게 구현됨
-2. 합성/타이밍/AXI 전송 문제
-3. 골든 모델이 사양을 잘못 옮김
-
-구분 방법: 같은 캡처의 REG 벡터를 xsim에 재생해 본다.
-
-```bash
-sources_1\verification\run_pl_trace.bat <캡처에서_뽑은_벡터.csv>
-python CARLA_FPGA_PROJECT\compare_golden_vs_pl.py --vectors <벡터.csv>
-```
-
-- 시뮬레이션은 **일치**하는데 보드만 불일치 -> **원인 2** (하드웨어/타이밍)
-- 시뮬레이션도 **불일치** -> **원인 1 또는 3** (로직/모델)
+1. 합성/타이밍/AXI 문제 → 같은 벡터를 xsim에 돌려 시뮬은 맞는지 본다
+2. 호스트 전송 지터 → 100 ms 초과 구간과 상관을 본다
 
 ## 5단계 — 클럭 단위 원인 분석
 
@@ -150,7 +139,7 @@ codex가 통과시킨 74개 시나리오를 재확인한다. 이번 변경으로
 - **오탐률**(정상 주행 중 확정 고장 / 전체 표본)
 - **복구 지연**(고장 해제 -> NORMAL 복귀까지 표본 수)
 
-`analyze_pl_capture.py`와 `compare_golden_vs_pl.py` 출력으로 산출한다.
+`analyze_pl_capture.py`와 `pl_capture_metrics.py` 출력으로 산출한다.
 
 ---
 
@@ -158,8 +147,6 @@ codex가 통과시킨 74개 시나리오를 재확인한다. 이번 변경으로
 
 | 항목 | 상태 |
 |---|---|
-| 관계식 14 (gyro_z 정지 기준)의 마스크 | `consistency_mask_4 = (situation != 0)` 이라 정상 선회(situation=0) 중에도 활성화된다. 골든 모델도 같은 동작을 재현하므로 RTL 구현은 일관되나, "정지 상태"를 뜻하려면 마스크가 속도 기반이어야 한다. **설계 결정 필요** |
-| 관계식 17 (steer) | 골든 모델 미구현 |
-| accel/distance consistency 관계식 | 골든 모델 미구현 |
+| 관계식 14 (gyro_z 정지 기준)의 마스크 | `consistency_mask_4 = (situation != 0)` 이라 정상 선회(situation=0) 중에도 활성화된다. "정지 상태"를 뜻하려면 마스크가 속도 기반이어야 한다. **설계 결정 필요** |
 | risk_control TD/MRM 타이머 | 골든 모델 미구현 |
 | Jump/Noise 임계값 | 실캡처 기반 산정 미완 |

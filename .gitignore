@@ -1,2 +1,42 @@
 utils_1/
 *.dcp
+
+# ---- 시뮬레이션 파형 / 대용량 산출물 ----
+# tb_top_axi_integration_snap.wdb 는 432 MB 다. 절대 커밋하지 마라.
+*.wdb
+*.vcd
+xsim.dir/
+*.jou
+*.pb
+*.str
+webtalk*.xml
+webtalk*.html
+
+# ---- Vivado / Vitis 임시 ----
+.Xil/
+*.backup.log
+*.backup.jou
+vivado.log
+vivado_*.log
+xvlog.log
+xelab.log
+xsim.log
+xelab.pb
+xvlog.pb
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+
+# ---- 주행 로그 / 캡처 (재생성 가능, 수십 MB) ----
+CARLA_FPGA_PROJECT/logs/
+CARLA_FPGA_PROJECT/**/*.bak
+verification_reports/*.log
+verification_reports/*.err
+verification_reports/pl_trace.csv
+verification_reports/pl_trace.vcd
+verification_reports/pl_replay_*.csv
+
+# ---- 이미지 산출물 ----
+*.jpg
+sources_1/awdfsadf/

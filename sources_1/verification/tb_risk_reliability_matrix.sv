@@ -125,14 +125,21 @@ module tb_risk_reliability_matrix;
             rel_in = '0; risk_in = '0;
         end
 
-        // INVALID starts from the documented safe reset history and applies
-        // the four-tier floor (tier 2).
+        // 2026-08-15 정책: INVALID 는 위험도를 올리지 않는다.
+        // TD/MRM 이 담당하므로 risk_control 은 원시 tier 를 그대로 통과시킨다.
+        // 이전에는 바닥값(4단계면 tier 2)을 적용해, INVALID 확정 즉시 제동이
+        // 걸리면서 TD 10초와 MRM 이 시작되기도 전에 차가 멈췄다.
+        rel_in = '0; risk_in = '0;
         rel_in.temperature.state = 2'b10; #1;
-        check_eq("road surface INVALID floor", dut.eff_tier_road_A, 2);
-        rel_in = '0; rel_in.accel_z.state = 2'b10; #1;
-        check_eq("road impact INVALID floor", dut.eff_tier_road_B, 2);
-        rel_in = '0; rel_in.lux.state = 2'b10; #1;
-        check_eq("light visibility INVALID floor", dut.eff_tier_vision_A, 2);
+        check_eq("road surface INVALID passes raw 0", dut.eff_tier_road_A, 0);
+        risk_in.Ri_road_A = 2; #1;
+        check_eq("road surface INVALID passes raw 2", dut.eff_tier_road_A, 2);
+        rel_in = '0; risk_in = '0; rel_in.accel_z.state = 2'b10; #1;
+        check_eq("road impact INVALID passes raw 0", dut.eff_tier_road_B, 0);
+        risk_in.Ri_road_B = 3; #1;
+        check_eq("road impact INVALID passes raw 3", dut.eff_tier_road_B, 3);
+        rel_in = '0; risk_in = '0; rel_in.lux.state = 2'b10; #1;
+        check_eq("light visibility INVALID passes raw 0", dut.eff_tier_vision_A, 0);
 
         // Roll has only SAFE/DANGER, so DEGRADED cannot raise SAFE to an
         // intermediate tier; INVALID must conservatively select DANGER.
@@ -142,7 +149,7 @@ module tb_risk_reliability_matrix;
         risk_in.Ri_posture_A = 1; #1;
         check_eq("roll DEGRADED danger remains danger", dut.eff_tier_posture_A, 1);
         risk_in = '0; rel_in.gyro_x.state = 2'b10; #1;
-        check_eq("roll INVALID floor", dut.eff_tier_posture_A, 1);
+        check_eq("roll INVALID passes raw 0", dut.eff_tier_posture_A, 0);
 
         // Yaw and lateral: three risk tiers.
         for (raw = 0; raw < 3; raw++) begin
@@ -158,9 +165,9 @@ module tb_risk_reliability_matrix;
             check_eq($sformatf("lateral DEGRADED raw=%0d", raw), dut.eff_tier_posture_C, exp);
         end
         rel_in = '0; risk_in = '0; rel_in.gyro_z.state = 2'b10; #1;
-        check_eq("yaw INVALID floor", dut.eff_tier_posture_B, 1);
+        check_eq("yaw INVALID passes raw 0", dut.eff_tier_posture_B, 0);
         rel_in = '0; rel_in.accel_y.state = 2'b10; #1;
-        check_eq("lateral INVALID floor", dut.eff_tier_posture_C, 1);
+        check_eq("lateral INVALID passes raw 0", dut.eff_tier_posture_C, 0);
 
         // Weather is simulation truth and intentionally has no sensor
         // reliability input: all four tiers must pass through unchanged.
@@ -170,27 +177,27 @@ module tb_risk_reliability_matrix;
         end
 
         //------------------------------------------------------------------
-        $display("\n=== B. PREVIOUS VALID RISK RETENTION DURING INVALID ===");
+        $display("\n=== B. NO RISK RETENTION DURING INVALID ===");
         prepare_control();
         risk_in.Ri_road_A = 3; sample();
         risk_in.Ri_road_A = 0; rel_in.temperature.state = 2'b10; #1;
-        check_eq("road surface INVALID retains tier 3", dut.eff_tier_road_A, 3);
+        check_eq("road surface INVALID does not retain tier 3", dut.eff_tier_road_A, 0);
 
         prepare_control(); risk_in.Ri_road_B = 3; sample();
         risk_in.Ri_road_B = 0; rel_in.accel_z.state = 2'b10; #1;
-        check_eq("road impact INVALID retains tier 3", dut.eff_tier_road_B, 3);
+        check_eq("road impact INVALID does not retain tier 3", dut.eff_tier_road_B, 0);
 
         prepare_control(); risk_in.Ri_vision_A = 3; sample();
         risk_in.Ri_vision_A = 0; rel_in.lux.state = 2'b10; #1;
-        check_eq("visibility INVALID retains tier 3", dut.eff_tier_vision_A, 3);
+        check_eq("visibility INVALID does not retain tier 3", dut.eff_tier_vision_A, 0);
 
         prepare_control(); risk_in.Ri_posture_B = 2; sample();
         risk_in.Ri_posture_B = 0; rel_in.gyro_z.state = 2'b10; #1;
-        check_eq("yaw INVALID retains tier 2", dut.eff_tier_posture_B, 2);
+        check_eq("yaw INVALID does not retain tier 2", dut.eff_tier_posture_B, 0);
 
         prepare_control(); risk_in.Ri_posture_C = 2; sample();
         risk_in.Ri_posture_C = 0; rel_in.accel_y.state = 2'b10; #1;
-        check_eq("lateral INVALID retains tier 2", dut.eff_tier_posture_C, 2);
+        check_eq("lateral INVALID does not retain tier 2", dut.eff_tier_posture_C, 0);
 
         //------------------------------------------------------------------
         $display("\n=== C. PREVIOUSLY UNCOVERED CONTROL TIERS ===");

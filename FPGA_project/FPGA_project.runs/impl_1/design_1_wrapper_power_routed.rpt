@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
-| Date             : Fri Aug 14 15:18:03 2026
+| Date             : Sat Aug 15 03:03:56 2026
 | Host             : JH_HP running 64-bit major release  (build 9200)
 | Command          : report_power -file design_1_wrapper_power_routed.rpt -pb design_1_wrapper_power_summary_routed.pb -rpx design_1_wrapper_power_routed.rpx
 | Design           : design_1_wrapper
@@ -30,7 +30,7 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 2.635        |
+| Total On-Chip Power (W)  | 2.634        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
 | Dynamic (W)              | 2.323        |
@@ -53,21 +53,21 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.020 |        3 |       --- |             --- |
-| CLB Logic               |     0.025 |    18280 |       --- |             --- |
-|   LUT as Logic          |     0.019 |     8702 |     47232 |           18.42 |
-|   CARRY8                |     0.003 |      897 |      8820 |           10.17 |
-|   Register              |     0.002 |     6377 |     94464 |            6.75 |
+| CLB Logic               |     0.025 |    18729 |       --- |             --- |
+|   LUT as Logic          |     0.020 |     8994 |     47232 |           19.04 |
+|   CARRY8                |     0.003 |      934 |      8820 |           10.59 |
+|   Register              |     0.002 |     6391 |     94464 |            6.77 |
 |   LUT as Shift Register |    <0.001 |       66 |     28800 |            0.23 |
 |   BUFG                  |    <0.001 |        2 |        24 |            8.33 |
 |   Others                |     0.000 |      156 |       --- |             --- |
-|   F7/F8 Muxes           |     0.000 |       41 |     70560 |            0.06 |
-| Signals                 |     0.020 |    14932 |       --- |             --- |
-| DSPs                    |     0.003 |       25 |       240 |           10.42 |
+|   F7/F8 Muxes           |     0.000 |       42 |     70560 |            0.06 |
+| Signals                 |     0.019 |    15220 |       --- |             --- |
+| DSPs                    |     0.002 |       24 |       240 |           10.00 |
 | PS8                     |     2.256 |        1 |       --- |             --- |
 | Static Power            |     0.311 |          |           |                 |
 |   PS Static             |     0.095 |          |           |                 |
 |   PL Static             |     0.216 |          |           |                 |
-| Total                   |     2.635 |          |           |                 |
+| Total                   |     2.634 |          |           |                 |
 +-------------------------+-----------+----------+-----------+-----------------+
 
 

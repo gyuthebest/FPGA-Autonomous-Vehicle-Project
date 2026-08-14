@@ -53,6 +53,9 @@ class VehicleCommand:
         self.fpga_steering_override = None
 
         self.gear_down_request = False
+        # MRM 1회성 다운시프트.  gear_down_request 와 달리 RPM 조건을
+        # 보지 않고 무조건 한 단 내린다 (UNECE R157 MRM 3번).
+        self.force_downshift = False
         self.speed_limit = 999
         self.reverse = False
 

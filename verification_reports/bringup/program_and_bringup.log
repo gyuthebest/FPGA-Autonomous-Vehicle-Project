@@ -1,4 +1,4 @@
-BRINGUP_BEGIN=2026-08-14 15:22:25
+BRINGUP_BEGIN=2026-08-15 03:05:53
 BIT=C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/impl_1/design_1_wrapper.bit
 ELF=C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/carla_fpga_bridge/Debug/carla_fpga_bridge.elf
 TCF_CONNECTED=1
@@ -15,4 +15,4 @@ TARGET_SELECTED=CORTEX_A53_0
 ELF_DOWNLOADED=1
 A53_RUNNING=1
 BRINGUP_COMPLETE=1
-BRINGUP_END=2026-08-14 15:23:02
+BRINGUP_END=2026-08-15 03:06:28

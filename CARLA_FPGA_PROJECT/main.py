@@ -296,6 +296,11 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
 
         simulation_time = 0.0
         sample_seq = 0  # Added for FPGA testing
+        # timeout 주입 시 몇 프레임마다 한 표본을 통과시킬지.
+        # 25 프레임 = 1.25초 침묵이면 TIMEOUT_N=10 (1초) 을 넘겨 확정된다.
+        TIMEOUT_RELEASE_PERIOD = 25
+        timeout_hold_frames = 0
+        prev_mrm = False
         # PL transition-demand/MRM registers survive a Python-only restart.
         # Briefly assert the PL-facing MANUAL bit so stale safety state from a
         # previous scenario cannot contaminate a new validation run.
@@ -349,6 +354,24 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         if not env_flag("CARLA_APPLY_FPGA", default=True):
             control_panel.apply_fpga_output = False
             print("[CONTROL] Apply FPGA output: OFF (CARLA_APPLY_FPGA=0)")
+        # 무인 검증용 고장 사전 주입.  GUI 버튼을 누르지 않고도 같은 경로를
+        # 탄다(control_panel.injector 를 그대로 쓴다).
+        #   CARLA_INJECT_FAULT=distance:stuck,gyro_x:range
+        #   CARLA_INJECT_RISK=collision
+        for spec in (os.getenv("CARLA_INJECT_FAULT", "") or "").split(","):
+            spec = spec.strip()
+            if not spec:
+                continue
+            name, _, check = spec.partition(":")
+            if name and check:
+                control_panel.injector.toggle_sensor_fault(name, check)
+                print(f"[INJECT] sensor fault {name}:{check}")
+        for spec in (os.getenv("CARLA_INJECT_RISK", "") or "").split(","):
+            spec = spec.strip()
+            if spec:
+                control_panel.injector.toggle_risk(spec)
+                print(f"[INJECT] risk {spec}")
+
         run_seconds = float(os.getenv("CARLA_RUN_SECONDS", "0") or 0)
         run_deadline = (time.perf_counter() + run_seconds) if run_seconds > 0 else None
         if run_deadline is not None:
@@ -470,7 +493,31 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             # ========================================================
             # [FPGA AXI REGISTER PACKING - TEST]
             # ========================================================
-            sample_seq += 1
+            # timeout 고장: sample_seq 를 대부분의 프레임에서 고정한다.
+            #
+            # PL 의 valid_s0 = (sample_seq_in != sample_seq_out) 이므로 seq 를
+            # 고정하면 "새 표본이 없다"고 판단해 100 ms 마다 timeout 증거를
+            # 쌓고 TIMEOUT_N=10 에서 확정한다(약 1초).
+            #
+            # 다만 **완전히 고정하면 화면에 안 보인다.**  risk_control.sv 는
+            #     if (valid_in_rel) rel_out <= rel_in;
+            # 이라 신뢰도 워드를 valid 표본에서만 래치한다.  seq 가 멈춰 있는
+            # 동안에는 워드가 갱신되지 않아 마지막 값(NORMAL)이 그대로 남는다.
+            # PL 은 timeout 을 확정하고 있는데 내보내지 않는 것이다.
+            #
+            # 그래서 주기적으로 한 표본만 통과시킨다.  RTL 의
+            # timeout_confirm_hold(DROP_N=2) 가 확정된 timeout 을 복구 첫
+            # 표본까지 유지하도록 만들어져 있어, 그 표본에서 11채널 INVALID 가
+            # 래치된다.  이후 다시 고정하면 증거가 재축적되므로 화면은 계속
+            # INVALID 를 유지한다.
+            if control_panel.injector.drop_sample:
+                timeout_hold_frames += 1
+                if timeout_hold_frames >= TIMEOUT_RELEASE_PERIOD:
+                    timeout_hold_frames = 0
+                    sample_seq += 1
+            else:
+                timeout_hold_frames = 0
+                sample_seq += 1
             
             # [추가된 부분: 파이썬 기반 루프 소요 시간 측정 (Hardware ILA 대체)]
             current_time = time.perf_counter()
@@ -571,6 +618,27 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
 
             if keyboard.manual_mode:
                 command = manual_command
+            elif not control_panel.fpga_in_loop:
+                # FPGA: NONE -- PL 뿐 아니라 **Python 위험 로직도 빼고**
+                # 순수 기본 주행만 남긴다.  FPGA 유무를 비교하려면 기준선에
+                # 같은 위험 대응이 들어 있으면 안 되기 때문이다.
+                #
+                # fuse() 는 인자가 None 이면 그 요소를 반영하지 않도록 이미
+                # 되어 있다.  네 개를 모두 빼면 기본값만 남는다.
+                #   throttle = MAX_THROTTLE, brake = 0,
+                #   steering_rate_limit = 100, speed_limit = 999
+                #
+                # 조향은 자율주행 모드에서 command.steering 을 쓰지 않고
+                # controller.calculate_lane_steering() 이 만들므로 차선 추종이
+                # 그대로 유지된다.  steering_rate_limit 이 100 이라 위험
+                # 로직에 의한 조향 제한만 사라진다.
+                #
+                # 다만 속도는 손을 대야 한다.  도로 제한속도는 road_logic 을
+                # 거쳐서만 command.speed_limit 에 실리는데 그 로직을 뺐으므로,
+                # environment 의 값을 직접 넣어 준다.  이렇게 해야
+                # "위험도와 무관하게 도로 제한속도만 따른다" 가 된다.
+                command = fusion_logic.fuse()
+                command.speed_limit = float(environment.speed_limit)
             else:
                 command = fusion_logic.fuse(
                     ttc=ttc_result,
@@ -656,10 +724,17 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             }
 
             host_send_ns = time.perf_counter_ns()
+            # sample_seq 고정만으로 timeout 을 만들므로 송신은 계속한다.
+            # 그래야 PL 이 확정한 INVALID 를 읽어서 화면에 띄울 수 있다.
             sample_dropped = control_panel.injector.drop_sample
+            # FPGA: NONE 은 PL 을 루프에서 완전히 뺀다.  프레임을 보내지
+            # 않으므로 UDP 왕복 지연과 지터가 주행 루프에 영향을 주지 않고,
+            # 순수 CARLA 기본 주행이 기준선이 된다.  고장 주입과 위험도
+            # 시나리오는 그대로 센서에 반영되므로 같은 조건에서 FPGA 유무만
+            # 바꿔 비교할 수 있다.
             fpga_result = (
                 fpga.exchange(input_words, sample_seq)
-                if fpga is not None and not sample_dropped
+                if fpga is not None and control_panel.fpga_in_loop
                 else None
             )
             control_panel.set_fpga_result(fpga_result)
@@ -697,6 +772,15 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             live_verifier.update(
                 1.0 / 20.0, fpga_result, requested_speed_limit, sensor,
             )
+            # MRM 진입 순간에만 1단 다운시프트를 요청한다 (R157 MRM 3번).
+            # 그 뒤의 변속은 Python 의 속도 기준 로직이 이어받는다.
+            # PL 의 gear 출력은 적용하지 않는 설계이므로(제어 영역 밖은 CARLA
+            # 로직 그대로), MRM 다운시프트도 여기서 한 번만 걸어 준다.
+            if fpga_result is not None and fpga_result.mrm and not prev_mrm:
+                command.force_downshift = True
+                print("[MRM] one-shot downshift requested")
+            prev_mrm = bool(fpga_result is not None and fpga_result.mrm)
+
             if fpga_actuation_active:
                 command.throttle = min(VehicleCommand.MAX_THROTTLE, fpga_result.accelerator)
                 command.brake = min(VehicleCommand.MAX_BRAKE, fpga_result.brake)
@@ -722,7 +806,13 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             if ENABLE_LEGACY_AUTO_OBSTACLES:
                 obstacle_manager.update(1.0 / 20.0, ttc_result)
 
-            controller.update(command, posture_result)
+            # NONE 에서는 자세 위험도도 빼야 한다.  posture_result 는 command 와
+            # 별개로 컨트롤러에 들어가 posture_speed_limit 을 걸기 때문에,
+            # 그대로 두면 "위험도와 무관하게 제한속도만 따른다" 가 깨진다.
+            controller.update(
+                command,
+                posture_result if control_panel.fpga_in_loop else None,
+            )
             # Use the command applied in this frame for the cockpit.  The
             # earlier vehicle.get_control() snapshot belongs to the previous
             # frame and would make the hand wheel visibly lag by one tick.

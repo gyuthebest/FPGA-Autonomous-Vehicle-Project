@@ -424,11 +424,17 @@ module preprocessor (
         return (angle < 0) ? -val : val;
     endfunction
 
-    function automatic logic signed [11:0] get_steer_lut(input logic signed [7:0] steering);
+    // LUT_STEER 의 상위 항목(2244 / 2501 / 2776)은 signed 12비트 상한 2047 을
+    // 넘는다.  중간 변수를 signed [11:0] 으로 두면 |steering| >= 80 (idx >= 10,
+    // val0 또는 val1 이 2047 초과) 구간에서 값이 음수로 뒤집혀 조향 기준값의
+    // 부호가 반대가 된다.  실측(pl_capture_20260814_183046): steering 91 에서
+    // RTL 이 -1756, 모델이 +2340 -> 관계식 17 이 잘못 확정되어 gyro_z 가
+    // DEGRADED 로 떴다.  LUT_STEER 최대 2776 이므로 signed 13비트로 넓힌다.
+    function automatic logic signed [12:0] get_steer_lut(input logic signed [7:0] steering);
         logic [7:0] abs_a;
         logic [3:0] idx;
         logic [3:0] rem;
-        logic signed [11:0] val0, val1, val;
+        logic signed [12:0] val0, val1, val;
         abs_a = (steering < 0) ? -steering : steering;
         if (abs_a > STEER_MAX) abs_a = STEER_MAX;
         idx = abs_a >> 3;
@@ -447,7 +453,9 @@ module preprocessor (
         return (val < 0) ? -val : val;
     endfunction
 
-    logic signed [11:0] sin_x, cos_x, sin_y, cos_y, tan_x, tan_y, steer_lut_val;
+    logic signed [11:0] sin_x, cos_x, sin_y, cos_y, tan_x, tan_y;
+    // steer LUT 은 2776 까지 올라가므로 signed 12비트로는 부족하다 (get_steer_lut 주석).
+    logic signed [12:0] steer_lut_val;
     logic signed [31:0] grav_x, grav_y, grav_z;
     // Verilog sizes a product as max(operand, context) width, not the sum, so
     // a bare (a * b) >>> LUT_SH inside a narrow assignment wraps the product
@@ -471,6 +479,14 @@ module preprocessor (
     //        그 오차는 최대 12 raw 로 임계 76 대비 무시할 수 있고 곱셈기를
     //        추가하지 않는다.
     logic signed [31:0] centripetal_pred;    // 관계식 4  : speed_x * gyro_z
+
+    // 관계식 8 : yaw 는 +-18000 (+-180.00 deg) 에서 되감긴다.  단순 차분하면
+    // 경계를 넘는 순간 차분이 36000 이 되어 기준값이 36000*C_GYR = 128,664,000
+    // 까지 튄다 (실측 잔차 최대 128,662,714, 개루프 캡처에서 2회 관측).
+    // 각도 차분은 원주상 최단 경로로 되감아야 물리적으로 옳다.
+    // roll/pitch 는 +-30 deg 로 클램프되어 경계가 없으므로 그대로 둔다.
+    logic signed [31:0] delta_incline_z_raw;
+    logic signed [31:0] delta_incline_z_wrapped;
     logic signed [31:0] abs_y, abs_z;
     logic signed [31:0] abs_max, abs_min;
     logic signed [31:0] approx1, approx2, approx_sqrt;
@@ -489,6 +505,14 @@ module preprocessor (
         grav_x = -(G * sin_y) >>> LUT_SH;
         grav_y = (G * sin_x * cos_y) >>> (2 * LUT_SH);
         grav_z = (G * cos_x * cos_y) >>> (2 * LUT_SH);
+
+        delta_incline_z_raw = sim_data_in.incline_z - sim_data_out.incline_z;
+        if (delta_incline_z_raw > 32'sd18000)
+            delta_incline_z_wrapped = delta_incline_z_raw - 32'sd36000;
+        else if (delta_incline_z_raw < -32'sd18000)
+            delta_incline_z_wrapped = delta_incline_z_raw + 32'sd36000;
+        else
+            delta_incline_z_wrapped = delta_incline_z_raw;
 
         steer_yaw_pred    = sim_data_in.speed_x * steer_lut_val;
         accel_y_tilt_pred = sensor_data_in.accel_z * tan_x;
@@ -569,7 +593,7 @@ module preprocessor (
                 pred_data_out.pred_gyro_x_2       <= '0;
                 pred_data_out.pred_gyro_y_1       <= (sim_data_in.incline_y - sim_data_out.incline_y) * C_GYR;
                 pred_data_out.pred_gyro_y_2       <= '0;
-                pred_data_out.pred_gyro_z_1       <= (sim_data_in.incline_z - sim_data_out.incline_z) * C_GYR;
+                pred_data_out.pred_gyro_z_1       <= delta_incline_z_wrapped * C_GYR;
                 pred_data_out.pred_gyro_z_2       <= '0;
                 pred_data_out.pred_gyro_z_3       <= steer_yaw_pred >>> LUT_SH;
             end

@@ -587,7 +587,11 @@ module tb_pl_full_verification;
         check_eq("risk yaw normal", rt_risk.Ri_posture_B, 0);
         check_eq("risk lateral normal", rt_risk.Ri_posture_C, 0);
 
-        rt_sensor_in.distance = 150;
+        // Emergency 경계가 TTC 1.5초에서 **1.4초**로 바뀌었다.
+        // 이전 벡터 distance=150 / approach=100 은 TTC 정확히 1.5초라
+        // 새 사양에서는 Critical 이다 (아래에 경계 시험으로 따로 둔다).
+        // 여기서는 확실히 Emergency 인 TTC 1.3초를 쓴다.
+        rt_sensor_in.distance = 130;
         rt_sensor_in.approach_speed = 100;
         rt_sensor_in.temperature = -50;
         rt_sensor_in.humidity = 90;
@@ -622,6 +626,38 @@ module tb_pl_full_verification;
         check_eq("collision emergency accelerator", rc_sim_out.accelerator, 0);
         check_eq("collision emergency brake", rc_sim_out.brake, 10);
         check_true("collision emergency hazard", rc_sim_out.hazard);
+
+        // --- 충돌 tier 경계 (사양: Emergency 는 TTC <= 1.4초) --------------
+        // 근사식이 1.40625 이므로 approach=100 기준 distance 140 까지 Emergency,
+        // 141 부터 Critical 이어야 한다.  이전 구현(1.5초)에서는 150 까지
+        // Emergency 였다.
+        rt_sensor_in.approach_speed = 100;
+        rt_sensor_in.distance = 140;
+        rt_sample();
+        check_eq("collision boundary 1.40s emergency", rt_risk.Ri_collision, 4);
+
+        rt_sensor_in.distance = 141;
+        rt_sample();
+        check_eq("collision boundary 1.41s critical", rt_risk.Ri_collision, 3);
+
+        rt_sensor_in.distance = 150;
+        rt_sample();
+        check_eq("collision boundary 1.50s critical", rt_risk.Ri_collision, 3);
+
+        // 최소 기어는 1단이다. gear=1 이면 RPM 조건을 만족해도 내리지 않는다.
+        rc_reset();
+        rc_sim_in.accelerator = 10;
+        rc_sim_in.speed_x = 1000;
+        rc_sim_in.speed_limit = 3200;
+        rc_sim_in.gear = 1;
+        rc_sim_in.rpm = 1;
+        rc_risk_in.Ri_collision = 3;
+        rc_sample();
+        check_eq("collision downshift keeps min gear 1", rc_sim_out.gear, 1);
+
+        rc_sim_in.gear = 2;
+        rc_sample();
+        check_eq("collision downshift from gear 2", rc_sim_out.gear, 1);
 
         rc_reset();
         rc_sim_in.accelerator = 10;

@@ -110,6 +110,9 @@ module tb_pl_trace;
           "s1_temperature,s1_humidity,s1_lux,",
           "s1_delta_distance,s1_delta_gyro_z,s1_delta_accel_z,s1_delta_temp,",
           "s1_pred_gyro_z_1,s1_pred_distance,s1_gyro_z_x_S_GYR,",
+          // 관계식 17(조향-yaw) / 관계식 3(accel_x 동역학) 의 기준값.
+          // 지금까지 트레이스에 없어 모델과 한 번도 대조되지 않던 항목이다.
+          "s1_pred_gyro_z_3,s1_pred_accel_x_1,s1_accel_x,s1_delta_accel_x,",
           // S2 개별 검사기 확정 비트 (채널 비트맵)
           "s2_range_err,s2_jump_err,s2_stuck_err,s2_noise_err,s2_timeout_err,",
           "s2_timeout_phase_cnt,",
@@ -160,6 +163,12 @@ module tb_pl_trace;
               $signed(dut.u_preprocessor.pred_data_out.pred_gyro_z_1),
               $signed(dut.u_preprocessor.pred_data_out.pred_distance),
               $signed(dut.u_preprocessor.sensor_data_in.gyro_z) * 1024);
+
+            $fwrite(trace_fd, "%0d,%0d,%0d,%0d,",
+              $signed(dut.u_preprocessor.pred_data_out.pred_gyro_z_3),
+              $signed(dut.u_preprocessor.pred_data_out.pred_accel_x_1),
+              $signed(dut.u_preprocessor.sensor_data_in.accel_x),
+              $signed(dut.u_preprocessor.processed_data_out.delta_accel_x));
 
             // S2 검사기 확정 비트
             $fwrite(trace_fd, "%0d,%0d,%0d,%0d,%0d,%0d,",

@@ -21,7 +21,7 @@ testable**이다.  따라서 값이 STUCK_N/STUCK_U = 15 표본(20 Hz에서 0.75
 `each_sensor_check`의 noise 검사는 두 조건의 OR이다.
 
     noise_error = (delta_sum > NOISE_THRESHOLD_1 * HISTORY)
-               || ($countones(flip_history) > NOISE_THRESHOLD_2)
+               && ($countones(flip_history) > NOISE_THRESHOLD_2)
 
 즉 (1) 10표본 |delta| 합이 NOISE_THRESHOLD_1*10을 넘거나,
 (2) delta 부호 반전이 10표본 중 7회를 넘으면 noise fault다.
@@ -238,8 +238,23 @@ class SensorNoiseModel:
                 offset += self._offset(channel, float(current))
             if offset == 0.0:
                 continue
-            value = float(current) + offset
-            value = max(channel.low, min(channel.high, value))
+            # 포화된 측정값 위에서 클램프가 바닥 진동을 지우지 않게 한다.
+            #
+            # 조도는 sensor_manager 가 130000 에서 포화시키고 한낮에는
+            # sun_factor 가 1.0 에 붙어 실제로 상수가 된다.  예전처럼 더한 뒤
+            # 클램프하면 상한에 붙은 구간에서 매 표본 정확히 같은 값이 나와
+            # delta 가 0 이 되고, 바닥 진동을 넣은 의미가 사라진다.  실측
+            # (pl_capture_20260814_183046): delta==0 이 98표본 연속 -> STUCK_N(15)
+            # 확정 -> lux 오탐 5.60%.  습도(상한 99)도 같은 구조다.
+            #
+            # 그래서 클램프를 오프셋 **이전** 에 걸고 진동 폭만큼 여유를 둔다.
+            # 결과값은 여전히 [low, high] 안이므로 잡음이 range fault 를
+            # 유발하지 않는다는 기존 성질은 그대로다.
+            headroom = abs(offset)
+            low = channel.low + headroom
+            high = channel.high - headroom
+            base = float(current) if low > high else max(low, min(high, float(current)))
+            value = max(channel.low, min(channel.high, base + offset))
             setattr(sensor, channel.attr, value)
 
         step = (1.0 / self.sample_rate_hz) if dt is None else float(dt)

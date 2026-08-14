@@ -19,7 +19,7 @@ CARLA도 FPGA 보드도 Vivado도 필요 없다.
     testable    = (CHANNEL_TYPE_2 == 0) or |trig_val| >= STUCK_THRESHOLD
 
     noise_error = (sum(|delta|,10) > NOISE_THRESHOLD_1 * 10)
-               or (sign_flips(10) > NOISE_THRESHOLD_2)
+              and (sign_flips(10) > NOISE_THRESHOLD_2)
 
 카운터는 모두 codex가 추가한 포화 동작을 포함한다.
 
@@ -191,7 +191,7 @@ class CheckerModel:
             self.flip_history.pop(0)
         if len(self.delta_history) == HISTORY:
             if (sum(self.delta_history) > ch.noise_1 * HISTORY
-                    or sum(self.flip_history) > ch.noise_2):
+                    and sum(self.flip_history) > ch.noise_2):
                 self.faults["noise"] += 1
 
         self.prev_value = value

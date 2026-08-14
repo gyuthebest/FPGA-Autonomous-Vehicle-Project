@@ -109,26 +109,31 @@ class LiveScenarioVerifier:
                 "fault": ("temperature", "jump"),
                 "reliability": ("temperature", 1), "risk_min": ("road_surface", 2),
             },
+            # 2026-08-15 정책: INVALID 는 위험도를 올리지 않는다.
+            # risk_control 은 원시 tier 를 그대로 통과시키고, INVALID 대응은
+            # TD/MRM 이 담당한다.  그래서 예전의 risk_min(바닥값) 기대는
+            # 더 이상 성립하지 않는다.  남은 관측 가능한 효과는 두 가지다.
+            #   - 해당 채널이 INVALID 로 확정된다
+            #   - HUD 경고가 뜬다 (hud_warning 은 9개 그룹의 INVALID 를 OR 한다)
             {
-                "name": "reliability_invalid_surface_floor", "seconds": 1.5,
+                "name": "reliability_invalid_surface_no_escalation", "seconds": 1.5,
                 "fault": ("temperature", "range"),
-                "reliability": ("temperature", 2), "risk_min": ("road_surface", 2),
+                "reliability": ("temperature", 2), "hud": 1,
             },
             {
-                "name": "reliability_invalid_impact_floor", "seconds": 1.5,
+                "name": "reliability_invalid_impact_no_escalation", "seconds": 1.5,
                 "fault": ("accel_z", "range"),
-                "reliability": ("accel_z", 2), "risk_min": ("road_impact", 2),
+                "reliability": ("accel_z", 2), "hud": 1,
             },
             {
-                "name": "reliability_invalid_visibility_floor", "seconds": 1.5,
+                "name": "reliability_invalid_visibility_no_escalation", "seconds": 1.5,
                 "fault": ("lux", "range"),
-                "reliability": ("lux", 2), "risk_min": ("visibility_light", 2),
+                "reliability": ("lux", 2), "hud": 1,
             },
             {
-                "name": "reliability_invalid_collision_floor", "seconds": 1.5,
+                "name": "reliability_invalid_collision_no_escalation", "seconds": 1.5,
                 "fault": ("approach_speed", "range"),
-                "reliability": ("approach_speed", 2), "risk_min": ("collision", 2),
-                "hud": 1,
+                "reliability": ("approach_speed", 2), "hud": 1,
             },
         ]
 

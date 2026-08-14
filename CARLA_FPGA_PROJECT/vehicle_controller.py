@@ -81,6 +81,16 @@ class VehicleController:
         1.65    # 4단 (80 ~ 120 km/h)
     ]
 
+    # 위 대역 상한 = 업시프트 지점.  UPSHIFT_RPM(6500)으로 계산한 값과 일치한다
+    # (1단 20.0 / 2단 55.1 / 3단 79.9 km/h).
+    # 다운시프트는 상한에서 3 km/h 아래로 두어 업시프트 지점과 겹치지 않게 한다.
+    GEAR_DOWN_HYSTERESIS_KMH = 3.0
+    GEAR_DOWN_KMH = [
+        20.0 - GEAR_DOWN_HYSTERESIS_KMH,   # 2단 -> 1단
+        55.0 - GEAR_DOWN_HYSTERESIS_KMH,   # 3단 -> 2단
+        80.0 - GEAR_DOWN_HYSTERESIS_KMH,   # 4단 -> 3단
+    ]
+
     TIRE_DIAMETER = 0.634      # m (195/65R15)
 
     # ======================================================
@@ -110,6 +120,8 @@ class VehicleController:
         self.posture_speed_limit = 999
         self.locked_path_ids = []
         self.gear_down_timer = 0.0
+        # MRM 1회성 다운시프트 대기 플래그 (process_gear 참조)
+        self.pending_mrm_downshift = False
         
         # 고정 주행 경로: (x, y, forward_x, forward_y, 누적거리)
         self.route = []
@@ -307,9 +319,27 @@ class VehicleController:
         """
         current_time = time.time()
 
+        # MRM 다운시프트 요청은 수행될 때까지 걸어 둔다.
+        # main.py 는 MRM 상승 엣지에서 한 프레임만 force_downshift 를 세운다.
+        # 그 프레임이 마침 SHIFT_DELAY 안이면 요청이 그대로 사라져 MRM
+        # 다운시프트가 일어나지 않는다.  그래서 여기서 래치한다.
+        if getattr(command, "force_downshift", False):
+            self.pending_mrm_downshift = True
+
         if (current_time - self.last_shift_time >= self.SHIFT_DELAY):
-            
-            if command.gear_down_request:
+
+            if self.pending_mrm_downshift:
+                # MRM 1회성 다운시프트 (UNECE R157 MRM 3번).
+                # RPM 조건 없이 무조건 한 단 내린다.
+                # 여기서 last_shift_time 을 갱신하므로 자율주행 로직의 다음
+                # 변속은 **이 시점부터 0.5초 뒤**에야 가능하다.
+                if self.current_gear > self.MIN_GEAR:
+                    self.current_gear -= 1
+                    self.last_shift_time = current_time
+                self.pending_mrm_downshift = False
+
+            elif command.gear_down_request:
+                # 위험로직의 명시적 조기 다운시프트 요청 (엔진브레이크용)
                 if (self.current_rpm <= self.DOWNSHIFT_RPM and self.current_gear > self.MIN_GEAR):
                     self.current_gear -= 1
                     self.last_shift_time = current_time
@@ -322,6 +352,21 @@ class VehicleController:
                 if self.current_gear < self.MAX_GEAR:
                     self.current_gear += 1
                     self.last_shift_time = current_time
+
+            elif (self.current_gear > self.MIN_GEAR
+                  and self.vehicle_speed < self.GEAR_DOWN_KMH[self.current_gear - 1]):
+                # 속도 기준 자동 다운시프트.
+                #
+                # 이것이 없으면 FPGA 제동·타행·장애물 감속 등 gear_down_request
+                # 가 서지 않는 모든 감속에서 기어가 그대로 남는다. 실제로 MRM
+                # 으로 속도가 줄어도 4단이 유지되는 문제가 있었다.
+                #
+                # RPM 기준으로 내리면 안 된다.  DOWNSHIFT_RPM=3000 은 2단에서
+                # 25.4 km/h 인데 1->2 업시프트는 20.0 km/h 라, 그 사이 구간에서
+                # 0.5초마다 오르내리는 헌팅이 생긴다.  GEAR_RATIO 주석의 속도
+                # 대역을 그대로 쓰고 3 km/h 이력을 두면 겹치지 않는다.
+                self.current_gear -= 1
+                self.last_shift_time = current_time
 
         self.control.manual_gear_shift = True
         self.control.gear = self.current_gear + 1

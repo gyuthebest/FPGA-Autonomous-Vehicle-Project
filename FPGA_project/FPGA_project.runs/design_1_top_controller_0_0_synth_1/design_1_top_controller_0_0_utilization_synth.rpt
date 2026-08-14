@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
-| Date         : Fri Aug 14 15:08:58 2026
+| Date         : Sat Aug 15 02:53:33 2026
 | Host         : JH_HP running 64-bit major release  (build 9200)
 | Command      : report_utilization -file design_1_top_controller_0_0_utilization_synth.rpt -pb design_1_top_controller_0_0_utilization_synth.pb
 | Design       : design_1_top_controller_0_0
@@ -32,14 +32,14 @@ Table of Contents
 +-------------------------+------+-------+------------+-----------+-------+
 |        Site Type        | Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+------+-------+------------+-----------+-------+
-| CLB LUTs*               | 8633 |     0 |          0 |     47232 | 18.28 |
-|   LUT as Logic          | 8633 |     0 |          0 |     47232 | 18.28 |
+| CLB LUTs*               | 8932 |     0 |          0 |     47232 | 18.91 |
+|   LUT as Logic          | 8932 |     0 |          0 |     47232 | 18.91 |
 |   LUT as Memory         |    0 |     0 |          0 |     28800 |  0.00 |
-| CLB Registers           | 5877 |     0 |          0 |     94464 |  6.22 |
-|   Register as Flip Flop | 5877 |     0 |          0 |     94464 |  6.22 |
+| CLB Registers           | 5891 |     0 |          0 |     94464 |  6.24 |
+|   Register as Flip Flop | 5891 |     0 |          0 |     94464 |  6.24 |
 |   Register as Latch     |    0 |     0 |          0 |     94464 |  0.00 |
-| CARRY8                  |  899 |     0 |          0 |      8820 | 10.19 |
-| F7 Muxes                |   26 |     0 |          0 |     35280 |  0.07 |
+| CARRY8                  |  936 |     0 |          0 |      8820 | 10.61 |
+| F7 Muxes                |   27 |     0 |          0 |     35280 |  0.08 |
 | F8 Muxes                |   12 |     0 |          0 |     17640 |  0.07 |
 | F9 Muxes                |    0 |     0 |          0 |      8820 |  0.00 |
 +-------------------------+------+-------+------------+-----------+-------+
@@ -61,8 +61,8 @@ Warning! LUT value is adjusted to account for LUT combining.
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 8     |          Yes |         Set |            - |
-| 5869  |          Yes |       Reset |            - |
+| 9     |          Yes |         Set |            - |
+| 5882  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -85,8 +85,8 @@ Warning! LUT value is adjusted to account for LUT combining.
 +----------------+------+-------+------------+-----------+-------+
 |    Site Type   | Used | Fixed | Prohibited | Available | Util% |
 +----------------+------+-------+------------+-----------+-------+
-| DSPs           |   25 |     0 |          0 |       240 | 10.42 |
-|   DSP48E2 only |   25 |       |            |           |       |
+| DSPs           |   24 |     0 |          0 |       240 | 10.00 |
+|   DSP48E2 only |   24 |       |            |           |       |
 +----------------+------+-------+------------+-----------+-------+
 
 
@@ -150,18 +150,18 @@ Warning! LUT value is adjusted to account for LUT combining.
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     | 5869 |            Register |
-| LUT2     | 2703 |                 CLB |
-| LUT3     | 1945 |                 CLB |
-| LUT1     | 1632 |                 CLB |
-| LUT4     | 1444 |                 CLB |
-| LUT6     | 1385 |                 CLB |
-| LUT5     | 1236 |                 CLB |
-| CARRY8   |  899 |                 CLB |
-| MUXF7    |   26 |                 CLB |
-| DSP48E2  |   25 |          Arithmetic |
+| FDRE     | 5882 |            Register |
+| LUT2     | 2843 |                 CLB |
+| LUT3     | 1948 |                 CLB |
+| LUT1     | 1642 |                 CLB |
+| LUT6     | 1520 |                 CLB |
+| LUT4     | 1515 |                 CLB |
+| LUT5     | 1273 |                 CLB |
+| CARRY8   |  936 |                 CLB |
+| MUXF7    |   27 |                 CLB |
+| DSP48E2  |   24 |          Arithmetic |
 | MUXF8    |   12 |                 CLB |
-| FDSE     |    8 |            Register |
+| FDSE     |    9 |            Register |
 +----------+------+---------------------+
 
 

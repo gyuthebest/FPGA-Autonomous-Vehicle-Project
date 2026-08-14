@@ -77,6 +77,21 @@ def decode_input_words(words) -> dict:
         "steering": _signed(((reg7 >> 19) & 0x1F) << 3 | ((reg8 >> 24) & 0x7), 8),
         "manual_mode": reg8 & 1,
         "situation": (reg8 >> 3) & 0x7,
+        # --- sim_data_in 의 제어 입력 --------------------------------------
+        # risk_control 의 중재는 이 값들을 상한/기준으로 쓴다.  빠뜨리면
+        # 모델이 accelerator=0 에서 시작해 제어 결과가 전부 어긋난다.
+        #   accelerator = slv_reg6[29:26]
+        #   brake       = slv_reg7[27:24]
+        #   rpm         = slv_reg7[29:28]
+        #   gear        = slv_reg7[31:30]
+        #   speed_limit = {slv_reg7[18:11], 5'b0}
+        "accelerator": (reg6 >> 26) & 0xF,
+        "brake": (reg7 >> 24) & 0xF,
+        "rpm": (reg7 >> 28) & 0x3,
+        "gear": (reg7 >> 30) & 0x3,
+        "speed_limit": ((reg7 >> 11) & 0xFF) << 5,
+        "headlight": (reg8 >> 1) & 1,
+        "hazard": (reg8 >> 2) & 1,
     }
 
 
@@ -199,6 +214,8 @@ def compare_board(capture: Path, skip: int = 20, jitter_ticks: bool = False) -> 
     이 순서는 pl_model.CHANNEL_ORDER 와 정확히 일치한다.
     """
     model = PLModel()
+    control_samples = {k: [] for k in
+                       ("accel", "brake", "steer", "limit")}
     total = 0
     skipped = 0
     warmed = 0
@@ -210,8 +227,10 @@ def compare_board(capture: Path, skip: int = 20, jitter_ticks: bool = False) -> 
     # 신뢰도 워드와 별개로 대조하는 항목들.
     #   risk 워드 / HUD 는 조합 논리라 비트 단위로 맞아야 한다.
     #   TD/MRM 은 PL 자유 카운터 위상에 걸려 ±1틱 오차가 남는다.
-    extra_total = {"risk_word": 0, "hud": 0, "td": 0, "mrm": 0}
-    extra_bad = {"risk_word": 0, "hud": 0, "td": 0, "mrm": 0}
+    extra_total = {"risk_word": 0, "hud": 0, "td": 0, "mrm": 0, "accel": 0, "brake": 0, "steer": 0,
+                   "limit": 0, "head": 0, "hazard": 0}
+    extra_bad = {"risk_word": 0, "hud": 0, "td": 0, "mrm": 0, "accel": 0, "brake": 0, "steer": 0,
+                   "limit": 0, "head": 0, "hazard": 0}
     td_off_by_one = 0
     prev_send_ns = None
 
@@ -239,13 +258,17 @@ def compare_board(capture: Path, skip: int = 20, jitter_ticks: bool = False) -> 
                 send_ns = int(row["host_send_ns"])
             except (KeyError, ValueError):
                 send_ns = None
+            # step() 이 시간을 흘리므로 여기서 따로 advance_time 을 부르면
+            # 이중 계상이 된다. 실제 송신 간격을 step() 에 넘긴다.
+            delta_ns = None
             if send_ns is not None:
                 if prev_send_ns is not None:
-                    model.advance_time(send_ns - prev_send_ns)
+                    delta_ns = send_ns - prev_send_ns
                 prev_send_ns = send_ns
 
             out = model.step(sample, sample_seq=seq_value,
-                             situation=sample.get("situation", 0))
+                             situation=sample.get("situation", 0),
+                             delta_ns=delta_ns)
 
             # 예열 구간은 모델을 진행시키되 비교하지 않는다.  보드는 시험 전에
             # 표본을 받지 못해 transport timeout이 확정된 상태(전 채널 INVALID)
@@ -280,6 +303,47 @@ def compare_board(capture: Path, skip: int = 20, jitter_ticks: bool = False) -> 
                     if delta == 1:
                         td_off_by_one += 1
 
+            # --- 최종 제어 명령 대조 (보드 REG13/REG14) ---------------------
+            # risk_control.sv 가 만든 sim_data_out 이다.  지금까지는 비교
+            # 대상이 아니었고, 골든에도 구현이 없었다.  제어까지 넣어야
+            # "FPGA 가 우리 제어 알고리즘대로 동작하는가" 를 판정할 수 있다.
+            for column, expected, key in (
+                ("fpga_accelerator", out.final_accelerator, "accel"),
+                ("fpga_brake", out.final_brake, "brake"),
+                ("fpga_steering_raw", out.final_steering, "steer"),
+            ):
+                raw = (row.get(column) or "").strip()
+                if raw.lstrip("-").isdigit():
+                    extra_total[key] += 1
+                    if int(raw) != expected:
+                        extra_bad[key] += 1
+                        if len(control_samples[key]) < 3:
+                            control_samples[key].append(
+                                f"seq{seq_value}: 모델={expected} 보드={raw}")
+
+            for column, expected, key in (
+                ("fpga_headlight", out.final_headlight, "head"),
+                ("fpga_hazard", out.final_hazard, "hazard"),
+            ):
+                if row.get(column) is not None:
+                    extra_total[key] += 1
+                    if _flag(column) != bool(expected):
+                        extra_bad[key] += 1
+
+            # speed_limit 은 캡처가 km/h 실수, 골든은 raw(0.01 km/h) 다.
+            board_limit = (row.get("fpga_speed_limit_kmh") or "").strip()
+            if board_limit:
+                try:
+                    extra_total["limit"] += 1
+                    if round(float(board_limit) * 100) != out.final_speed_limit:
+                        extra_bad["limit"] += 1
+                        if len(control_samples["limit"]) < 3:
+                            control_samples["limit"].append(
+                                f"seq{seq_value}: 모델={out.final_speed_limit} "
+                                f"보드={round(float(board_limit) * 100)}")
+                except ValueError:
+                    extra_total["limit"] -= 1
+
             board_word = int(row["fpga_reliability_word_hex"], 16)
             for index, name in enumerate(CHANNEL_ORDER):
                 board_state = (board_word >> (index * 2)) & 0x3
@@ -308,12 +372,18 @@ def compare_board(capture: Path, skip: int = 20, jitter_ticks: bool = False) -> 
     if any(extra_total.values()):
         print("\n신뢰도 워드 외 대조")
         label = {"risk_word": "risk 워드(유효 tier)", "hud": "HUD 경고",
-                 "mrm": "MRM", "td": "TD 잔여초"}
-        for key in ("risk_word", "hud", "mrm", "td"):
+                 "mrm": "MRM", "td": "TD 잔여초",
+                 "accel": "최종 가속", "brake": "최종 제동",
+                 "steer": "최종 조향", "limit": "최종 제한속도",
+                 "head": "전조등", "hazard": "비상등"}
+        for key in ("risk_word", "hud", "mrm", "td",
+                    "accel", "brake", "steer", "limit", "head", "hazard"):
             if not extra_total[key]:
                 continue
             bad, total_key = extra_bad[key], extra_total[key]
             note = ""
+            if key in control_samples and control_samples[key]:
+                note = "  " + " / ".join(control_samples[key])
             if key == "td" and bad:
                 note = (f"  (그중 ±1초 {td_off_by_one}건 — PL 자유 카운터 "
                         f"위상은 복원 불가)")
