@@ -1,0 +1,62 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Fri Aug 14 01:42:46 2026
+# Process ID: 40168
+# Current directory: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project
+# Command line: vivado.exe -mode batch -source sources_1\verification\program_latest_bitstream.tcl -nojournal -log verification_reports\program_timeout_hold.log
+# Log file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/program_timeout_hold.log
+# Journal file: 
+# Running On: JH_HP, OS: Windows, CPU Frequency: 1996 MHz, CPU Physical cores: 12, Host memory: 16697 MB
+#-----------------------------------------------------------
+source {sources_1\verification\program_latest_bitstream.tcl}
+# set script_dir [file dirname [file normalize [info script]]]
+# set repo_root [file normalize [file join $script_dir .. ..]]
+# set bit_file [file join $repo_root FPGA_project FPGA_project.runs impl_1 design_1_wrapper.bit]
+# if {![file exists $bit_file]} {
+#     error "Bitstream not found: $bit_file"
+# }
+# open_hw_manager
+open_hw_manager: Time (s): cpu = 00:00:05 ; elapsed = 00:00:08 . Memory (MB): peak = 380.715 ; gain = 68.945
+# connect_hw_server -url localhost:3121
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2022.2.0
+  ****** Build date   : Oct 05 2022-08:25:37
+    **** Build number : 2022.2.1664925937
+      ** Copyright 2017-2026 Xilinx, Inc. All Rights Reserved.
+
+
+
+# set opened 0
+# foreach target [get_hw_targets] {
+#     if {![catch {open_hw_target $target}]} {
+#         set opened 1
+#         break
+#     }
+# }
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/20250308b07201
+# if {!$opened} { error "No JTAG hardware target could be opened" }
+# set device [lindex [get_hw_devices -filter {PART =~ "xczu2*"}] 0]
+# if {$device eq ""} { error "xczu2 device was not found" }
+# current_hw_device $device
+# refresh_hw_device -update_hw_probes false $device
+INFO: [Labtools 27-1434] Device xczu2 (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+refresh_hw_device: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2602.168 ; gain = 2194.250
+# set_property PROGRAM.FILE $bit_file $device
+# program_hw_devices $device
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 2602.707 ; gain = 0.539
+# refresh_hw_device $device
+INFO: [Labtools 27-1434] Device xczu2 (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+# puts "PROGRAMMED_DEVICE=$device"
+PROGRAMMED_DEVICE=xczu2_0
+# puts "PROGRAMMED_BITSTREAM=$bit_file"
+PROGRAMMED_BITSTREAM=C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/impl_1/design_1_wrapper.bit
+# close_hw_manager
+INFO: [Common 17-206] Exiting Vivado at Fri Aug 14 01:43:28 2026...

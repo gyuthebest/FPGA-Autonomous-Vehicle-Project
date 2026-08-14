@@ -1,0 +1,1 @@
+-debug "typical" -top "tb_core_logic" -snapshot "tb_core_logic_snap" 

@@ -1,0 +1,443 @@
+Time resolution is 1 ps
+==================================================
+[CASE 1] Collision Risk 0 (Normal)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 2] Collision Risk 1 (Caution)
+--------------------------------------------------
+Risk Out -> Col:1, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 3] Collision Risk 2 (Danger, Speed < 1111)
+--------------------------------------------------
+Risk Out -> Col:2, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:2, Str:0, Gr:1, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 4] Collision Risk 2 (Danger, Speed < 2222)
+--------------------------------------------------
+Risk Out -> Col:2, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:2, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 5] Collision Risk 3 (Critical, Speed > 2222)
+--------------------------------------------------
+Risk Out -> Col:4, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:10, Str:0, Gr:2, Hz:1, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 6] Collision Risk 4 (Emergency)
+--------------------------------------------------
+Risk Out -> Col:4, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:10, Str:0, Gr:2, Hz:1, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 7] Collision Risk 1 -> Degraded (Risk becomes 2)
+--------------------------------------------------
+Risk Out -> Col:2, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:2, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 8] Collision Risk 2 -> Degraded (Risk becomes 3)
+--------------------------------------------------
+Risk Out -> Col:3, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:4, Str:0, Gr:2, Hz:1, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 9] Collision Risk 4 -> Degraded (Risk capped at 3)
+--------------------------------------------------
+Risk Out -> Col:4, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:10, Str:0, Gr:2, Hz:1, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 10] Collision Invalid (Risk forced to floor 2)
+--------------------------------------------------
+Risk Out -> Col:4, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:10, Str:0, Gr:2, Hz:1, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+==================================================
+[CASE 11] Road A Risk 1 (Wet)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:1, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:208
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 12] Road A Risk 2 (Ice)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:2, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:162
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 13] Road A Risk 3 (Black Ice)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:3, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:116
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 14] Road A Risk 1 -> Degraded (Risk becomes 2)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:2, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:162
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 15] Road A Invalid (Risk floor 1)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:2, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:162
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+==================================================
+[CASE 16] Road B Risk 1 (Rough, accel_z = 1G + 0.5G)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 17] Road B Risk 2 (Severe, accel_z = 1G + 1G)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 18] Road B Risk 3 (Extreme, accel_z = 1G + 2G)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 19] Road B Degraded
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:1, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:2, Str:0, Gr:2, Hz:0, HL:0, SpdLim:185
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 20] Road B Invalid (Risk floor 1)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:2, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:2, Str:0, Gr:2, Hz:0, HL:0, SpdLim:139
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+==================================================
+[CASE 21] Vision A Risk 1
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 22] Vision A Risk 2
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:2, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 23] Vision A Risk 3
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:3, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:208
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 24] Vision A Degraded
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:2, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 25] Vision A Invalid (Risk floor 1)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:2, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+==================================================
+[CASE 26] Vision B Risk 1
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:1, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:208
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 27] Vision B Risk 2
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:2, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:1, HL:1, SpdLim:162
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 28] Vision B Risk 3
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:3, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:139
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 29] Posture A Risk 1 (Gyro X > 40deg)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:1, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:4, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 30] Posture A Degraded
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 31] Posture A Invalid (Risk floor 1)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:1, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+==================================================
+[CASE 32] Posture B Risk 1 (Gyro Z > 30deg)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:1, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 33] Posture B Risk 2 (Gyro Z > 60deg)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:2, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 34] Posture B Degraded
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:1, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 35] Posture B Invalid (Risk floor 1)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:1, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+==================================================
+[CASE 36] Posture C Risk 1 (Accel Y > 0.5G)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:1
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 37] Posture C Risk 2 (Accel Y > 0.8G)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:2
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 38] Posture C Degraded
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:1
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 39] Posture C Invalid (Risk floor 1)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:1
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+==================================================
+[CASE 40] Combinational Random Case 1
+--------------------------------------------------
+Risk Out -> Col:4, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:10, Str:0, Gr:2, Hz:1, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 41] Combinational Random Case 2
+--------------------------------------------------
+Risk Out -> Col:3, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:4, Str:0, Gr:2, Hz:1, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 42] Combinational Random Case 3
+--------------------------------------------------
+Risk Out -> Col:2, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:2, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 43] Combinational Random Case 4
+--------------------------------------------------
+Risk Out -> Col:2, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:2, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 44] Combinational Random Case 5
+--------------------------------------------------
+Risk Out -> Col:1, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 45] Combinational Random Case 6
+--------------------------------------------------
+Risk Out -> Col:1, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 46] Combinational Random Case 7
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:7, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 47] Combinational Random Case 8
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:8, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 48] Combinational Random Case 9
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:9, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 49] Combinational Random Case 10
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 50] Combinational Random Case 11
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:1, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 51] Combinational Random Case 12
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:2, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 52] Combinational Random Case 13
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:3, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 53] Combinational Random Case 14
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:4, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 54] Combinational Random Case 15
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 55] Combinational Random Case 16
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:6, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 56] Combinational Random Case 17
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:7, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 57] Combinational Random Case 18
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:8, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 58] Combinational Random Case 19
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:9, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 59] Combinational Random Case 20
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 60] Combinational Random Case 21
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:1, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 61] Combinational Random Case 22
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:2, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 62] Combinational Random Case 23
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:3, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 63] Combinational Random Case 24
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:4, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 64] Combinational Random Case 25
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:5, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 65] Combinational Random Case 26
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:6, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 66] Combinational Random Case 27
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:1, PoC:0
+Control  -> Acc:7, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 67] Combinational Random Case 28
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:1, PoC:0
+Control  -> Acc:8, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 68] Combinational Random Case 29
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:1, ViB:0, PoA:0, PoB:1, PoC:0
+Control  -> Acc:8, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[CASE 69] Combinational Random Case 30
+--------------------------------------------------
+Risk Out -> Col:0, RdA:2, RdB:0, ViA:1, ViB:0, PoA:0, PoB:1, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:1, SpdLim:162
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:0
+==================================================
+[TD & MRM TEST] Initiating Hard Fault on Posture A (Roll)
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:1, PoB:0, PoC:0
+Control  -> Acc:0, Brk:0, Str:0, Gr:2, Hz:0, HL:0, SpdLim:232
+TD_MRM   -> TD:0, MRM:0, TD_rem:11, Dur:0, HUD:1
+--- Waiting 4 seconds (Invalid Duration counting up) ---
+Time advanced by 4 seconds.
+TD_MRM   -> TD:1, MRM:0, TD_rem:7, Dur:4, HUD:1
+--- Waiting 1 more second (Invalid Duration hits 5, locked!) ---
+Time advanced by 1 seconds.
+TD_MRM   -> TD:1, MRM:0, TD_rem:6, Dur:5, HUD:1
+--- Waiting 5 seconds (TD Countdown 10 -> 5) ---
+Time advanced by 5 seconds.
+TD_MRM   -> TD:1, MRM:0, TD_rem:1, Dur:5, HUD:1
+--- Waiting 5 more seconds (TD Countdown 5 -> 0, MRM!) ---
+Time advanced by 5 seconds.
+TD_MRM   -> TD:1, MRM:1, TD_rem:0, Dur:5, HUD:1
+--- Healing sensor, but locked should persist ---
+--------------------------------------------------
+Risk Out -> Col:0, RdA:0, RdB:0, ViA:0, ViB:0, PoA:0, PoB:0, PoC:0
+Control  -> Acc:0, Brk:3, Str:0, Gr:2, Hz:1, HL:0, SpdLim:232
+TD_MRM   -> TD:1, MRM:1, TD_rem:0, Dur:5, HUD:0
+Time advanced by 1 seconds.
+TD_MRM   -> TD:1, MRM:1, TD_rem:0, Dur:5, HUD:0
+==================================================
+ALL 70+ CASES COMPLETED SUCCESSFULLY!
+$finish called at time : 18160 ns : File "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/tb_top_controller.sv" Line 978

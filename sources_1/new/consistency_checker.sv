@@ -48,7 +48,10 @@ module consistency_check #(
         else begin
             if (valid_s1) begin
                 if (raw_consistency == 2'b00) consistency_cnt <= (consistency_cnt < CONSISTENCY_D) ? '0 : consistency_cnt - CONSISTENCY_D;
-                else if (raw_consistency == 2'b01) consistency_cnt <= consistency_cnt + CONSISTENCY_U;
+                else if (raw_consistency == 2'b01)
+                    consistency_cnt <= (consistency_cnt >= CONSISTENCY_N - CONSISTENCY_U)
+                                     ? CONSISTENCY_N
+                                     : consistency_cnt + CONSISTENCY_U;
                 else consistency_cnt <= consistency_cnt;
             end
         end

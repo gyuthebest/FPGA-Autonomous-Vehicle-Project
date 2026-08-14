@@ -1,0 +1,13 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/types_pkg.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module consistency_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/mask_20s.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mask_20s
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module each_sensor_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_reliability.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sensor_reliability
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/verification/tb_distance_debug.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_distance_debug
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/distance_debug_proj/distance_debug.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

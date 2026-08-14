@@ -1,0 +1,639 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Fri Aug 14 15:05:22 2026
+# Process ID: 14864
+# Current directory: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/design_1_top_controller_0_0_synth_1
+# Command line: vivado.exe -log design_1_top_controller_0_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source design_1_top_controller_0_0.tcl
+# Log file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/design_1_top_controller_0_0_synth_1/design_1_top_controller_0_0.vds
+# Journal file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/design_1_top_controller_0_0_synth_1\vivado.jou
+# Running On: JH_HP, OS: Windows, CPU Frequency: 1996 MHz, CPU Physical cores: 12, Host memory: 16697 MB
+#-----------------------------------------------------------
+source design_1_top_controller_0_0.tcl -notrace
+create_project: Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 379.848 ; gain = 58.207
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project' may become invalid. A better location for the repository would be in a path adjacent to the project. (Current project location is 'c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/design_1_top_controller_0_0_synth_1'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2022.2/data/ip'.
+update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 421.426 ; gain = 41.578
+WARNING: [IP_Flow 19-4995] The host OS only allows 260 characters in a normal path. The IP cache path is more than 80 characters. If you experience issues with IP caching, please consider changing the IP cache to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter. 
+Current IP cache path is c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.cache/ip 
+Command: synth_design -top design_1_top_controller_0_0 -part xczu2cg-sfvc784-1-e -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu2cg'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu2cg'
+INFO: [Device 21-403] Loading part xczu2cg-sfvc784-1-e
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 40392
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Xilinx/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 1682.527 ; gain = 329.582
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'design_1_top_controller_0_0' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ip/design_1_top_controller_0_0/synth/design_1_top_controller_0_0.sv:53]
+INFO: [Synth 8-6157] synthesizing module 'top_controller' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/top_controller.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'sensor_input_v1_0_S00_AXI' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'sensor_input_v1_0_S00_AXI' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v:5]
+INFO: [Synth 8-6157] synthesizing module 'preprocessor' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/preprocessor.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'preprocessor' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/preprocessor.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'sensor_reliability' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_reliability.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'mask_20s' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/mask_20s.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'mask_20s' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/mask_20s.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized0' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized0' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized1' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized1' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized2' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized2' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized3' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized3' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized4' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized4' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized5' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized5' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized0' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized0' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized1' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized1' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized2' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized2' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized3' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized3' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized4' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized4' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized5' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized5' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized6' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized6' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'sensor_reliability' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/sensor_reliability.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'risk_types' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/risk_types.sv:3]
+INFO: [Synth 8-6155] done synthesizing module 'risk_types' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/risk_types.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'risk_control_2' [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/risk_control.sv:3]
+INFO: [Synth 8-6155] done synthesizing module 'risk_control_2' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/risk_control.sv:3]
+INFO: [Synth 8-6155] done synthesizing module 'top_controller' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/top_controller.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'design_1_top_controller_0_0' (0#1) [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ip/design_1_top_controller_0_0/synth/design_1_top_controller_0_0.sv:53]
+WARNING: [Synth 8-6014] Unused sequential element cnt_05_reg was removed.  [c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.gen/sources_1/bd/design_1/ipshared/765a/sources_1/new/risk_control.sv:774]
+WARNING: [Synth 8-7129] Port sim_data_in[headlight] in module risk_control_2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sim_data_in[hazard] in module risk_control_2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[18] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[17] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[16] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[15] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[14] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[13] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[12] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[11] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[10] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[9] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[8] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[7] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[6] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[5] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[4] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[3] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[2] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[1] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[0] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[18] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[17] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[16] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[15] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[14] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[13] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[12] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[11] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[10] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[9] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[8] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[7] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[6] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[5] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[4] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[3] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[2] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[1] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[0] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[11] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[10] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[9] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[8] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[7] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[6] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[5] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[4] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[3] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[2] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[1] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[0] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[11] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[10] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[9] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[8] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[16] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[15] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[14] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[13] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[12] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[11] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[10] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[9] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[8] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[2] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[1] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[0] in module each_sensor_check__parameterized2 is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 1841.484 ; gain = 488.539
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 1841.484 ; gain = 488.539
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 1841.484 ; gain = 488.539
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.470 . Memory (MB): peak = 1841.484 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1921.848 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.248 . Memory (MB): peak = 1939.770 ; gain = 17.922
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Xilinx/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:31 ; elapsed = 00:00:39 . Memory (MB): peak = 1939.770 ; gain = 586.824
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xczu2cg-sfvc784-1-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:31 ; elapsed = 00:00:39 . Memory (MB): peak = 1939.770 ; gain = 586.824
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:31 ; elapsed = 00:00:39 . Memory (MB): peak = 1939.770 ; gain = 586.824
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:35 ; elapsed = 00:00:46 . Memory (MB): peak = 1939.770 ; gain = 586.824
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input   32 Bit       Adders := 28    
+	   2 Input   32 Bit       Adders := 116   
+	  10 Input   32 Bit       Adders := 11    
+	   4 Input   32 Bit       Adders := 1     
+	  10 Input   23 Bit       Adders := 1     
+	  10 Input   21 Bit       Adders := 3     
+	   2 Input   21 Bit       Adders := 1     
+	  10 Input   20 Bit       Adders := 1     
+	   2 Input   19 Bit       Adders := 1     
+	   3 Input   19 Bit       Adders := 2     
+	  10 Input   18 Bit       Adders := 1     
+	   2 Input   17 Bit       Adders := 3     
+	  10 Input   17 Bit       Adders := 3     
+	   3 Input   17 Bit       Adders := 9     
+	   2 Input   16 Bit       Adders := 3     
+	  10 Input   16 Bit       Adders := 1     
+	   3 Input   16 Bit       Adders := 2     
+	   3 Input   15 Bit       Adders := 3     
+	   2 Input   15 Bit       Adders := 3     
+	   2 Input   14 Bit       Adders := 2     
+	   3 Input   14 Bit       Adders := 2     
+	   2 Input   13 Bit       Adders := 4     
+	   3 Input   13 Bit       Adders := 7     
+	  10 Input   12 Bit       Adders := 1     
+	   2 Input   12 Bit       Adders := 12    
+	   3 Input   12 Bit       Adders := 11    
+	   2 Input   11 Bit       Adders := 1     
+	   3 Input    9 Bit       Adders := 6     
+	   2 Input    9 Bit       Adders := 4     
+	   2 Input    8 Bit       Adders := 11    
+	   3 Input    8 Bit       Adders := 2     
+	   2 Input    4 Bit       Adders := 3     
+	   2 Input    3 Bit       Adders := 7     
+	   2 Input    2 Bit       Adders := 24    
++---XORs : 
+	   2 Input      1 Bit         XORs := 8     
++---Registers : 
+	               32 Bit    Registers := 81    
+	               21 Bit    Registers := 1     
+	               19 Bit    Registers := 12    
+	               18 Bit    Registers := 4     
+	               17 Bit    Registers := 43    
+	               16 Bit    Registers := 35    
+	               15 Bit    Registers := 8     
+	               14 Bit    Registers := 24    
+	               13 Bit    Registers := 43    
+	               12 Bit    Registers := 29    
+	               11 Bit    Registers := 4     
+	               10 Bit    Registers := 11    
+	                9 Bit    Registers := 2     
+	                8 Bit    Registers := 17    
+	                7 Bit    Registers := 4     
+	                6 Bit    Registers := 2     
+	                4 Bit    Registers := 7     
+	                3 Bit    Registers := 7     
+	                2 Bit    Registers := 61    
+	                1 Bit    Registers := 91    
++---Multipliers : 
+	              12x32  Multipliers := 1     
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 210   
+	   4 Input   32 Bit        Muxes := 39    
+	   5 Input   32 Bit        Muxes := 11    
+	   6 Input   32 Bit        Muxes := 11    
+	   3 Input   32 Bit        Muxes := 4     
+	  11 Input   32 Bit        Muxes := 10    
+	   2 Input   19 Bit        Muxes := 1     
+	   2 Input   17 Bit        Muxes := 3     
+	   2 Input   16 Bit        Muxes := 5     
+	   2 Input   15 Bit        Muxes := 2     
+	   2 Input   14 Bit        Muxes := 1     
+	   2 Input   13 Bit        Muxes := 8     
+	   4 Input   13 Bit        Muxes := 3     
+	   3 Input   13 Bit        Muxes := 1     
+	   2 Input   12 Bit        Muxes := 14    
+	   2 Input   11 Bit        Muxes := 1     
+	   2 Input    9 Bit        Muxes := 6     
+	   2 Input    8 Bit        Muxes := 16    
+	   3 Input    8 Bit        Muxes := 2     
+	   5 Input    5 Bit        Muxes := 11    
+	   5 Input    4 Bit        Muxes := 26    
+	   2 Input    4 Bit        Muxes := 58    
+	   3 Input    4 Bit        Muxes := 3     
+	   4 Input    4 Bit        Muxes := 4     
+	   7 Input    4 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 30    
+	   5 Input    3 Bit        Muxes := 1     
+	   3 Input    3 Bit        Muxes := 1     
+	   4 Input    2 Bit        Muxes := 34    
+	   2 Input    2 Bit        Muxes := 123   
+	   3 Input    2 Bit        Muxes := 3     
+	   5 Input    2 Bit        Muxes := 2     
+	   2 Input    1 Bit        Muxes := 142   
+	   4 Input    1 Bit        Muxes := 2     
+	   3 Input    1 Bit        Muxes := 1     
+	   5 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:72)
+BRAMs: 300 (col length: RAMB18 72 RAMB36 36)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP val, operation Mode is: -C+A*(B:0x28)+1-1.
+DSP Report: operator val is absorbed into DSP val.
+DSP Report: operator val0 is absorbed into DSP val.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x28).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP pred_data_out_reg[pred_approach_speed], operation Mode is: (A*(B:0x14))'.
+DSP Report: register pred_data_out_reg[pred_approach_speed] is absorbed into DSP pred_data_out_reg[pred_approach_speed].
+DSP Report: operator p_0_out is absorbed into DSP pred_data_out_reg[pred_approach_speed].
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x3d5).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP pred_data_out_reg[pred_accel_x_3], operation Mode is: (A*B)'.
+DSP Report: register pred_data_out_reg[pred_accel_x_3] is absorbed into DSP pred_data_out_reg[pred_accel_x_3].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_accel_x_3].
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x3d5).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP pred_data_out_reg[pred_accel_y_3], operation Mode is: (A*B)'.
+DSP Report: register pred_data_out_reg[pred_accel_y_3] is absorbed into DSP pred_data_out_reg[pred_accel_y_3].
+DSP Report: operator p_0_out is absorbed into DSP pred_data_out_reg[pred_accel_y_3].
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x3d5).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP pred_data_out_reg[pred_gyro_x_1], operation Mode is: ((D-A2)*(B:0xdf6))'.
+DSP Report: register pred_data_out_reg[pred_gyro_x_1] is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: register pred_data_out_reg[pred_gyro_x_1] is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: Generating DSP pred_data_out_reg[pred_gyro_y_1], operation Mode is: ((D-A2)*(B:0xdf6))'.
+DSP Report: register pred_data_out_reg[pred_gyro_y_1] is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: register pred_data_out_reg[pred_gyro_y_1] is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: Generating DSP pred_data_out_reg[pred_gyro_z_1], operation Mode is: ((D-A2)*(B:0xdf6))'.
+DSP Report: register pred_data_out_reg[pred_gyro_z_1] is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: register pred_data_out_reg[pred_gyro_z_1] is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: Generating DSP pred_data_out_reg[pred_gyro_z_3], operation Mode is: (A*B)'.
+DSP Report: register pred_data_out_reg[pred_gyro_z_3] is absorbed into DSP pred_data_out_reg[pred_gyro_z_3].
+DSP Report: operator p_0_out is absorbed into DSP pred_data_out_reg[pred_gyro_z_3].
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x266).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x2cd).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x39a).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x333).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:46 ; elapsed = 00:02:16 . Memory (MB): peak = 1939.770 ; gain = 586.824
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+ROM: Preliminary Mapping Report
++-------------+------------+---------------+----------------+
+|Module Name  | RTL Object | Depth x Width | Implemented As | 
++-------------+------------+---------------+----------------+
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
++-------------+------------+---------------+----------------+
+
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++------------------+---------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name       | DSP Mapping         | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------------+---------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|consistency_check | -C+A*(B:0x28)+1-1   | 21     | 7      | 22     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x28)          | 15     | 6      | -      | -      | 21     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*(B:0x14))'       | 13     | 5      | -      | -      | 13     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x3d5)         | 12     | 11     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'              | 22     | 12     | -      | -      | 22     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x3d5)         | 12     | 11     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 23     | 12     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 16     | 14     | -      | -      | 30     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'              | 12     | 12     | -      | -      | 22     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x3d5)         | 12     | 11     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 23     | 12     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | ((D-A2)*(B:0xdf6))' | 17     | 13     | -      | 16     | 31     | 1    | 0    | -    | 0    | 0     | 1    | 0    | 
+|preprocessor      | ((D-A2)*(B:0xdf6))' | 17     | 13     | -      | 16     | 31     | 1    | 0    | -    | 0    | 0     | 1    | 0    | 
+|preprocessor      | ((D-A2)*(B:0xdf6))' | 17     | 13     | -      | 16     | 31     | 1    | 0    | -    | 0    | 0     | 1    | 0    | 
+|preprocessor      | (A*B)'              | 14     | 12     | -      | -      | 26     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|risk_control_2    | A*(B:0x266)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A*(B:0x2cd)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A*(B:0x39a)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A*(B:0x333)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++------------------+---------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:02:02 ; elapsed = 00:02:37 . Memory (MB): peak = 2417.230 ; gain = 1064.285
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:02:02 ; elapsed = 00:02:37 . Memory (MB): peak = 2417.230 ; gain = 1064.285
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:02:08 ; elapsed = 00:02:43 . Memory (MB): peak = 2479.621 ; gain = 1126.676
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:02:16 ; elapsed = 00:02:52 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:02:17 ; elapsed = 00:02:53 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:18 ; elapsed = 00:02:54 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:02:18 ; elapsed = 00:02:54 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:02:19 ; elapsed = 00:02:55 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:02:19 ; elapsed = 00:02:55 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name       | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|preprocessor      | A*B         | 15     | 6      | -      | -      | 21     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'      | 13     | 5      | -      | -      | 13     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'      | 30     | 18     | -      | -      | 22     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 18     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 18     | -      | -      | 30     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'      | 30     | 18     | -      | -      | 22     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 18     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (D-A'*B)'   | 30     | 12     | -      | 27     | 28     | 1    | 0    | -    | 0    | 0     | 0    | 1    | 
+|preprocessor      | (D-A'*B)'   | 30     | 12     | -      | 27     | 28     | 1    | 0    | -    | 0    | 0     | 0    | 1    | 
+|preprocessor      | (D-A'*B)'   | 30     | 12     | -      | 27     | 28     | 1    | 0    | -    | 0    | 0     | 0    | 1    | 
+|preprocessor      | (A*B)'      | 30     | 18     | -      | -      | 26     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|consistency_check | C'-(A'*B+1) | 15     | 6      | 48     | -      | 32     | 1    | 0    | 0    | -    | -     | 0    | 0    | 
++------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+----------------+------+
+|      |Cell            |Count |
++------+----------------+------+
+|1     |CARRY8          |   899|
+|2     |DSP_ALU         |    25|
+|3     |DSP_A_B_DATA    |    25|
+|6     |DSP_C_DATA      |    25|
+|8     |DSP_MULTIPLIER  |    25|
+|10    |DSP_M_DATA      |    25|
+|11    |DSP_OUTPUT      |    25|
+|13    |DSP_PREADD      |    25|
+|14    |DSP_PREADD_DATA |    25|
+|16    |LUT1            |  1632|
+|17    |LUT2            |  2703|
+|18    |LUT3            |  1945|
+|19    |LUT4            |  1444|
+|20    |LUT5            |  1236|
+|21    |LUT6            |  1385|
+|22    |MUXF7           |    26|
+|23    |MUXF8           |    12|
+|24    |FDRE            |  5869|
+|25    |FDSE            |     8|
++------+----------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:02:19 ; elapsed = 00:02:55 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:58 ; elapsed = 00:02:48 . Memory (MB): peak = 2490.250 ; gain = 1039.020
+Synthesis Optimization Complete : Time (s): cpu = 00:02:19 ; elapsed = 00:02:55 . Memory (MB): peak = 2490.250 ; gain = 1137.305
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.321 . Memory (MB): peak = 2502.297 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 962 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 2528.230 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 25 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 25 instances
+
+Synth Design complete, checksum: fc7a4d24
+INFO: [Common 17-83] Releasing license: Synthesis
+68 Infos, 104 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:02:34 ; elapsed = 00:03:15 . Memory (MB): peak = 2528.230 ; gain = 2078.434
+INFO: [Coretcl 2-1174] Renamed 36 cell refs.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/design_1_top_controller_0_0_synth_1/design_1_top_controller_0_0.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file design_1_top_controller_0_0_utilization_synth.rpt -pb design_1_top_controller_0_0_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Fri Aug 14 15:09:02 2026...

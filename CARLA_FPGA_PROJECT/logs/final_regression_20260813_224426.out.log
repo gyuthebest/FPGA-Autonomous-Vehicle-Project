@@ -1,0 +1,20 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Windowed: 1280x720
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+
+Town04 is already loaded; reusing the current world.
+Waiting for Town04...
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+
+ERROR
+time-out of 60000ms while waiting for the simulator, make sure the simulator is ready and connected to 127.0.0.1:2000
+Finished.

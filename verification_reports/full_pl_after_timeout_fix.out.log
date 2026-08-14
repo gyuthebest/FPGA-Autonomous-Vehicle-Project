@@ -1,0 +1,170 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/types_pkg.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/preprocessor.sv" into library work
+INFO: [VRFC 10-311] analyzing module preprocessor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv" into library work
+INFO: [VRFC 10-311] analyzing module consistency_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/mask_20s.sv" into library work
+INFO: [VRFC 10-311] analyzing module mask_20s
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv" into library work
+INFO: [VRFC 10-311] analyzing module each_sensor_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_reliability.sv" into library work
+INFO: [VRFC 10-311] analyzing module sensor_reliability
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_types.sv" into library work
+INFO: [VRFC 10-311] analyzing module risk_types
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_control.sv" into library work
+INFO: [VRFC 10-311] analyzing module risk_control_2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v" into library work
+INFO: [VRFC 10-311] analyzing module sensor_input_v1_0_S00_AXI
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/top_controller.sv" into library work
+INFO: [VRFC 10-311] analyzing module top_controller
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/AppData/Local/Temp/fpga_av_full_pl_verification/tb_pl_full_verification.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_pl_full_verification
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2022.2/bin/unwrapped/win64.o/xelab.exe -debug typical -top tb_pl_full_verification -snapshot tb_pl_full_verification_snap 
+Multi-threading is on. Using 10 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package work.types_pkg
+Compiling module work.preprocessor
+Compiling module work.each_sensor_check(WIDTH=16,DW=17...
+Compiling module work.consistency_check(WIDTH=16)
+Compiling module work.mask_20s(CLK_FREQ=32'b010)
+Compiling module work.risk_types
+Compiling module work.risk_control_2(CLK_FREQ=20)
+Compiling module work.sensor_input_v1_0_S00_AXI_defaul...
+Compiling module work.mask_20s(CLK_FREQ=32'b011001000)
+Compiling module work.each_sensor_check(WIDTH=16,DW=16...
+Compiling module work.each_sensor_check(WIDTH=13,DW=14...
+Compiling module work.each_sensor_check(TW=15)
+Compiling module work.each_sensor_check(WIDTH=16,DW=17...
+Compiling module work.each_sensor_check(WIDTH=11,DW=12...
+Compiling module work.each_sensor_check(WIDTH=8,DW=8,T...
+Compiling module work.each_sensor_check(WIDTH=19,DW=19...
+Compiling module work.consistency_check(WIDTH=21)
+Compiling module work.consistency_check(WIDTH=13)
+Compiling module work.consistency_check
+Compiling module work.sensor_reliability(CLK_FREQ_HZ=3...
+Compiling module work.risk_control_2(CLK_FREQ=200)
+Compiling module work.top_controller(CLK_FREQ_HZ=200,S...
+Compiling module work.tb_pl_full_verification
+Built simulation snapshot tb_pl_full_verification_snap
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_pl_full_verification_snap/xsim_script.tcl
+# xsim {tb_pl_full_verification_snap} -autoloadwcfg -tclbatch {run_full_verification.tcl}
+Time resolution is 1 ps
+source run_full_verification.tcl
+## log_wave -recursive *
+WARNING: [Simtcl 6-197] One or more HDL objects could not be logged because of object type or size limitations.  To see details please rerun the command with -verbose (-v).
+## run all
+
+=== 1. PREPROCESSOR / VALID / DELTA / PREDICTOR ===
+[PASS] pre.valid on new sequence actual=0x1
+[PASS] pre.sequence actual=0x1
+[PASS] pre.distance pass-through actual=0x64
+[PASS] pre.initial distance delta actual=0x64
+[PASS] pre.predictor reset value actual=0xfa0
+[PASS] pre.valid low without new sequence actual=0x0
+[PASS] pre.clock counter increments actual=0x1
+[PASS] pre.current distance delta actual=0x1e
+[PASS] pre.previous distance delta actual=0x64
+[PASS] pre.linear distance prediction actual=0xf82
+
+=== 2. RANGE / JUMP / STUCK / TIMEOUT / NOISE ===
+[PASS] range immediate threshold actual=0x1
+[PASS] jump debounce first hit actual=0x0
+[PASS] jump debounce confirmation actual=0x1
+[PASS] stuck trigger and debounce actual=0x1
+[PASS] timeout threshold actual=0x1
+[PASS] timeout recovery mask armed actual=0x1
+[PASS] noise MAD/sign-flip window actual=0x1
+
+=== 3. CONSISTENCY AND 20-SECOND MASK ===
+[PASS] consistency normal actual=0x0
+[PASS] consistency debounce confirmation actual=0x1
+[PASS] consistency mask freezes counter actual=0x0
+[PASS] 20s stuck mask asserted actual=0x1
+[PASS] 20s consistency mask asserted actual=0x1
+[PASS] 20s stuck mask clears actual=0x0
+[PASS] 20s consistency mask clears actual=0x0
+
+=== 4. ALL EIGHT RISK CLASSIFIERS ===
+[PASS] risk collision safe actual=0x0
+[PASS] risk road surface dry actual=0x0
+[PASS] risk road impact normal actual=0x0
+[PASS] risk vision lux normal actual=0x0
+[PASS] risk weather normal actual=0x0
+[PASS] risk roll normal actual=0x0
+[PASS] risk yaw normal actual=0x0
+[PASS] risk lateral normal actual=0x0
+[PASS] risk collision emergency actual=0x4
+[PASS] risk road black ice actual=0x3
+[PASS] risk road severe impact actual=0x3
+[PASS] risk vision darkness actual=0x3
+[PASS] risk weather propagation actual=0x2
+[PASS] risk roll danger actual=0x1
+[PASS] risk yaw danger actual=0x2
+[PASS] risk lateral danger actual=0x2
+
+=== 5. RISK FUSION / CONTROL / TD / MRM ===
+[PASS] collision emergency accelerator actual=0x0
+[PASS] collision emergency brake actual=0xa
+[PASS] collision emergency hazard actual=0x1
+[PASS] black ice accelerator cap actual=0x4
+[PASS] black ice brake suppression actual=0x0
+[PASS] black ice speed limit 50 percent actual=0x640
+[PASS] weather accelerator cap actual=0x8
+[PASS] weather speed limit 70 percent actual=0x8c0
+[PASS] weather headlight actual=0x1
+[PASS] weather hazard actual=0x1
+[PASS] manual accelerator pass-through actual=0x9
+[PASS] manual brake pass-through actual=0x1
+[PASS] manual still applies safety light actual=0x1
+[PASS] degraded collision raises tier actual=0x1
+[PASS] degraded collision removes accelerator actual=0x0
+[PASS] invalid reliability HUD actual=0x1
+[PASS] TD countdown reaches zero actual=0x0
+[PASS] MRM asserted actual=0x1
+[PASS] MRM accelerator actual=0x0
+[PASS] MRM brake actual=0x3
+[PASS] MRM hazard actual=0x1
+[PASS] manual mode clears TD countdown actual=0xb
+
+=== 6. COMPLETE AXI -> PIPELINE -> AXI INTEGRATION ===
+[PASS] REG0..8 do not commit a frame actual=0x0
+[PASS] AXI risk sequence actual=0x1
+[PASS] AXI reliability sequence actual=0x1
+[PASS] AXI final accelerator actual=0xa
+[PASS] AXI final brake actual=0x0
+[PASS] AXI final speed limit actual=0xc80
+[PASS] AXI byte strobe low byte actual=0x1
+[PASS] range debounce first invalid sample actual=0x0
+[PASS] range debounce second invalid sample actual=0x0
+[PASS] range debounce third invalid sample actual=0x1
+[PASS] AXI distance reliability eventually INVALID actual=0x2
+[PASS] timeout not confirmed after nine intervals actual=0x0
+[PASS] timeout confirmed after ten intervals actual=0x1
+[PASS] timeout counter saturates at threshold actual=0xa
+[PASS] timeout clears on first recovery sample actual=0x0
+[PASS] timeout counter completes bounded healing actual=0x0
+
+============================================================
+FULL PL VERIFICATION RESULT: PASS=78 FAIL=0
+============================================================
+$finish called at time : 12706 ns : File "C:/Users/jiho0/AppData/Local/Temp/fpga_av_full_pl_verification/tb_pl_full_verification.sv" Line 736
+## set failures [get_value /tb_pl_full_verification/fail_count]
+## if {$failures != "0"} {
+##     puts "ERROR: self-checking testbench reported $failures failures"
+##     quit 1
+## }
+## quit 0
+INFO: [Common 17-206] Exiting xsim at Thu Aug 13 22:49:56 2026...

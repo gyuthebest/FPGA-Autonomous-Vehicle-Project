@@ -9,6 +9,7 @@ import random
 import carla
 import math
 
+import utils
 from map_manager import MapManager
 from vehicle_command import VehicleCommand
 
@@ -277,19 +278,19 @@ class ObstacleManager:
 
         ego_yaw = self.ego.get_transform().rotation.yaw
 
-        target_wp = min(
-            next_waypoints,
-            key=lambda wp: abs(
-                ((
-                    wp.transform.rotation.yaw
-                    - ego_yaw
-                    + 180
-                ) % 360) - 180
-            )
-        )
+        target_wp = utils.select_aligned_waypoint(next_waypoints, ego_yaw)
+
+        if target_wp is None:
+            return
 
         transform = target_wp.transform
-        transform.location.y += 2.5
+
+        # 보행자를 갓길 쪽으로 2.5 m 밀어낸다. 기존 코드는 월드 좌표 Y축에
+        # 그대로 더해서, 도로가 동서 방향일 때 보행자가 차선 한가운데 또는
+        # 반대 차선에 나타났다. 차선 기준 우측 벡터로 오프셋해야 한다.
+        right = transform.get_right_vector()
+        transform.location.x += right.x * 2.5
+        transform.location.y += right.y * 2.5
 
         self.spawn_pedestrian(transform)
 
@@ -314,18 +315,11 @@ class ObstacleManager:
 
         ego_yaw = self.ego.get_transform().rotation.yaw
 
-        target_wp = min(
-            next_waypoints,
-            key=lambda wp: abs(
-                ((
-                    wp.transform.rotation.yaw
-                    - ego_yaw
-                    + 180
-                ) % 360) - 180
-            )
-        )
+        # select_aligned_waypoint 가 교차로 waypoint를 이미 제외하므로
+        # 별도의 is_intersection 확인은 필요 없다.
+        target_wp = utils.select_aligned_waypoint(next_waypoints, ego_yaw)
 
-        if target_wp.is_intersection:
+        if target_wp is None:
             return
 
         transform = target_wp.transform
@@ -353,16 +347,12 @@ class ObstacleManager:
 
         ego_yaw = self.ego.get_transform().rotation.yaw
 
-        target_wp = min(
-            next_waypoints,
-            key=lambda wp: abs(
-                ((
-                    wp.transform.rotation.yaw
-                    - ego_yaw
-                    + 180
-                ) % 360) - 180
-            )
-        )
+        # 진행 방향과 정렬된 차선만 사용한다. 교차로/분기점 waypoint를 그대로
+        # 쓰면 앞차가 도로를 가로질러 서 있는 장면이 만들어진다.
+        target_wp = utils.select_aligned_waypoint(next_waypoints, ego_yaw)
+
+        if target_wp is None:
+            return
 
         transform = target_wp.transform
 
@@ -388,16 +378,10 @@ class ObstacleManager:
 
         ego_yaw = self.ego.get_transform().rotation.yaw
 
-        target_wp = min(
-            next_waypoints,
-            key=lambda wp: abs(
-                ((
-                    wp.transform.rotation.yaw
-                    - ego_yaw
-                    + 180
-                ) % 360) - 180
-            )
-        )
+        target_wp = utils.select_aligned_waypoint(next_waypoints, ego_yaw)
+
+        if target_wp is None:
+            return
 
         transform = target_wp.transform
 

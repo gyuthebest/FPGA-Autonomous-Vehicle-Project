@@ -1,0 +1,4 @@
+Running: xsim.dir/tb_top_axi_integration_snap/xsimk.exe -simmode gui -wdb tb_top_axi_integration_snap.wdb -simrunnum 0 -socket 52235
+Design successfully loaded
+Design Loading Memory Usage: 10900 KB (Peak: 10900 KB)
+Design Loading CPU Usage: 62 ms

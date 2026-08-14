@@ -1,0 +1,15 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  \
+"../../../../../sources_1/new/types_pkg.sv" \
+"../../../../../sources_1/new/preprocessor.sv" \
+"../../../../../sources_1/new/risk_control_2.sv" \
+"../../../../../sources_1/new/risk_types.sv" \
+"../../../../../sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v" \
+"../../../../../sources_1/new/top_controller.sv" \
+"../../../../../sources_1/new/tb_top_controller.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

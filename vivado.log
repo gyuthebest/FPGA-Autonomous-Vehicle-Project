@@ -1,0 +1,53 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Thu Aug 13 16:26:26 2026
+# Process ID: 9388
+# Current directory: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project
+# Command line: vivado.exe -mode batch -source C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\sources_1\verification\probe_hardware.tcl
+# Log file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vivado.log
+# Journal file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project\vivado.jou
+# Running On: JH_HP, OS: Windows, CPU Frequency: 1996 MHz, CPU Physical cores: 12, Host memory: 16697 MB
+#-----------------------------------------------------------
+source {C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\sources_1\verification\probe_hardware.tcl}
+# set report_dir [file normalize [file join [file dirname [info script]] ../../verification_reports/bringup]]
+# file mkdir $report_dir
+# set fp [open [file join $report_dir hardware_probe.txt] w]
+# open_hw_manager
+# connect_hw_server -url localhost:3121
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2022.2.0
+  ****** Build date   : Oct 05 2022-08:25:37
+    **** Build number : 2022.2.1664925937
+      ** Copyright 2017-2026 Xilinx, Inc. All Rights Reserved.
+
+
+
+# set targets [get_hw_targets]
+# puts $fp "HW_TARGET_COUNT=[llength $targets]"
+# foreach t $targets {
+#     puts $fp "HW_TARGET=$t"
+#     if {![catch {open_hw_target $t} err]} {
+#         set devices [get_hw_devices]
+#         puts $fp "HW_DEVICE_COUNT=[llength $devices]"
+#         foreach d $devices {
+#             puts $fp "HW_DEVICE=$d PART=[get_property PART $d] PROGRAMMED=[get_property PROGRAM.HW_CFGMEM $d]"
+#         }
+#         close_hw_target
+#     } else {
+#         puts $fp "OPEN_ERROR=$err"
+#     }
+# }
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/20250308b07201
+INFO: [Labtoolstcl 44-464] Closing hw_target localhost:3121/xilinx_tcf/Xilinx/20250308b07201
+# close_hw_manager
+# close $fp
+# exit
+INFO: [Common 17-206] Exiting Vivado at Thu Aug 13 16:26:40 2026...
+

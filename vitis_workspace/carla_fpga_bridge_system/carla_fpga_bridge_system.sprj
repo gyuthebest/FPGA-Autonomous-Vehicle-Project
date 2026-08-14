@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<systemproject:SystemProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdsproject="http://www.xilinx.com/sdsproject" xmlns:systemproject="http://www.xilinx.com/systemproject" name="carla_fpga_bridge_system" platform="C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/carla_fpga_platform/export/carla_fpga_platform/carla_fpga_platform.xpfm" platformUID="xilinx:::0.0(custom)" sysConfig="carla_fpga_platform" runtime="C/C++">
+  <configuration name="Debug" id="com.xilinx.sdx.system.managedbuilder.debugConfiguration.1091743">
+    <configBuildOptions xsi:type="systemproject:SystemOptions">
+      <applications name="carla_fpga_bridge" domainName="standalone_domain" domainPrettyName="standalone on psu_cortexa53_0" appBuildConfig="Debug"/>
+      <options xsi:type="sdsproject:Option" gensdcard="true" dmclkid="0"/>
+    </configBuildOptions>
+  </configuration>
+  <configuration name="Release" id="com.xilinx.sdx.system.managedbuilder.releaseConfiguration.1896224280">
+    <configBuildOptions xsi:type="systemproject:SystemOptions">
+      <applications name="carla_fpga_bridge" domainName="standalone_domain" domainPrettyName="standalone on psu_cortexa53_0" appBuildConfig="Release"/>
+      <options xsi:type="sdsproject:Option" gensdcard="true" dmclkid="0"/>
+    </configBuildOptions>
+  </configuration>
+</systemproject:SystemProject>

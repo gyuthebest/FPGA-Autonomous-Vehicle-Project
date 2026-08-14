@@ -1,0 +1,15 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/types_pkg.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/preprocessor.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module preprocessor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_control_2.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module risk_control_2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_types.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module risk_types
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sensor_input_v1_0_S00_AXI
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/top_controller.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top_controller
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/tb_top_controller.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_top_controller
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sim_proj/sim_proj.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

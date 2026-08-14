@@ -1,0 +1,7 @@
+case,passed,samples,details
+impact_rough,0,13,road_impact=2 expected=1 | road_impact=2 expected=1 | road_impact=2 expected=1 | road_impact=2 expected=1 | road_impact=2 expected=1
+impact_severe,1,13,OK
+impact_extreme,1,13,OK
+visibility_dim,1,13,OK
+posture_yaw_danger,1,13,OK
+posture_lateral_danger,1,13,OK

@@ -1,0 +1,294 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Fullscreen: 1920x1080
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+
+Town04 is already loaded; reusing the current world.
+Waiting for Town04...
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+Town04 Ready.
+INFO:  Found the required file in cache!  Carla/Maps/TM/Town04.bin 
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260814_022108.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260814_022108.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 112.62 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 113.91 ms (프레임 seq: 1521)
+[*] 최대 지터 갱신! 새로운 gap_max: 304.52 ms (프레임 seq: 1689)
+[*] 최대 지터 갱신! 새로운 gap_max: 305.69 ms (프레임 seq: 14665)
+[*] 최대 지터 갱신! 새로운 gap_max: 326.73 ms (프레임 seq: 14810)
+[INJECT] distance/jump: ON
+[INJECT] distance/jump: OFF
+[INJECT] distance/jump: ON
+[INJECT] distance/stuck: ON
+[INJECT] distance/jump: OFF
+[INJECT] distance/stuck: OFF
+[INJECT] approach_speed/range: ON
+[INJECT] approach_speed/range: OFF
+[MODE] AUTO
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[CONTROL] Apply FPGA output: OFF
+[CONTROL] Apply FPGA output: ON
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[SCENARIO] Obstacle at 46.0 m (safe minimum 33.3 m)
+[SCENARIO] Obstacle at 26.7 m (safe minimum 25.0 m)
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[SCENARIO] Obstacle at 32.9 m (safe minimum 25.0 m)
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[CONTROL] Apply FPGA output: OFF
+[SCENARIO] Obstacle at 50.5 m (safe minimum 25.9 m)
+[CONTROL] Apply FPGA output: ON
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[SCENARIO] Obstacle at 93.8 m (safe minimum 47.8 m)
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road surface: ICE (friction=0.55)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=ICE
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[CONTROL] Apply FPGA output: OFF
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road surface: ICE (friction=0.55)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=ICE
+[SCENARIO] Road surface: BLACK_ICE (friction=0.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=BLACK_ICE
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road surface: ICE (friction=0.55)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=ICE
+[SCENARIO] Road roughness: 10% (1 strips)
+[SCENARIO] Road roughness: 20% (1 strips)
+[SCENARIO] Road roughness: 30% (2 strips)
+[SCENARIO] Road roughness: 40% (2 strips)
+[SCENARIO] Road roughness: 50% (3 strips)
+[SCENARIO] Road roughness: 60% (3 strips)
+[SCENARIO] Road roughness: 70% (4 strips)
+[SCENARIO] Road impact impulse: 70%
+[SCENARIO] Road impact impulse: 70%
+[SCENARIO] Road impact impulse: 70%
+[SCENARIO] Road impact impulse: 70%
+[SCENARIO] Road roughness: 80% (4 strips)
+[SCENARIO] Road roughness: 90% (5 strips)
+[SCENARIO] Road impact impulse: 90%
+[SCENARIO] Road impact impulse: 90%
+[SCENARIO] Road impact impulse: 90%
+[SCENARIO] Road impact impulse: 90%
+[SCENARIO] Road impact impulse: 90%
+[SCENARIO] Weather=CLEAR, visibility risk=4%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=10%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=23%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=26%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=35%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=47%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=46%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=43%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=39%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=33%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=28%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=22%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=14%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=1%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=10%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=20%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=30%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=32%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=35%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=37%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=44%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=49%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=55%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=61%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=64%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=66%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=73%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=76%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=77%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=85%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=87%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=90%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=94%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=34%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=29%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=23%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=15%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=7%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=4%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=ICE
+[CONTROL] Apply FPGA output: ON
+[SCENARIO] Weather=CLEAR, visibility risk=65%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=94%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=7%, surface=ICE
+[SCENARIO] Weather=CLEAR, visibility risk=1%, surface=ICE
+[SCENARIO] Weather=RAIN, visibility risk=1%, surface=ICE
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[SCENARIO] Weather=RAIN, visibility risk=0%, surface=DRY
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[CONTROL] Apply FPGA output: OFF
+[SCENARIO] Weather=RAIN, visibility risk=0%, surface=DRY
+[CONTROL] Apply FPGA output: ON
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[SCENARIO] Weather=RAIN, visibility risk=0%, surface=DRY
+[*] 최대 지터 갱신! 새로운 gap_max: 333.10 ms (프레임 seq: 22560)
+[*] 최대 지터 갱신! 새로운 gap_max: 441.96 ms (프레임 seq: 23046)
+[HUD] FPGA input monitor: ON
+[HUD] FPGA input monitor: OFF
+[HUD] FPGA input monitor: ON
+[HUD] FPGA input monitor: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 460.80 ms (프레임 seq: 23678)
+[HUD] FPGA input monitor: ON
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[CONTROL] Apply FPGA output: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[HUD] FPGA input monitor: OFF
+[HUD] FPGA input monitor: ON
+[INJECT] accel_x/consistency: ON
+[INJECT] accel_x/jump: ON
+[INJECT] accel_x/consistency: OFF
+[INJECT] accel_x/jump: OFF
+[INJECT] accel_x/consistency: ON
+[INJECT] accel_x/jump: ON
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/timeout: ON
+[INJECT] accel_x/timeout: OFF
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/jump: OFF
+[INJECT] accel_x/consistency: OFF
+[INJECT] accel_x/noise: ON
+[INJECT] accel_x/noise: OFF
+[INJECT] accel_x/timeout: ON
+[INJECT] accel_x/timeout: OFF
+[INJECT] accel_x/timeout: ON
+[INJECT] accel_x/timeout: OFF
+[INJECT] accel_x/range: ON
+[INJECT] accel_x/range: OFF
+[INJECT] accel_x/jump: ON
+[INJECT] accel_x/jump: OFF
+[INJECT] accel_x/range: ON
+[INJECT] accel_x/range: OFF
+[INJECT] accel_x/noise: ON
+[INJECT] accel_x/noise: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/stuck: ON
+[INJECT] accel_x/stuck: OFF
+[INJECT] accel_x/consistency: ON
+[INJECT] accel_x/consistency: OFF
+[INJECT] accel_x/jump: ON
+[INJECT] accel_x/jump: OFF
+[INJECT] accel_x/timeout: ON
+[INJECT] accel_x/timeout: OFF
+[INJECT] accel_x/noise: ON
+[INJECT] accel_x/noise: OFF
+[INJECT] accel_x/range: ON
+[INJECT] accel_x/range: OFF
+[HUD] FPGA input monitor: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 507.11 ms (프레임 seq: 24918)
+[HUD] FPGA input monitor: ON
+[HUD] FPGA input monitor: OFF

@@ -1,0 +1,93 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Fullscreen: 1920x1080
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+
+Town04 is already loaded; reusing the current world.
+Waiting for Town04...
+Town04 Ready.
+INFO:  Found the required file in cache!  Carla/Maps/TM/Town04.bin 
+[LIVE VERIFY] RESET before sensor_distance_stuck
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260814_011800.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260814_011800.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 192.45 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 210.70 ms (프레임 seq: 3)
+[*] 최대 지터 갱신! 새로운 gap_max: 216.14 ms (프레임 seq: 4)
+[LIVE VERIFY] 1/5 sensor_distance_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 612.75 ms (프레임 seq: 93)
+[LIVE VERIFY] PASS sensor_distance_stuck: OK
+[LIVE VERIFY] RESET before sensor_accel_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 2/5 sensor_accel_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 633.13 ms (프레임 seq: 188)
+[LIVE VERIFY] PASS sensor_accel_x_stuck: OK
+[LIVE VERIFY] RESET before sensor_gyro_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 3/5 sensor_gyro_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 728.75 ms (프레임 seq: 283)
+[LIVE VERIFY] FAIL sensor_gyro_x_stuck: gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_gyro_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 4/5 sensor_gyro_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL sensor_gyro_y_stuck: gyro_y.reliability=0 minimum=1 | gyro_y.reliability=0 minimum=1 | gyro_y.reliability=0 minimum=1 | gyro_y.reliability=0 minimum=1 | gyro_y.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_timeout_global
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 5/5 sensor_timeout_global
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] timeout dropout complete; observing recovery
+[*] 최대 지터 갱신! 새로운 gap_max: 766.20 ms (프레임 seq: 490)
+[LIVE VERIFY] FAIL sensor_timeout_global: distance.reliability=0 expected=2, approach_speed.reliability=1 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2 | distance.reliability=0 expected=2, approach_speed.reliability=1 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2 | distance.reliability=0 expected=2, approach_speed.reliability=1 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2 | distance.reliability=0 expected=2, approach_speed.reliability=1 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2 | distance.reliability=0 expected=2, approach_speed.reliability=1 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2 | distance.reliability=0 expected=2, approach_speed.reliability=1 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2 | distance.reliability=0 expected=2, approach_speed.reliability=1 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2
+CARLA LIVE CONTROL RESULT: PASS=2 FAIL=3
+
+Cleaning up session...
+Finished.

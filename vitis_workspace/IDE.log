@@ -1,0 +1,74 @@
+16:20:44 DEBUG : Logs will be stored at 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/IDE.log'.
+16:20:45 INFO  : Registering command handlers for Vitis TCF services
+16:20:46 INFO  : Platform repository initialization has completed.
+16:20:53 INFO  : Result from executing command 'getProjects': carla_fpga_platform
+16:20:53 INFO  : Result from executing command 'getPlatforms': xilinx_zcu102_base_202220_1|C:/Xilinx/Vitis/2022.2/base_platforms/xilinx_zcu102_base_202220_1/xilinx_zcu102_base_202220_1.xpfm;xilinx_zcu102_base_dfx_202220_1|C:/Xilinx/Vitis/2022.2/base_platforms/xilinx_zcu102_base_dfx_202220_1/xilinx_zcu102_base_dfx_202220_1.xpfm;xilinx_zcu104_base_202220_1|C:/Xilinx/Vitis/2022.2/base_platforms/xilinx_zcu104_base_202220_1/xilinx_zcu104_base_202220_1.xpfm
+16:22:26 INFO  : Result from executing command 'getProjects': carla_fpga_platform
+16:22:26 INFO  : Result from executing command 'getPlatforms': carla_fpga_platform|C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/carla_fpga_platform/export/carla_fpga_platform/carla_fpga_platform.xpfm;xilinx_zcu102_base_202220_1|C:/Xilinx/Vitis/2022.2/base_platforms/xilinx_zcu102_base_202220_1/xilinx_zcu102_base_202220_1.xpfm;xilinx_zcu102_base_dfx_202220_1|C:/Xilinx/Vitis/2022.2/base_platforms/xilinx_zcu102_base_dfx_202220_1/xilinx_zcu102_base_dfx_202220_1.xpfm;xilinx_zcu104_base_202220_1|C:/Xilinx/Vitis/2022.2/base_platforms/xilinx_zcu104_base_202220_1/xilinx_zcu104_base_202220_1.xpfm
+16:22:26 INFO  : Result from executing command 'reportPlatform': {carla_fpga_platform={standalone_domain={Os=standalone, DomainName=standalone_domain, CpuType=cortex-a53, CpuInstance=psu_cortexa53_0}}}
+16:22:26 INFO  : Result from executing command 'reportPlatform': {carla_fpga_platform={standalone_domain={Os=standalone, DomainName=standalone_domain, CpuType=cortex-a53, CpuInstance=psu_cortexa53_0}}}
+16:22:26 INFO  : Result from executing command 'reportPlatform': {carla_fpga_platform={standalone_domain={Os=standalone, DomainName=standalone_domain, CpuType=cortex-a53, CpuInstance=psu_cortexa53_0}}}
+16:22:36 INFO  : plnx-install-location is set to ''
+16:22:38 ERROR : Failed to call init_repo
+Reason: error writing "stdout": broken pipe
+16:22:38 ERROR : Exception raised in executing the command =Failed to call init_repo
+Reason: error writing "stdout": broken pipe 
+16:22:38 INFO  : Successfully done query RDI_DATADIR 
+16:22:46 ERROR : xsct server communication channel has closed unexpectedly.
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:186) ~[?:?]
+	at java.net.SocketInputStream.read(SocketInputStream.java:140) ~[?:?]
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:290) ~[?:?]
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:351) ~[?:?]
+	at java.io.FilterInputStream.read(FilterInputStream.java:107) ~[?:?]
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:186) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:85) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:329) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+16:28:20 DEBUG : Logs will be stored at 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/IDE.log'.
+16:28:21 INFO  : Registering command handlers for Vitis TCF services
+16:28:21 INFO  : Platform repository initialization has completed.
+16:28:22 INFO  : plnx-install-location is set to ''
+16:29:35 INFO  : Checking for BSP changes to sync application flags for project 'carla_fpga_bridge'...
+16:29:46 INFO  : Updating application flags with new BSP settings...
+16:29:46 INFO  : Successfully done query RDI_DATADIR 
+16:29:47 INFO  : Successfully updated application flags for project carla_fpga_bridge.
+16:29:50 ERROR : xsct server communication channel has closed unexpectedly.
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:186) ~[?:?]
+	at java.net.SocketInputStream.read(SocketInputStream.java:140) ~[?:?]
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:290) ~[?:?]
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:351) ~[?:?]
+	at java.io.FilterInputStream.read(FilterInputStream.java:107) ~[?:?]
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:186) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:85) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:329) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+16:30:21 DEBUG : Logs will be stored at 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/IDE.log'.
+16:30:22 INFO  : Registering command handlers for Vitis TCF services
+16:30:22 INFO  : Platform repository initialization has completed.
+16:30:24 INFO  : plnx-install-location is set to ''
+16:31:14 INFO  : Checking for BSP changes to sync application flags for project 'carla_fpga_bridge'...
+16:31:28 ERROR : xsct server communication channel has closed unexpectedly.
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:186) ~[?:?]
+	at java.net.SocketInputStream.read(SocketInputStream.java:140) ~[?:?]
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:290) ~[?:?]
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:351) ~[?:?]
+	at java.io.FilterInputStream.read(FilterInputStream.java:107) ~[?:?]
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:186) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:85) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:329) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+17:33:54 DEBUG : Logs will be stored at 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/IDE.log'.
+17:33:55 INFO  : Registering command handlers for Vitis TCF services
+17:33:56 INFO  : Platform repository initialization has completed.
+17:33:56 INFO  : plnx-install-location is set to ''
+17:34:48 INFO  : Checking for BSP changes to sync application flags for project 'carla_fpga_bridge'...
+17:35:04 ERROR : xsct server communication channel has closed unexpectedly.
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:186) ~[?:?]
+	at java.net.SocketInputStream.read(SocketInputStream.java:140) ~[?:?]
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:290) ~[?:?]
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:351) ~[?:?]
+	at java.io.FilterInputStream.read(FilterInputStream.java:107) ~[?:?]
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:186) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:85) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:329) ~[org.eclipse.tcf.core_1.7.0.202210132147.jar:?]

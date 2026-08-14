@@ -1,0 +1,53 @@
+﻿pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Windowed: 1280x720
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+
+Town04 is already loaded; reusing the current world.
+Waiting for Town04...
+Town04 Ready.
+[SENSOR NOISE] enabled (CARLA_SENSOR_NOISE)
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260814_170409.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260814_170409.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+[CONTROL] Apply FPGA output: OFF (CARLA_APPLY_FPGA=0)
+[RUN] Auto-exit after 180 s
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 55.23 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 79.00 ms (프레임 seq: 3)
+[*] 최대 지터 갱신! 새로운 gap_max: 138.83 ms (프레임 seq: 7)
+[*] 최대 지터 갱신! 새로운 gap_max: 158.21 ms (프레임 seq: 18)
+[*] 최대 지터 갱신! 새로운 gap_max: 184.36 ms (프레임 seq: 25)
+[*] 최대 지터 갱신! 새로운 gap_max: 494.79 ms (프레임 seq: 163)
+[HUD] FPGA input monitor: ON
+[RUN] Duration reached, exiting cleanly.
+
+Cleaning up session...
+Finished.
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+INFO:  Found the required file in cache!  Carla/Maps/TM/Town04.bin 

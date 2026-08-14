@@ -50,6 +50,7 @@ class VehicleCommand:
 
         self.steering = self.CENTER_STEERING
         self.steering_rate_limit = 100
+        self.fpga_steering_override = None
 
         self.gear_down_request = False
         self.speed_limit = 999

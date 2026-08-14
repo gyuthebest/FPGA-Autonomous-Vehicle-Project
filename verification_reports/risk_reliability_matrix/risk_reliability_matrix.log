@@ -1,0 +1,152 @@
+#-----------------------------------------------------------
+# xsim v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Fri Aug 14 00:04:48 2026
+# Process ID: 44008
+# Current directory: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/risk_reliability_matrix
+# Command line: xsim.exe -log risk_reliability_matrix.log -mode tcl -source {xsim.dir/tb_risk_reliability_matrix_snap/xsim_script.tcl}
+# Log file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/risk_reliability_matrix/risk_reliability_matrix.log
+# Journal file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/risk_reliability_matrix\xsim.jou
+# Running On: JH_HP, OS: Windows, CPU Frequency: 1996 MHz, CPU Physical cores: 12, Host memory: 16697 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_risk_reliability_matrix_snap/xsim_script.tcl
+# xsim {tb_risk_reliability_matrix_snap} -autoloadwcfg -tclbatch {C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/verification/run_risk_reliability_matrix.tcl}
+Time resolution is 1 ps
+source C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/verification/run_risk_reliability_matrix.tcl
+## run all
+
+=== A. RELIABILITY -> EFFECTIVE RISK: ALL UNCOVERED DOMAINS ===
+[PASS] road surface NORMAL raw=0 actual=0
+[PASS] road surface DEGRADED raw=0 actual=1
+[PASS] road impact NORMAL raw=0 actual=0
+[PASS] road impact DEGRADED raw=0 actual=1
+[PASS] light visibility NORMAL raw=0 actual=0
+[PASS] light visibility DEGRADED raw=0 actual=1
+[PASS] road surface NORMAL raw=1 actual=1
+[PASS] road surface DEGRADED raw=1 actual=2
+[PASS] road impact NORMAL raw=1 actual=1
+[PASS] road impact DEGRADED raw=1 actual=2
+[PASS] light visibility NORMAL raw=1 actual=1
+[PASS] light visibility DEGRADED raw=1 actual=2
+[PASS] road surface NORMAL raw=2 actual=2
+[PASS] road surface DEGRADED raw=2 actual=2
+[PASS] road impact NORMAL raw=2 actual=2
+[PASS] road impact DEGRADED raw=2 actual=2
+[PASS] light visibility NORMAL raw=2 actual=2
+[PASS] light visibility DEGRADED raw=2 actual=2
+[PASS] road surface NORMAL raw=3 actual=3
+[PASS] road surface DEGRADED raw=3 actual=3
+[PASS] road impact NORMAL raw=3 actual=3
+[PASS] road impact DEGRADED raw=3 actual=3
+[PASS] light visibility NORMAL raw=3 actual=3
+[PASS] light visibility DEGRADED raw=3 actual=3
+[PASS] road surface INVALID floor actual=2
+[PASS] road impact INVALID floor actual=2
+[PASS] light visibility INVALID floor actual=2
+[PASS] roll DEGRADED safe remains safe actual=0
+[PASS] roll DEGRADED danger remains danger actual=1
+[PASS] roll INVALID floor actual=1
+[PASS] yaw NORMAL raw=0 actual=0
+[PASS] yaw DEGRADED raw=0 actual=1
+[PASS] lateral NORMAL raw=0 actual=0
+[PASS] lateral DEGRADED raw=0 actual=1
+[PASS] yaw NORMAL raw=1 actual=1
+[PASS] yaw DEGRADED raw=1 actual=1
+[PASS] lateral NORMAL raw=1 actual=1
+[PASS] lateral DEGRADED raw=1 actual=1
+[PASS] yaw NORMAL raw=2 actual=2
+[PASS] yaw DEGRADED raw=2 actual=2
+[PASS] lateral NORMAL raw=2 actual=2
+[PASS] lateral DEGRADED raw=2 actual=2
+[PASS] yaw INVALID floor actual=1
+[PASS] lateral INVALID floor actual=1
+[PASS] weather independent raw=0 actual=0
+[PASS] weather independent raw=1 actual=1
+[PASS] weather independent raw=2 actual=2
+[PASS] weather independent raw=3 actual=3
+
+=== B. PREVIOUS VALID RISK RETENTION DURING INVALID ===
+[PASS] road surface INVALID retains tier 3 actual=3
+[PASS] road impact INVALID retains tier 3 actual=3
+[PASS] visibility INVALID retains tier 3 actual=3
+[PASS] yaw INVALID retains tier 2 actual=2
+[PASS] lateral INVALID retains tier 2 actual=2
+
+=== C. PREVIOUSLY UNCOVERED CONTROL TIERS ===
+[PASS] collision CAUTION accelerator actual=0
+[PASS] collision CAUTION brake unchanged actual=1
+[PASS] collision DANGER low-speed brake actual=2
+[PASS] collision DANGER mid-speed brake actual=3
+[PASS] collision DANGER high-speed brake actual=4
+[PASS] collision CRITICAL low-speed brake actual=4
+[PASS] collision CRITICAL hazard actual=1
+[PASS] collision CRITICAL mid-speed brake actual=6
+[PASS] collision CRITICAL high-speed brake actual=8
+[PASS] wet accelerator cap actual=8
+[PASS] wet speed limit 90 percent actual=2881
+[PASS] ice accelerator cap actual=6
+[PASS] ice speed limit 70 percent actual=2240
+[PASS] ice brake suppression actual=0
+[PASS] rough-road accelerator cap actual=9
+[PASS] rough-road brake actual=2
+[PASS] rough-road speed limit 80 percent actual=2559
+[PASS] severe-impact accelerator cap actual=7
+[PASS] severe-impact speed limit 60 percent actual=1918
+[PASS] extreme-impact accelerator cap actual=5
+[PASS] extreme-impact speed limit 50 percent actual=1600
+[PASS] dim light headlight actual=1
+[PASS] dim light no speed reduction actual=3200
+[PASS] dark headlight actual=1
+[PASS] very-dark speed limit 90 percent actual=2881
+[PASS] fog accelerator cap actual=8
+[PASS] fog speed limit 90 percent actual=2881
+[PASS] fog hazard off actual=0
+[PASS] snow accelerator cap actual=5
+[PASS] snow speed limit 60 percent actual=1918
+[PASS] snow hazard off actual=0
+[PASS] roll danger accelerator actual=0
+[PASS] yaw caution accelerator cap actual=8
+[PASS] yaw caution steering delta cap actual=40
+[PASS] yaw danger accelerator actual=0
+[PASS] yaw danger steering delta cap actual=0
+[PASS] lateral caution accelerator cap actual=7
+[PASS] lateral caution steering delta cap actual=60
+[PASS] lateral danger accelerator actual=0
+[PASS] lateral danger brake suppression actual=0
+[PASS] lateral danger steering delta cap actual=20
+
+=== D. WARNING / TD GROUPS AND MULTI-RISK ARBITRATION ===
+[PASS] road surface INVALID HUD actual=1
+[PASS] road surface INVALID no TD actual=0
+[PASS] road impact INVALID HUD actual=1
+[PASS] road impact INVALID no TD actual=0
+[PASS] visibility INVALID HUD actual=1
+[PASS] visibility INVALID no TD actual=0
+[PASS] roll INVALID TD actual=1
+[PASS] yaw INVALID TD actual=1
+[PASS] lateral INVALID TD actual=1
+[PASS] pitch INVALID HUD actual=1
+[PASS] pitch INVALID no TD actual=0
+[PASS] longitudinal INVALID HUD actual=1
+[PASS] longitudinal INVALID no TD actual=0
+[PASS] combined emergency+black-ice accelerator actual=0
+[PASS] combined emergency+black-ice current brake arbitration actual=0
+[PASS] combined emergency+black-ice hazard actual=1
+[PASS] combined emergency+black-ice speed limit actual=1600
+[PASS] multi-risk minimum accelerator actual=5
+[PASS] multi-risk maximum brake actual=2
+[PASS] multi-risk minimum speed limit actual=1918
+[PASS] multi-risk lights OR actual=1
+
+============================================================
+RISK/RELIABILITY GAP MATRIX RESULT: PASS=115 FAIL=0
+============================================================
+$finish called at time : 1320 ns : File "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/verification/tb_risk_reliability_matrix.sv" Line 324
+## set failures [get_value /tb_risk_reliability_matrix/fail_count]
+## if {$failures != "0"} {
+##     puts "ERROR: risk/reliability matrix reported $failures failures"
+##     quit 1
+## }
+## quit 0
+INFO: [Common 17-206] Exiting xsim at Fri Aug 14 00:04:50 2026...

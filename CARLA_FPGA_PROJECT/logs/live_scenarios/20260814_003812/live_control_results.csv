@@ -1,0 +1,48 @@
+case,passed,samples,details
+sensor_distance_jump,0,10,distance.reliability=0 expected=1 | distance.reliability=0 expected=1 | distance.reliability=0 expected=1
+sensor_distance_stuck,0,13,distance.reliability=0 expected=2 | distance.reliability=0 expected=2 | distance.reliability=0 expected=2 | distance.reliability=0 expected=2 | distance.reliability=0 expected=2
+sensor_distance_noise,0,13,distance.reliability=0 expected=1 | distance.reliability=0 expected=1
+sensor_distance_consistency,0,12,distance.reliability=0 expected=1 | distance.reliability=0 expected=1 | distance.reliability=0 expected=1
+sensor_approach_speed_jump,1,10,OK
+sensor_approach_speed_stuck,0,13,approach_speed.reliability=0 expected=2 | approach_speed.reliability=0 expected=2 | approach_speed.reliability=0 expected=2 | approach_speed.reliability=0 expected=2 | approach_speed.reliability=0 expected=2
+sensor_approach_speed_noise,1,13,OK
+sensor_approach_speed_consistency,1,12,OK
+sensor_accel_x_range,1,8,OK
+sensor_accel_x_jump,0,10,accel_x.reliability=2 expected=1 | accel_x.reliability=2 expected=1 | accel_x.reliability=2 expected=1 | accel_x.reliability=2 expected=1 | accel_x.reliability=2 expected=1
+sensor_accel_x_stuck,1,13,OK
+sensor_accel_x_noise,1,13,OK
+sensor_accel_x_consistency,1,12,OK
+sensor_accel_y_range,1,8,OK
+sensor_accel_y_jump,0,10,accel_y.reliability=2 expected=1 | accel_y.reliability=2 expected=1 | accel_y.reliability=2 expected=1 | accel_y.reliability=2 expected=1 | accel_y.reliability=2 expected=1
+sensor_accel_y_stuck,0,13,accel_y.reliability=1 expected=2 | accel_y.reliability=1 expected=2 | accel_y.reliability=1 expected=2 | accel_y.reliability=1 expected=2 | accel_y.reliability=1 expected=2
+sensor_accel_y_noise,0,13,accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1
+sensor_accel_y_consistency,0,12,accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1 | accel_y.reliability=0 expected=1
+sensor_accel_z_jump,0,10,accel_z.reliability=2 expected=1 | accel_z.reliability=2 expected=1 | accel_z.reliability=2 expected=1 | accel_z.reliability=2 expected=1 | accel_z.reliability=2 expected=1
+sensor_accel_z_stuck,0,13,accel_z.reliability=1 expected=2 | accel_z.reliability=0 expected=2 | accel_z.reliability=0 expected=2 | accel_z.reliability=0 expected=2 | accel_z.reliability=0 expected=2
+sensor_accel_z_noise,0,13,accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1
+sensor_accel_z_consistency,0,12,accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1 | accel_z.reliability=0 expected=1
+sensor_gyro_x_range,1,8,OK
+sensor_gyro_x_jump,1,10,OK
+sensor_gyro_x_stuck,0,13,gyro_x.reliability=1 expected=2 | gyro_x.reliability=1 expected=2 | gyro_x.reliability=1 expected=2 | gyro_x.reliability=1 expected=2 | gyro_x.reliability=1 expected=2
+sensor_gyro_x_noise,1,13,OK
+sensor_gyro_x_consistency,1,12,OK
+sensor_gyro_y_range,1,8,OK
+sensor_gyro_y_jump,1,10,OK
+sensor_gyro_y_stuck,0,13,gyro_y.reliability=1 expected=2 | gyro_y.reliability=1 expected=2 | gyro_y.reliability=1 expected=2 | gyro_y.reliability=1 expected=2 | gyro_y.reliability=1 expected=2
+sensor_gyro_y_noise,1,13,OK
+sensor_gyro_y_consistency,1,12,OK
+sensor_gyro_z_range,1,8,OK
+sensor_gyro_z_jump,1,10,OK
+sensor_gyro_z_stuck,0,13,gyro_z.reliability=1 expected=2 | gyro_z.reliability=1 expected=2 | gyro_z.reliability=1 expected=2 | gyro_z.reliability=1 expected=2 | gyro_z.reliability=1 expected=2
+sensor_gyro_z_noise,1,13,OK
+sensor_gyro_z_consistency,1,12,OK
+sensor_temperature_stuck,1,13,OK
+sensor_temperature_noise,1,13,OK
+sensor_humidity_range,1,8,OK
+sensor_humidity_jump,1,10,OK
+sensor_humidity_stuck,0,13,humidity.reliability=0 expected=1 | humidity.reliability=0 expected=1 | humidity.reliability=0 expected=1 | humidity.reliability=0 expected=1 | humidity.reliability=0 expected=1
+sensor_humidity_noise,0,13,humidity.reliability=0 expected=1
+sensor_lux_jump,1,10,OK
+sensor_lux_stuck,1,13,OK
+sensor_lux_noise,1,13,OK
+sensor_timeout_global,0,4,"distance.reliability=0 expected=2, approach_speed.reliability=0 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=1 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=0 expected=2"

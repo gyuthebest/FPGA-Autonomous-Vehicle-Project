@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\main.py", line 818, in main
+    world = client.load_world(map_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: time-out of 60000ms while waiting for the simulator, make sure the simulator is ready and connected to 127.0.0.1:2000

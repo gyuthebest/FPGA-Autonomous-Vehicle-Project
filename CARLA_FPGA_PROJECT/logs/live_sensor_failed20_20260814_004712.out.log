@@ -1,0 +1,227 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Fullscreen: 1600x1000
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+
+Town04 is already loaded; reusing the current world.
+Waiting for Town04...
+Town04 Ready.
+INFO:  Found the required file in cache!  Carla/Maps/TM/Town04.bin 
+[LIVE VERIFY] RESET before sensor_distance_jump
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260814_004721.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260814_004721.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 74.45 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 138.15 ms (프레임 seq: 3)
+[*] 최대 지터 갱신! 새로운 gap_max: 164.60 ms (프레임 seq: 14)
+[LIVE VERIFY] 1/20 sensor_distance_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 436.32 ms (프레임 seq: 40)
+[LIVE VERIFY] PASS sensor_distance_jump: OK
+[LIVE VERIFY] RESET before sensor_distance_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 2/20 sensor_distance_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL sensor_distance_stuck: distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_distance_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 3/20 sensor_distance_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 454.44 ms (프레임 seq: 163)
+[LIVE VERIFY] PASS sensor_distance_noise: OK
+[LIVE VERIFY] RESET before sensor_distance_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 4/20 sensor_distance_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_distance_consistency: OK
+[LIVE VERIFY] RESET before sensor_approach_speed_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 5/20 sensor_approach_speed_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL sensor_approach_speed_stuck: approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_accel_x_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 6/20 sensor_accel_x_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_x_jump: OK
+[LIVE VERIFY] RESET before sensor_accel_y_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 7/20 sensor_accel_y_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_jump: OK
+[LIVE VERIFY] RESET before sensor_accel_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 8/20 sensor_accel_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_stuck: OK
+[LIVE VERIFY] RESET before sensor_accel_y_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 9/20 sensor_accel_y_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_noise: OK
+[LIVE VERIFY] RESET before sensor_accel_y_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 10/20 sensor_accel_y_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_consistency: OK
+[LIVE VERIFY] RESET before sensor_accel_z_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 11/20 sensor_accel_z_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_z_jump: OK
+[LIVE VERIFY] RESET before sensor_accel_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 12/20 sensor_accel_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_z_stuck: OK
+[LIVE VERIFY] RESET before sensor_accel_z_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 13/20 sensor_accel_z_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 535.30 ms (프레임 seq: 702)
+[LIVE VERIFY] PASS sensor_accel_z_noise: OK
+[LIVE VERIFY] RESET before sensor_accel_z_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 14/20 sensor_accel_z_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_z_consistency: OK
+[LIVE VERIFY] RESET before sensor_gyro_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 15/20 sensor_gyro_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL sensor_gyro_x_stuck: gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1 | gyro_x.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_gyro_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 16/20 sensor_gyro_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_y_stuck: OK
+[LIVE VERIFY] RESET before sensor_gyro_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 17/20 sensor_gyro_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL sensor_gyro_z_stuck: gyro_z.reliability=0 minimum=1 | gyro_z.reliability=0 minimum=1 | gyro_z.reliability=0 minimum=1 | gyro_z.reliability=0 minimum=1 | gyro_z.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_humidity_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 18/20 sensor_humidity_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_humidity_stuck: OK
+[LIVE VERIFY] RESET before sensor_humidity_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 19/20 sensor_humidity_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_humidity_noise: OK
+[LIVE VERIFY] RESET before sensor_timeout_global
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 20/20 sensor_timeout_global
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] timeout dropout complete; observing recovery
+[LIVE VERIFY] FAIL sensor_timeout_global: distance.reliability=0 expected=2, approach_speed.reliability=0 expected=2, accel_x.reliability=1 expected=2, accel_y.reliability=0 expected=2, accel_z.reliability=0 expected=2, gyro_x.reliability=0 expected=2, gyro_y.reliability=0 expected=2, gyro_z.reliability=0 expected=2, temperature.reliability=1 expected=2, humidity.reliability=1 expected=2, lux.reliability=1 expected=2
+CARLA LIVE CONTROL RESULT: PASS=15 FAIL=5
+
+Cleaning up session...
+Finished.

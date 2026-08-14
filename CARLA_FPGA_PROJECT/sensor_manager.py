@@ -57,6 +57,13 @@ class SensorManager:
         self.incline_y = 0.0 # Pitch
         self.incline_z = 0.0 # Yaw
         self.last_imu_time = 0.0
+        # Verification metadata only.  These fields let the capture logger
+        # prove that the asynchronous sensor callbacks belong to the CARLA
+        # frame packed into the current PL sample.
+        self.imu_frame = -1
+        self.imu_timestamp = -1.0
+        self.radar_frame = -1
+        self.radar_timestamp = -1.0
 
         # -----------------------------
         # Forward Vector
@@ -119,8 +126,11 @@ class SensorManager:
 
         # 2. Radar Sensor
         radar_bp = bp_lib.find('sensor.other.radar')
-        radar_bp.set_attribute('horizontal_fov', '30')
-        radar_bp.set_attribute('vertical_fov', '30')
+        # ACC-style forward corridor.  A 30x30 degree cone repeatedly selected
+        # nearby guardrails/road furniture as the closest target and produced
+        # false 4 m / 27 m/s collision emergencies on an empty road.
+        radar_bp.set_attribute('horizontal_fov', '8')
+        radar_bp.set_attribute('vertical_fov', '4')
         radar_bp.set_attribute('range', '200') # 200m range
         
         radar_transform = carla.Transform(carla.Location(x=2.0, z=1.0)) # Front bumper
@@ -143,6 +153,8 @@ class SensorManager:
         self.gyro_x = data.gyroscope.x
         self.gyro_y = data.gyroscope.y
         self.gyro_z = data.gyroscope.z
+        self.imu_frame = int(data.frame)
+        self.imu_timestamp = float(data.timestamp)
 
     @staticmethod
     def _on_radar_event(weak_self, data):
@@ -153,14 +165,26 @@ class SensorManager:
         min_dist = 200.0
         approach_vel = 0.0
         
-        # Find the closest detection
+        # Find the closest detection inside the ego-lane corridor.  CARLA
+        # radar reports reflection points, not classified vehicle objects, so
+        # angular FOV alone is insufficient on curves and beside guardrails.
         for detection in data:
-            if detection.depth < min_dist:
+            lateral_offset = abs(detection.depth * math.sin(detection.azimuth))
+            if (
+                lateral_offset <= 0.9
+                and math.radians(-1.0) <= detection.altitude <= math.radians(3.0)
+                and detection.depth < min_dist
+            ):
                 min_dist = detection.depth
-                approach_vel = detection.velocity # CARLA radar velocity: positive towards sensor
+                # CARLA computes dot(target_velocity - ego_velocity, target_direction),
+                # so a closing target in front of the ego vehicle is negative.
+                # The PL convention is positive closing speed; invert at the interface.
+                approach_vel = max(0.0, -detection.velocity)
 
         self.distance = min_dist
         self.approach_speed = approach_vel
+        self.radar_frame = int(data.frame)
+        self.radar_timestamp = float(data.timestamp)
 
     def update(self):
 

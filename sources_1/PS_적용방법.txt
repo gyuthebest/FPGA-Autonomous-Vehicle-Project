@@ -1,0 +1,17 @@
+Vitis lwIP 애플리케이션에 다음 두 파일을 추가한다.
+  - ps_carla_bridge.c
+  - ps_carla_bridge.h
+
+네트워크 인터페이스가 올라온 다음 한 번 호출한다.
+  if (carla_fpga_bridge_init() != 0) {
+      xil_printf("CARLA FPGA bridge init failed\r\n");
+      return -1;
+  }
+
+기존 while (1) 루프에서 xemacif_input(echo_netif) 다음에 매번 호출한다.
+  xemacif_input(echo_netif);
+  carla_fpga_bridge_service();
+
+기존 PS 수정본에 있던 send_output_to_carla() 무한 호출과 UDP 콜백 코드는 제거한다.
+보드 주소는 192.168.1.10/24, 노트북 유선 LAN은 192.168.1.20/24로 설정한다.
+입력 UDP 포트는 5001이며, 응답은 요청을 보낸 노트북의 source port로 돌아간다.

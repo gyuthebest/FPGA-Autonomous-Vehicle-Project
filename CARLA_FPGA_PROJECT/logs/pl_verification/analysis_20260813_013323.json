@@ -1,0 +1,200 @@
+{
+  "capture": "C:\\Users\\jiho0\\GitProjects\\FPGA-Autonomous-Vehicle-Project\\CARLA_FPGA_PROJECT\\logs\\pl_verification\\pl_capture_20260813_013323.csv",
+  "sample_count": 1045,
+  "first_sample_seq": 1,
+  "last_sample_seq": 1045,
+  "nominal_period_ms": 50.0,
+  "update_clk_x2_ms": 100.0,
+  "timeout_confirm_count": 10,
+  "timeout_confirm_ms": 1000.0,
+  "host_gap_note": "Host send gap is not the PS REG9 write gap. HIL validation must add PS-side timestamps.",
+  "host_gap_ms": {
+    "min": 7.7296,
+    "mean": 50.731087356321844,
+    "p50": 50.5694,
+    "p95": 52.65799,
+    "p99": 67.57466199999998,
+    "max": 148.3632,
+    "at_or_over_update_clk_x2": 1,
+    "at_or_over_timeout_confirm": 0
+  },
+  "channels": {
+    "distance": {
+      "pl_min": 383,
+      "pl_max": 682,
+      "range_limits": [
+        0,
+        20000
+      ],
+      "raw_out_of_range_samples": 0,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 2,
+      "max_abs_delta": 293,
+      "max_abs_second_difference": 534,
+      "jump_threshold": 100,
+      "jump_raw_hits": 214
+    },
+    "approach_speed": {
+      "pl_min": -4096,
+      "pl_max": -24,
+      "range_limits": [
+        -4000,
+        4000
+      ],
+      "raw_out_of_range_samples": 1,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 6,
+      "max_abs_delta": 4072,
+      "max_abs_second_difference": 4080,
+      "jump_threshold": 10,
+      "jump_raw_hits": 365
+    },
+    "accel_x": {
+      "pl_min": -2048,
+      "pl_max": 690,
+      "range_limits": [
+        -1600,
+        1600
+      ],
+      "raw_out_of_range_samples": 1,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 4,
+      "max_abs_delta": 2048,
+      "max_abs_second_difference": 4096,
+      "jump_threshold": 2000,
+      "jump_raw_hits": 2
+    },
+    "accel_y": {
+      "pl_min": -35,
+      "pl_max": 2047,
+      "range_limits": [
+        -1600,
+        1600
+      ],
+      "raw_out_of_range_samples": 1,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 5,
+      "max_abs_delta": 2047,
+      "max_abs_second_difference": 4094,
+      "jump_threshold": 2000,
+      "jump_raw_hits": 2
+    },
+    "accel_z": {
+      "pl_min": -2048,
+      "pl_max": 2047,
+      "range_limits": [
+        -1600,
+        1600
+      ],
+      "raw_out_of_range_samples": 3,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 433,
+      "max_abs_delta": 3029,
+      "max_abs_second_difference": 5078,
+      "jump_threshold": 2000,
+      "jump_raw_hits": 2
+    },
+    "gyro_x": {
+      "pl_min": -1,
+      "pl_max": 1,
+      "range_limits": [
+        -16000,
+        16000
+      ],
+      "raw_out_of_range_samples": 0,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 551,
+      "max_abs_delta": 1,
+      "max_abs_second_difference": 1,
+      "jump_threshold": 1000,
+      "jump_raw_hits": 0
+    },
+    "gyro_y": {
+      "pl_min": -1,
+      "pl_max": 2,
+      "range_limits": [
+        -16000,
+        16000
+      ],
+      "raw_out_of_range_samples": 0,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 91,
+      "max_abs_delta": 1,
+      "max_abs_second_difference": 2,
+      "jump_threshold": 1000,
+      "jump_raw_hits": 0
+    },
+    "gyro_z": {
+      "pl_min": -52,
+      "pl_max": 149,
+      "range_limits": [
+        -16000,
+        16000
+      ],
+      "raw_out_of_range_samples": 0,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 109,
+      "max_abs_delta": 84,
+      "max_abs_second_difference": 163,
+      "jump_threshold": 1000,
+      "jump_raw_hits": 0
+    },
+    "temperature": {
+      "pl_min": 12,
+      "pl_max": 22,
+      "range_limits": [
+        -500,
+        600
+      ],
+      "raw_out_of_range_samples": 0,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 600,
+      "max_abs_delta": 10,
+      "max_abs_second_difference": 10,
+      "jump_threshold": 5,
+      "jump_raw_hits": 2
+    },
+    "humidity": {
+      "pl_min": 30,
+      "pl_max": 90,
+      "range_limits": [
+        0,
+        100
+      ],
+      "raw_out_of_range_samples": 0,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 600,
+      "max_abs_delta": 60,
+      "max_abs_second_difference": 60,
+      "jump_threshold": 5,
+      "jump_raw_hits": 2
+    },
+    "lux": {
+      "pl_min": 35636,
+      "pl_max": 95673,
+      "range_limits": [
+        0,
+        130000
+      ],
+      "raw_out_of_range_samples": 0,
+      "range_confirmed_frames_n3": 0,
+      "max_identical_run_samples": 30,
+      "max_abs_delta": 47057,
+      "max_abs_second_difference": 47133,
+      "jump_threshold": 20000,
+      "jump_raw_hits": 2
+    }
+  },
+  "data_quality": {
+    "sequence_contiguous": true,
+    "fault_labels": [
+      "none"
+    ],
+    "imu_frame_lag_min": 0,
+    "imu_frame_lag_max": 0,
+    "imu_not_same_frame_samples": 0,
+    "radar_frame_lag_min": 0,
+    "radar_frame_lag_max": 0,
+    "radar_not_same_frame_samples": 0
+  }
+}

@@ -1,0 +1,737 @@
+﻿pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Windowed: 1280x720
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+
+Town04 is already loaded; reusing the current world.
+Waiting for Town04...
+Town04 Ready.
+[LIVE VERIFY] RESET before baseline
+[SENSOR NOISE] enabled (CARLA_SENSOR_NOISE)
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260814_154327.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260814_154327.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 52.93 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 96.20 ms (프레임 seq: 3)
+[*] 최대 지터 갱신! 새로운 gap_max: 118.47 ms (프레임 seq: 7)
+[LIVE VERIFY] 1/75 baseline
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 135.08 ms (프레임 seq: 26)
+[*] 최대 지터 갱신! 새로운 gap_max: 156.62 ms (프레임 seq: 36)
+[*] 최대 지터 갱신! 새로운 gap_max: 229.91 ms (프레임 seq: 46)
+[LIVE VERIFY] PASS baseline: OK
+[LIVE VERIFY] RESET before collision_caution
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 2/75 collision_caution
+[SCENARIO] Obstacle at 86.0 m (safe minimum 38.5 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 272.48 ms (프레임 seq: 94)
+[LIVE VERIFY] FAIL collision_caution: collision=3 expected=1 | collision=3 expected=1 | collision=3 expected=1 | collision=3 expected=1 | collision=3 expected=1
+[LIVE VERIFY] RESET before collision_danger
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 3/75 collision_danger
+[SCENARIO] Obstacle at 61.2 m (safe minimum 38.8 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL collision_danger: collision=3 expected=2 | collision=3 expected=2 | collision=3 expected=2 | collision=3 expected=2 | collision=3 expected=2
+[LIVE VERIFY] RESET before collision_critical
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 4/75 collision_critical
+[SCENARIO] Obstacle at 40.8 m (safe minimum 35.8 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS collision_critical: OK
+[LIVE VERIFY] RESET before collision_emergency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 5/75 collision_emergency
+[SCENARIO] Obstacle at 55.8 m (safe minimum 30.6 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS collision_emergency: OK
+[LIVE VERIFY] RESET before road_wet
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 6/75 road_wet
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS road_wet: OK
+[LIVE VERIFY] RESET before road_ice
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 7/75 road_ice
+[SCENARIO] Road surface: ICE (friction=0.55)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=ICE
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS road_ice: OK
+[LIVE VERIFY] RESET before road_black_ice
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 8/75 road_black_ice
+[SCENARIO] Road surface: BLACK_ICE (friction=0.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=BLACK_ICE
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS road_black_ice: OK
+[LIVE VERIFY] RESET before impact_rough
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 9/75 impact_rough
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] impact precondition ready: 49.4 km/h
+[SCENARIO] Road roughness: 20% (1 strips)
+[LIVE VERIFY] PASS impact_rough: OK
+[LIVE VERIFY] RESET before impact_severe
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 10/75 impact_severe
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] impact precondition ready: 48.6 km/h
+[SCENARIO] Road roughness: 50% (3 strips)
+[LIVE VERIFY] PASS impact_severe: OK
+[LIVE VERIFY] RESET before impact_extreme
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 11/75 impact_extreme
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] impact precondition ready: 48.5 km/h
+[SCENARIO] Road roughness: 90% (5 strips)
+[LIVE VERIFY] PASS impact_extreme: OK
+[LIVE VERIFY] RESET before visibility_dim
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 12/75 visibility_dim
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=20%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 286.86 ms (프레임 seq: 577)
+[LIVE VERIFY] PASS visibility_dim: OK
+[LIVE VERIFY] RESET before visibility_dark
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 13/75 visibility_dark
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=50%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS visibility_dark: OK
+[LIVE VERIFY] RESET before visibility_very_dark
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 14/75 visibility_very_dark
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=90%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS visibility_very_dark: OK
+[LIVE VERIFY] RESET before weather_fog
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 15/75 weather_fog
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=FOG, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS weather_fog: OK
+[LIVE VERIFY] RESET before weather_rain
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 16/75 weather_rain
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=RAIN, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS weather_rain: OK
+[LIVE VERIFY] RESET before weather_snow
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 17/75 weather_snow
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=SNOW, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[HUD] FPGA input monitor: ON
+[LIVE VERIFY] PASS weather_snow: OK
+[LIVE VERIFY] RESET before posture_roll
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 18/75 posture_roll
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_roll: OK
+[LIVE VERIFY] RESET before posture_yaw_caution
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 19/75 posture_yaw_caution
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_yaw_caution: OK
+[LIVE VERIFY] RESET before posture_yaw_danger
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 20/75 posture_yaw_danger
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_yaw_danger: OK
+[LIVE VERIFY] RESET before posture_lateral_caution
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 21/75 posture_lateral_caution
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_lateral_caution: OK
+[LIVE VERIFY] RESET before posture_lateral_danger
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 22/75 posture_lateral_danger
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_lateral_danger: OK
+[LIVE VERIFY] RESET before reliability_degraded_escalates_surface
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 23/75 reliability_degraded_escalates_surface
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_degraded_escalates_surface: OK
+[LIVE VERIFY] RESET before reliability_invalid_surface_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 24/75 reliability_invalid_surface_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_surface_floor: OK
+[LIVE VERIFY] RESET before reliability_invalid_impact_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 25/75 reliability_invalid_impact_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_impact_floor: OK
+[LIVE VERIFY] RESET before reliability_invalid_visibility_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 26/75 reliability_invalid_visibility_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_visibility_floor: OK
+[LIVE VERIFY] RESET before reliability_invalid_collision_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 27/75 reliability_invalid_collision_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_collision_floor: OK
+[LIVE VERIFY] RESET before sensor_distance_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 28/75 sensor_distance_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_distance_range: OK
+[LIVE VERIFY] RESET before sensor_distance_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 29/75 sensor_distance_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_distance_jump: OK
+[LIVE VERIFY] RESET before sensor_distance_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 30/75 sensor_distance_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL sensor_distance_stuck: distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1 | distance.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_distance_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 31/75 sensor_distance_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_distance_noise: OK
+[LIVE VERIFY] RESET before sensor_distance_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 32/75 sensor_distance_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_distance_consistency: OK
+[LIVE VERIFY] RESET before sensor_approach_speed_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 33/75 sensor_approach_speed_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_approach_speed_jump: OK
+[LIVE VERIFY] RESET before sensor_approach_speed_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 34/75 sensor_approach_speed_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL sensor_approach_speed_stuck: approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1 | approach_speed.reliability=0 minimum=1
+[LIVE VERIFY] RESET before sensor_approach_speed_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 35/75 sensor_approach_speed_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_approach_speed_noise: OK
+[LIVE VERIFY] RESET before sensor_approach_speed_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 36/75 sensor_approach_speed_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_approach_speed_consistency: OK
+[LIVE VERIFY] RESET before sensor_accel_x_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 37/75 sensor_accel_x_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_x_range: OK
+[LIVE VERIFY] RESET before sensor_accel_x_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 38/75 sensor_accel_x_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_x_jump: OK
+[LIVE VERIFY] RESET before sensor_accel_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 39/75 sensor_accel_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_x_stuck: OK
+[LIVE VERIFY] RESET before sensor_accel_x_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 40/75 sensor_accel_x_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_x_noise: OK
+[LIVE VERIFY] RESET before sensor_accel_x_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 41/75 sensor_accel_x_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_x_consistency: OK
+[LIVE VERIFY] RESET before sensor_accel_y_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 42/75 sensor_accel_y_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_range: OK
+[LIVE VERIFY] RESET before sensor_accel_y_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 43/75 sensor_accel_y_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_jump: OK
+[LIVE VERIFY] RESET before sensor_accel_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 44/75 sensor_accel_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_stuck: OK
+[LIVE VERIFY] RESET before sensor_accel_y_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 45/75 sensor_accel_y_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_noise: OK
+[LIVE VERIFY] RESET before sensor_accel_y_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 46/75 sensor_accel_y_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_y_consistency: OK
+[LIVE VERIFY] RESET before sensor_accel_z_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 47/75 sensor_accel_z_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_z_jump: OK
+[LIVE VERIFY] RESET before sensor_accel_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 48/75 sensor_accel_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_z_stuck: OK
+[LIVE VERIFY] RESET before sensor_accel_z_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 49/75 sensor_accel_z_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_z_noise: OK
+[LIVE VERIFY] RESET before sensor_accel_z_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 50/75 sensor_accel_z_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_accel_z_consistency: OK
+[LIVE VERIFY] RESET before sensor_gyro_x_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 51/75 sensor_gyro_x_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_x_range: OK
+[LIVE VERIFY] RESET before sensor_gyro_x_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 52/75 sensor_gyro_x_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_x_jump: OK
+[LIVE VERIFY] RESET before sensor_gyro_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 53/75 sensor_gyro_x_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_x_stuck: OK
+[LIVE VERIFY] RESET before sensor_gyro_x_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 54/75 sensor_gyro_x_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_x_noise: OK
+[LIVE VERIFY] RESET before sensor_gyro_x_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 55/75 sensor_gyro_x_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_x_consistency: OK
+[LIVE VERIFY] RESET before sensor_gyro_y_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 56/75 sensor_gyro_y_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_y_range: OK
+[LIVE VERIFY] RESET before sensor_gyro_y_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 57/75 sensor_gyro_y_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_y_jump: OK
+[LIVE VERIFY] RESET before sensor_gyro_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 58/75 sensor_gyro_y_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_y_stuck: OK
+[LIVE VERIFY] RESET before sensor_gyro_y_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 59/75 sensor_gyro_y_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_y_noise: OK
+[LIVE VERIFY] RESET before sensor_gyro_y_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 60/75 sensor_gyro_y_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_y_consistency: OK
+[LIVE VERIFY] RESET before sensor_gyro_z_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 61/75 sensor_gyro_z_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 295.05 ms (프레임 seq: 3389)
+[LIVE VERIFY] PASS sensor_gyro_z_range: OK
+[LIVE VERIFY] RESET before sensor_gyro_z_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 62/75 sensor_gyro_z_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_z_jump: OK
+[LIVE VERIFY] RESET before sensor_gyro_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 63/75 sensor_gyro_z_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_z_stuck: OK
+[LIVE VERIFY] RESET before sensor_gyro_z_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 64/75 sensor_gyro_z_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_z_noise: OK
+[LIVE VERIFY] RESET before sensor_gyro_z_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 65/75 sensor_gyro_z_consistency
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_gyro_z_consistency: OK
+[LIVE VERIFY] RESET before sensor_temperature_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 66/75 sensor_temperature_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_temperature_stuck: OK
+[LIVE VERIFY] RESET before sensor_temperature_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 67/75 sensor_temperature_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_temperature_noise: OK
+[LIVE VERIFY] RESET before sensor_humidity_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 68/75 sensor_humidity_range
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_humidity_range: OK
+[LIVE VERIFY] RESET before sensor_humidity_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 69/75 sensor_humidity_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_humidity_jump: OK
+[LIVE VERIFY] RESET before sensor_humidity_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 70/75 sensor_humidity_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_humidity_stuck: OK
+[LIVE VERIFY] RESET before sensor_humidity_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 71/75 sensor_humidity_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_humidity_noise: OK
+[LIVE VERIFY] RESET before sensor_lux_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 72/75 sensor_lux_jump
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_lux_jump: OK
+[LIVE VERIFY] RESET before sensor_lux_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 73/75 sensor_lux_stuck
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_lux_stuck: OK
+[LIVE VERIFY] RESET before sensor_lux_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 74/75 sensor_lux_noise
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS sensor_lux_noise: OK
+[LIVE VERIFY] RESET before sensor_timeout_global
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] 75/75 sensor_timeout_global
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] timeout dropout complete; observing recovery
+[LIVE VERIFY] PASS sensor_timeout_global: OK
+CARLA LIVE CONTROL RESULT: PASS=71 FAIL=4
+
+Cleaning up session...
+Finished.
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+INFO:  Found the required file in cache!  Carla/Maps/TM/Town04.bin 

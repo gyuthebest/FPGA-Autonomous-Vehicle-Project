@@ -186,7 +186,14 @@ class VehicleController:
         # --------------------------------------------------
         # Steering
         # --------------------------------------------------
-        if command.manual_mode:
+        fpga_steering = getattr(command, "fpga_steering_override", None)
+
+        if fpga_steering is not None:
+            # FPGA returns normalized signed steering in the range [-1.0, 1.0].
+            # It is already the final safety-limited command for this sample.
+            self.current_steering = max(-1.0, min(1.0, float(fpga_steering)))
+
+        elif command.manual_mode:
             
             steer = (
                 command.steering

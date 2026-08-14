@@ -1,0 +1,50 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
+| Date         : Fri Aug 14 14:55:02 2026
+| Host         : JH_HP running 64-bit major release  (build 9200)
+| Command      : report_ip_status
+------------------------------------------------------------------------------------
+
+IP Status Summary
+
+1. Project IP Status
+--------------------
+Your project uses 6 IP. Some of these IP may have undergone changes in this release of the software. Please review the recommended actions.
+
+More information on the Xilinx versioning policy is available at www.xilinx.com.
+
+Project IP Instances
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| Instance Name                | Status     | Recommendation      | Change    | IP Name            | IP      | New Version   | New        | Original Part        |
+|                              |            |                     | Log       |                    | Version |               | License    |                      |
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_proc_sys_reset_0_0  | Up-to-date | No changes required |  *(1)     | Processor System   | 5.0     | 5.0 (Rev. 13) | Included   | xczu2cg-sfvc784-1-e  |
+|                              |            |                     |           | Reset              | (Rev.   |               |            |                      |
+|                              |            |                     |           |                    | 13)     |               |            |                      |
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_ps8_0_axi_periph_0  | Up-to-date | No changes required |  *(2)     | AXI Interconnect   | 2.1     | 2.1 (Rev. 28) | Included   | xczu2cg-sfvc784-1-e  |
+|                              |            |                     |           |                    | (Rev.   |               |            |                      |
+|                              |            |                     |           |                    | 28)     |               |            |                      |
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_top_controller_0_0  | Up-to-date | No changes required | Change    | top_controller_v1_ | 1.0     | 1.0 (Rev. 2)  | Included   | xczu2cg-sfvc784-1-e  |
+|                              |            |                     | Log not   |                    | (Rev.   |               |            |                      |
+|                              |            |                     | available |                    | 2)      |               |            |                      |
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_zynq_ultra_ps_e_0_0 | Up-to-date | No changes required |  *(3)     | Zynq UltraScale+   | 3.4     | 3.4 (Rev. 1)  | Included   | xczu2cg-sfvc784-1-e  |
+|                              |            |                     |           | MPSoC              | (Rev.   |               |            |                      |
+|                              |            |                     |           |                    | 1)      |               |            |                      |
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| top_controller_0             | Up-to-date | No changes required | Change    | top_controller_v1_ | 1.0     | 1.0 (Rev. 2)  | Included   | xczu2cg-sfvc784-1-e  |
+|                              |            |                     | Log not   |                    | (Rev.   |               |            |                      |
+|                              |            |                     | available |                    | 2)      |               |            |                      |
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| top_controller_1             | Up-to-date | No changes required | Change    | top_controller_v1_ | 1.0     | 1.0 (Rev. 2)  | Included   | xczu2cg-sfvc784-1-e  |
+|                              |            |                     | Log not   |                    | (Rev.   |               |            |                      |
+|                              |            |                     | available |                    | 2)      |               |            |                      |
++------------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+*(1) c:/Xilinx/Vivado/2022.2/data/ip/xilinx/proc_sys_reset_v5_0/doc/proc_sys_reset_v5_0_changelog.txt
+*(2) c:/Xilinx/Vivado/2022.2/data/ip/xilinx/axi_interconnect_v2_1/doc/axi_interconnect_v2_1_changelog.txt
+*(3) c:/Xilinx/Vivado/2022.2/data/ip/xilinx/zynq_ultra_ps_e_v3_4/doc/zynq_ultra_ps_e_v3_4_changelog.txt
+
+

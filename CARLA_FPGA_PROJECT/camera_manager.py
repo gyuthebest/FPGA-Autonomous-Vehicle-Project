@@ -13,7 +13,7 @@ import math
 
 class CameraManager:
 
-    def __init__(self, world, vehicle):
+    def __init__(self, world, vehicle, image_width=1280, image_height=720):
 
         self.world = world
         self.vehicle = vehicle
@@ -29,8 +29,11 @@ class CameraManager:
             "sensor.camera.rgb"
         )
 
-        blueprint.set_attribute("image_size_x", "640")
-        blueprint.set_attribute("image_size_y", "360")
+        # Match the CARLA RGB sensor to the pygame display.  Drawing a fixed
+        # 640x360 sensor image on a fullscreen monitor makes the scene blurry
+        # and leaves most of the display unused.
+        blueprint.set_attribute("image_size_x", str(max(1, int(image_width))))
+        blueprint.set_attribute("image_size_y", str(max(1, int(image_height))))
         blueprint.set_attribute("fov", "90")
 
         transform = carla.Transform(
@@ -84,8 +87,9 @@ class CameraManager:
         self.last_camera_pitch = pitch
 
         if mode == "first_person":
-            # 운전석 부근 1인칭
-            loc = carla.Location(x=0.5, y=-0.4, z=1.2)
+            # 차량 중심선 1인칭.  y=-0.4 는 좌측 운전석 오프셋이라 화면이 왼쪽으로
+            # 치우쳐 보였다.  y=0.0 으로 차량 세로축 중앙에 맞춘다.
+            loc = carla.Location(x=0.5, y=0.0, z=1.2)
             rot = carla.Rotation(pitch=0.0, yaw=0.0, roll=0.0)
         else:
             # 3인칭 궤도(Orbit) 회전

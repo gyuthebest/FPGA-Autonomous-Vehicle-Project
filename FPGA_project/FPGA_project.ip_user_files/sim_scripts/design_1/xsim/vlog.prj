@@ -1,0 +1,23 @@
+verilog xil_defaultlib --include "C:/Xilinx/Vivado/2022.2/data/xilinx_vip/include" --include "../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/ec67/hdl" --include "../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/abef/hdl" \
+"../../../bd/design_1/ip/design_1_zynq_ultra_ps_e_0_0/sim/design_1_zynq_ultra_ps_e_0_0_vip_wrapper.v" \
+"../../../bd/design_1/ip/design_1_auto_pc_0/sim/design_1_auto_pc_0.v" \
+
+sv xil_defaultlib --include "C:/Xilinx/Vivado/2022.2/data/xilinx_vip/include" --include "../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/ec67/hdl" --include "../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/abef/hdl" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/types_pkg.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/consistency_checker.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/mask_20s.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/preprocessor.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/risk_control.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/risk_types.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/sensor_checker.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/sensor_reliability.sv" \
+"../../../bd/design_1/ipshared/765a/sources_1/new/top_controller.sv" \
+"../../../bd/design_1/ip/design_1_top_controller_0_0/sim/design_1_top_controller_0_0.sv" \
+
+verilog xil_defaultlib --include "C:/Xilinx/Vivado/2022.2/data/xilinx_vip/include" --include "../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/ec67/hdl" --include "../../../../FPGA_project.gen/sources_1/bd/design_1/ipshared/abef/hdl" \
+"../../../bd/design_1/sim/design_1.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+nosort

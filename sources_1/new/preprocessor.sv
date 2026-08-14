@@ -449,6 +449,28 @@ module preprocessor (
 
     logic signed [11:0] sin_x, cos_x, sin_y, cos_y, tan_x, tan_y, steer_lut_val;
     logic signed [31:0] grav_x, grav_y, grav_z;
+    // Verilog sizes a product as max(operand, context) width, not the sum, so
+    // a bare (a * b) >>> LUT_SH inside a narrow assignment wraps the product
+    // *before* the shift.  pred_gyro_z_3 (16-bit LHS, 14x12 product) lost the
+    // steering prediction entirely this way -- board capture matched a model
+    // that truncated the product to 16 bits on 38973/38973 comparisons.
+    // pred_accel_y_3 (12-bit LHS, 12x12 product) has the same defect; it is
+    // masked while driving by consistency_mask_5 and shows up only on a slope
+    // at standstill.  Compute both products at full width first.
+    logic signed [31:0] steer_yaw_pred;      // 관계식 17 : speed_x * steer LUT
+    logic signed [31:0] accel_y_tilt_pred;   // 관계식 15 : accel_z * tan(incline_x)
+    // 관계식 4 (횡가속도) 는 a_y = dv_y/dt + g_y 만 기준값으로 삼고 있었다.
+    // 차체 좌표계에서 실제 횡가속도에는 구심항 v_x*w_z 가 반드시 들어간다.
+    // 정상 선회에서는 body-frame 횡속도가 거의 변하지 않아 dv_y/dt ~ 0 인데
+    // 실제 a_y 는 v_x*w_z 만큼 나오므로, 이 항이 없으면 정상 선회가 그대로
+    // 고장으로 판정된다.  실캡처 3543 표본에서 잔차 중앙값 111 (임계 76),
+    // 임계 초과 55.8 % 였고 구심항을 넣으면 중앙값 7 / 0.65 % 가 된다.
+    //
+    // 단위 : v_x LSB 0.01 m/s, w_z LSB 0.001 rad/s, a_y LSB 0.01 m/s^2 이므로
+    //        정확한 계수는 1/1000 이다.  >>> LUT_SH (1/1024) 는 2.4 % 작지만
+    //        그 오차는 최대 12 raw 로 임계 76 대비 무시할 수 있고 곱셈기를
+    //        추가하지 않는다.
+    logic signed [31:0] centripetal_pred;    // 관계식 4  : speed_x * gyro_z
     logic signed [31:0] abs_y, abs_z;
     logic signed [31:0] abs_max, abs_min;
     logic signed [31:0] approx1, approx2, approx_sqrt;
@@ -467,6 +489,10 @@ module preprocessor (
         grav_x = -(G * sin_y) >>> LUT_SH;
         grav_y = (G * sin_x * cos_y) >>> (2 * LUT_SH);
         grav_z = (G * cos_x * cos_y) >>> (2 * LUT_SH);
+
+        steer_yaw_pred    = sim_data_in.speed_x * steer_lut_val;
+        accel_y_tilt_pred = sensor_data_in.accel_z * tan_x;
+        centripetal_pred  = sim_data_in.speed_x * sensor_data_in.gyro_z;
 
         abs_y = abs(sensor_data_in.accel_y);
         abs_z = abs(sensor_data_in.accel_z);
@@ -534,9 +560,9 @@ module preprocessor (
                 pred_data_out.pred_accel_x_1      <= (sim_data_in.speed_x - speed_x_prev[W-1]) * C_ACC + grav_x * S_ACC;
                 pred_data_out.pred_accel_x_2      <= grav_x;
                 pred_data_out.pred_accel_x_3      <= (-approx_sqrt * tan_y) >>> LUT_SH;
-                pred_data_out.pred_accel_y_1      <= (sim_data_in.speed_y - speed_y_prev[W-1]) * C_ACC + grav_y * S_ACC;
+                pred_data_out.pred_accel_y_1      <= (sim_data_in.speed_y - speed_y_prev[W-1]) * C_ACC + grav_y * S_ACC + (centripetal_pred >>> LUT_SH);
                 pred_data_out.pred_accel_y_2      <= grav_y;
-                pred_data_out.pred_accel_y_3      <= (sensor_data_in.accel_z * tan_x) >>> LUT_SH;
+                pred_data_out.pred_accel_y_3      <= accel_y_tilt_pred >>> LUT_SH;
                 pred_data_out.pred_accel_z_1      <= (sim_data_in.speed_z - speed_z_prev[W-1]) * C_ACC + grav_z * S_ACC;
                 pred_data_out.pred_accel_z_2      <= grav_z;
                 pred_data_out.pred_gyro_x_1       <= (sim_data_in.incline_x - sim_data_out.incline_x) * C_GYR;
@@ -545,7 +571,7 @@ module preprocessor (
                 pred_data_out.pred_gyro_y_2       <= '0;
                 pred_data_out.pred_gyro_z_1       <= (sim_data_in.incline_z - sim_data_out.incline_z) * C_GYR;
                 pred_data_out.pred_gyro_z_2       <= '0;
-                pred_data_out.pred_gyro_z_3       <= (sim_data_in.speed_x * steer_lut_val) >>> LUT_SH;
+                pred_data_out.pred_gyro_z_3       <= steer_yaw_pred >>> LUT_SH;
             end
         end
     end

@@ -1,0 +1,28 @@
+case,passed,samples,details
+baseline,1,13,OK
+collision_caution,1,13,OK
+collision_danger,1,13,OK
+collision_critical,1,13,OK
+collision_emergency,1,13,OK
+road_wet,0,13,road_surface=2 expected=1 | road_surface=2 expected=1 | road_surface=2 expected=1 | road_surface=2 expected=1 | road_surface=2 expected=1
+road_ice,1,13,OK
+road_black_ice,1,13,OK
+impact_rough,0,13,"road_impact=0 expected=1, brake=0 min=2"
+impact_severe,0,13,"road_impact=1 expected=2, speed_limit=61.16 max=47.08"
+impact_extreme,0,13,"road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19"
+visibility_dim,0,13,visibility_light=2 expected=1 | visibility_light=2 expected=1 | visibility_light=2 expected=1 | visibility_light=2 expected=1 | visibility_light=2 expected=1
+visibility_dark,1,13,OK
+visibility_very_dark,1,13,OK
+weather_fog,1,13,OK
+weather_rain,1,13,OK
+weather_snow,1,13,OK
+posture_roll,1,13,OK
+posture_yaw_caution,1,13,OK
+posture_yaw_danger,0,13,"yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0"
+posture_lateral_caution,1,13,OK
+posture_lateral_danger,0,13,brake=3 max=0 | brake=3 max=0 | brake=3 max=0 | brake=3 max=0 | brake=3 max=0
+reliability_degraded_escalates_surface,1,13,OK
+reliability_invalid_surface_floor,1,13,OK
+reliability_invalid_impact_floor,1,13,OK
+reliability_invalid_visibility_floor,1,13,OK
+reliability_invalid_collision_floor,1,13,OK

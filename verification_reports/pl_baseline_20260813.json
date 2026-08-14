@@ -1,0 +1,309 @@
+{
+  "created_utc": "2026-08-12T15:34:20.531962+00:00",
+  "repo": "C:\\Users\\jiho0\\GitProjects\\FPGA-Autonomous-Vehicle-Project",
+  "policy": "PL source and parameters frozen for CARLA-based calibration",
+  "git": {
+    "commit": "c034506d8f1951896bf0daa7d0f32e8c504af84a",
+    "status_porcelain": "D CARLA_FPGA_PROJECT/logs/drive_20260811_163836.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164018.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164323.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164324.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164330.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164331.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164332.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164333.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164334.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164335.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164336.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164337.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_164338.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_165545.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_170110.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_170146.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_170152.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172317.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172357.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172358.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172359.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172400.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172401.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172402.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172415.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172605.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172630.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172632.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172650.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172651.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172652.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172653.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_172654.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_173803.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_173850.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_173851.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_173946.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202355.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202408.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202425.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202426.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202427.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202428.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202429.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202430.csv\n D CARLA_FPGA_PROJECT/logs/drive_20260811_202431.csv\n M CARLA_FPGA_PROJECT/main.py\n M CARLA_FPGA_PROJECT/vehicle_command.py\n M CARLA_FPGA_PROJECT/vehicle_controller.py\nA  sources_1/board_preset.tcl\n M sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v\nM  sources_1/new/mask_20s.sv\nM  sources_1/new/preprocessor.sv\nM  sources_1/new/risk_control.sv\nM  sources_1/new/sensor_checker.sv\nM  sources_1/new/sensor_reliability.sv\nMM sources_1/new/top_controller.sv\nA  sources_1/verify_sources.tcl\n?? CARLA_FPGA_PROJECT/fpga_interface.py\n?? CARLA_FPGA_PROJECT/logs/drive_20260812_170148.csv\n?? CARLA_FPGA_PROJECT/logs/drive_20260812_170212.csv\n?? FPGA_project/\n?? SYS_WRAP_automobile/\n?? component.xml\n?? logs/\n?? sim_proj/\n?? \"sources_1/PS_\\354\\240\\201\\354\\232\\251\\353\\260\\251\\353\\262\\225.txt\"\n?? sources_1/awdfsadf/\n?? sources_1/ps_carla_bridge.c\n?? sources_1/ps_carla_bridge.h\n?? sources_1/ps_main_udp_example.c\n?? sources_1/run.tcl\n?? sources_1/run_sim.bat\n?? sources_1/tb_core_logic.sv\n?? sources_1/tb_core_logic_snap.wdb\n?? sources_1/verification/\n?? sources_1/vivado.jou\n?? sources_1/vivado.log\n?? sources_1/xelab.log\n?? sources_1/xelab.pb\n?? sources_1/xsim.dir/\n?? sources_1/xsim.jou\n?? sources_1/xsim.log\n?? sources_1/xsim_33136.backup.jou\n?? sources_1/xsim_33136.backup.log\n?? sources_1/xvlog.log\n?? sources_1/xvlog.pb\n?? \"sources_1/\\353\\241\\234\\354\\273\\254 \\353\\260\\261\\354\\227\\205 \\355\\214\\214\\354\\235\\274/\"\n?? vivado.jou\n?? vivado.log\n?? xgui/"
+  },
+  "files": [
+    {
+      "path": "component.xml",
+      "bytes": 35361,
+      "sha256": "b77227a38b36c179e5103cdc876ddf266decae19cc0116f5e5427fbf3e21080a"
+    },
+    {
+      "path": "FPGA_project\\design_1_wrapper.xsa",
+      "bytes": 1038916,
+      "sha256": "6b064cafdb349ab5a64d2485694784e2e4b82d171a5a18376d9d4fa845ad9fe8"
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\ip\\sensor_input_1_0\\hdl\\sensor_input_v1_0_S00_AXI.v",
+      "bytes": 23065,
+      "sha256": "5a04769d51d5d0c0a59a05b40855053d485103cbd1868b0e74e370f084f4c958",
+      "parameter_declarations": [
+        "parameter integer C_S_AXI_DATA_WIDTH = 32, // Width of S_AXI address bus parameter integer C_S_AXI_ADDR_WIDTH = 6 ) ( // Users to add ports here output sensor_data_t sensor_data_out, output sim_data_t sim_data_out, output logic [31:0] sample_seq, input risk_t risk_in, input reliability_state_t rel_in, input sensor_data_t sensor_data_in, input sim_data_t sim_data_in, input logic [31:0] sample_seq_risk, input logic [31:0] sample_seq_rel, input logic [1:0] valid_out_rel_risk, input logic transition_demand, input logic hud_warning, input logic mrm, input logic [3:0] td_remain_sec, // User ports ends // Do not modify the ports beyond this line // Global Clock Signal input wire S_AXI_ACLK, // Global Reset Signal. This Signal is Active LOW input wire S_AXI_ARESETN, // Write address (issued by master, acceped by Slave) input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_AWADDR, // Write channel Protection type. This signal indicates the // privilege and security level of the transaction, and whether // the transaction is a data access or an instruction access. input wire [2 : 0] S_AXI_AWPROT, // Write address valid. This signal indicates that the master signaling // valid write address and control information. input wire S_AXI_AWVALID, // Write address ready. This signal indicates that the slave is ready // to accept an address and associated control signals. output wire S_AXI_AWREADY, // Write data (issued by master, acceped by Slave) input wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_WDATA, // Write strobes. This signal indicates which byte lanes hold // valid data. There is one write strobe bit for each eight // bits of the write data bus. input wire [(C_S_AXI_DATA_WIDTH/8)-1 : 0] S_AXI_WSTRB, // Write valid. This signal indicates that valid write // data and strobes are available. input wire S_AXI_WVALID, // Write ready. This signal indicates that the slave // can accept the write data. output wire S_AXI_WREADY, // Write response. This signal indicates the status // of the write transaction. output wire [1 : 0] S_AXI_BRESP, // Write response valid. This signal indicates that the channel // is signaling a valid write response. output wire S_AXI_BVALID, // Response ready. This signal indicates that the master // can accept a write response. input wire S_AXI_BREADY, // Read address (issued by master, acceped by Slave) input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_ARADDR, // Protection type. This signal indicates the privilege // and security level of the transaction, and whether the // transaction is a data access or an instruction access. input wire [2 : 0] S_AXI_ARPROT, // Read address valid. This signal indicates that the channel // is signaling valid read address and control information. input wire S_AXI_ARVALID, // Read address ready. This signal indicates that the slave is // ready to accept an address and associated control signals. output wire S_AXI_ARREADY, // Read data (issued by slave) output wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_RDATA, // Read response. This signal indicates the status of the // read transfer. output wire [1 : 0] S_AXI_RRESP, // Read valid. This signal indicates that the channel is // signaling the required read data. output wire S_AXI_RVALID, // Read ready. This signal indicates that the master can // accept the read data and response information. input wire S_AXI_RREADY );",
+        "parameter for addressing 32 bit / 64 bit C_S_AXI_DATA_WIDTH // ADDR_LSB is used for addressing 32/64 bit registers/memories // ADDR_LSB = 2 for 32 bits (n downto 2) // ADDR_LSB = 3 for 64 bits (n downto 3) localparam integer ADDR_LSB = (C_S_AXI_DATA_WIDTH/32) + 1;",
+        "localparam integer OPT_MEM_ADDR_BITS = 3;"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\consistency_checker.sv",
+      "bytes": 1862,
+      "sha256": "63abb5c8366a4f1c3458532c533ffcb61d6b694da3be4b6b43128f1376689c8e",
+      "parameter_declarations": [
+        "parameter WIDTH = 12, parameter S = 40, parameter CONSISTENCY_THRESHOLD = 360, parameter int unsigned CONSISTENCY_U = 1, parameter int unsigned CONSISTENCY_D = 3, parameter int unsigned CONSISTENCY_N = 8 )( input clk, input rst_n, input valid_s1, input timeout_mask_2s, input consistency_mask, input signed [WIDTH-1:0] sensor_data, input signed [WIDTH-1:0] pred_data, output logic consistency_error );"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\mask_20s.sv",
+      "bytes": 1357,
+      "sha256": "1a17f13f3341f9b45571a7fab7decb9a0245e14c85c202ddff6a224ac934ded3",
+      "parameter_declarations": [
+        "parameter CLK_FREQ = 100000000, //100MHz 가정 )( */ parameter int unsigned CLK_FREQ = 100000000 ) ( input logic clk, input logic rst_n, input logic stuck_err, input logic consistency_error_approach_speed, output logic stuck_mask_20s, output logic consistency_mask_20s_approach_speed );"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\preprocessor.sv",
+      "bytes": 22534,
+      "sha256": "a63a2b1d9349daa8d0fb854351758fabba6dea46f88fb79718da1cd1b70b10bb",
+      "parameter_declarations": [
+        "localparam HISTORY = 10;",
+        "localparam int S_DIST = 40;",
+        "localparam int C_DIST = 1;",
+        "localparam int S_APSP = 1;",
+        "localparam int C_APSP = 20;",
+        "localparam int S_ACC = 1;",
+        "localparam int C_ACC = 10;",
+        "localparam int S_GYR = 1024;",
+        "localparam int C_GYR = 3574;",
+        "localparam M = 100;",
+        "localparam W = 2;",
+        "localparam int G = 981;",
+        "localparam int L = 272;",
+        "localparam int LUT_SH = 10;",
+        "localparam int INCL_MAX = 3000;",
+        "localparam int STEER_MAX = 100;",
+        "localparam int CLAMP_TH = 2990;",
+        "localparam int LVL_TH = 300;",
+        "localparam int YAW_TH = 2000;",
+        "localparam int STOP_TH = 10;",
+        "localparam int SPD_MIN = 100;"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\risk_control.sv",
+      "bytes": 31244,
+      "sha256": "5dcfc5e027c873dc122efbad5d9e6e06f218b055eb6ca368a38b9298b790122a",
+      "parameter_declarations": [
+        "parameter int CLK_FREQ = 100000000 // 100MHz 가정 ) ( input logic clk,// input logic rst_n,// input logic valid_in,// input logic valid_in_rel,/// input logic [31:0] sample_seq_in,// input logic [31:0] sample_seq_in_rel, //수정 // input sensor_data_t sensor_data_in,// input sim_data_t sim_data_in,// input reliability_state_t rel_in,// input risk_t risk_in,// // output logic [31:0] sample_seq_out_risk,// output logic [31:0] sample_seq_out_rel, //수정 //output logic valid_out_risk, //output logic valid_out_rel, output logic [1:0] valid_out_rel_risk, // output risk_t risk_out,// output reliability_state_t rel_out,// output sensor_data_t sensor_data_out,// output sim_data_t sim_data_out,// output logic transition_demand, output logic hud_warning, output logic mrm, output logic [3:0] td_remain_sec );",
+        "localparam logic [1:0] NORMAL = 2'b00;",
+        "localparam logic [1:0] DEGRADED = 2'b01;",
+        "localparam logic [1:0] INVALID = 2'b10;",
+        "localparam int COUNT_05_FREQ = CLK_FREQ >>> 1;",
+        "localparam int CNT_WIDTH = (COUNT_05_FREQ <= 1) ? 1: $clog2(COUNT_05_FREQ + 1);",
+        "localparam int ONE_SEC_CYCLES = CLK_FREQ;"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\risk_types.sv",
+      "bytes": 6603,
+      "sha256": "c52c194fb5fbbce78cb2339b75d750b5baabc4d1e886424fe63330ec71ff3cd7",
+      "parameter_declarations": [
+        "localparam logic [11:0] ACCEL_0_5G = 12'd490;",
+        "localparam logic [11:0] ACCEL_0_8G = 12'd784;",
+        "localparam logic [11:0] ACCEL_1_0G = 12'd980;",
+        "localparam logic [11:0] ACCEL_2_0G = 12'd1960;",
+        "localparam logic [15:0] GYRO_30DEGS = 16'd524;",
+        "localparam logic [15:0] GYRO_40DEGS = 16'd698;",
+        "localparam logic [15:0] GYRO_60DEGS = 16'd1047;"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\sensor_checker.sv",
+      "bytes": 7122,
+      "sha256": "f87d12c24de3bbf084a6a1d6974ec70d630290e615f41f63747109b9a3a8c830",
+      "parameter_declarations": [
+        "parameter WIDTH = 12, parameter DW = 13, parameter TW = 13, parameter CHANNEL_TYPE_1 = 1, parameter CHANNEL_TYPE_2 = 1, parameter UPDATE_CLK_X2 = 20, parameter DROP_N = 2, parameter HISTORY = 10, parameter RANGE_THRESHOLD_MAX = 100, parameter RANGE_THRESHOLD_MIN = 100, parameter JUMP_THRESHOLD = 100, parameter STUCK_THRESHOLD = 0, parameter NOISE_THRESHOLD_1 = 10, parameter NOISE_THRESHOLD_2 = 10, parameter RANGE_USE_MIN = 1'b1, parameter RANGE_USE_MAX = 1'b1, parameter int unsigned RANGE_U = 1, // ← unsigned parameter int unsigned RANGE_D = 1, parameter int unsigned RANGE_N = 10, parameter int unsigned JUMP_U = 1, // ← unsigned parameter int unsigned JUMP_D = 1, parameter int unsigned JUMP_N = 10, parameter int unsigned STUCK_U = 1, // ← unsigned parameter int unsigned STUCK_D = 1, parameter int unsigned STUCK_N = 10, parameter int unsigned TIMEOUT_U = 1, // ← unsigned parameter int unsigned TIMEOUT_D = 1, parameter int unsigned TIMEOUT_N = 10 )( input clk, input rst_n, input valid_s1, input [31:0] clk_cnt, input stuck_mask, input signed [WIDTH-1:0] sensor_data, input signed [DW-1:0] processed_data, input signed [DW-1:0] prev_processed_data, input signed [TW-1:0] trig_val_1, input signed [TW-1:0] trig_val_2, input [2:0] situation, output logic range_error, output logic jump_error, output logic stuck_error, output logic timeout_error, output logic noise_error, output logic timeout_mask_1s, output logic timeout_mask_2s );",
+        "localparam int SUM_W = DW + $clog2(HISTORY + 1);"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\sensor_reliability.sv",
+      "bytes": 35848,
+      "sha256": "f8b192871584b272545085551c04e0532654593815c652e6ad59432f60492a08",
+      "parameter_declarations": [
+        "parameter int unsigned CLK_FREQ_HZ = 100000000, parameter int unsigned SAMPLE_RATE_HZ = 20 ) ( input clk,// input rst_n,// input valid_s1,// input [31:0] sample_seq_in,// input [31:0] clk_cnt, // input sensor_data_t sensor_data_in,// input processed_data_t processed_data_in,// input processed_data_t prev_processed_data_in,// input pred_data_t pred_data_in,// input consistency_mask_1,// input consistency_mask_2,// input consistency_mask_3,// input [2:0] situation, // output logic timeout_mask_1s,// output logic consistency_mask_1s_approach_speed,// output logic consistency_mask_20s_approach_speed, // 20s 추가// output logic [31:0] sample_seq_out_rel,// output logic valid_out_rel,// output reliability_state_t reliability_out// );",
+        "localparam int NCH = 11;",
+        "localparam int CH_DIST = 0, CH_APSP = 1, CH_AX = 2, CH_AY = 3, CH_AZ = 4, CH_GX = 5, CH_GY = 6, CH_GZ = 7, CH_TEMP = 8, CH_HUM = 9, CH_LUX = 10;",
+        "localparam int RU = 1, RD = 1, RN = 3;",
+        "localparam int JU = 6, JD = 1, JN = 18;",
+        "localparam int NU = 1, ND = 1, NN = 3;",
+        "localparam int TU = 1, TD = 2, TN = 10;",
+        "localparam int UPDATE_CLK_X2 = (2 * CLK_FREQ_HZ) / SAMPLE_RATE_HZ;",
+        "localparam int DROP_N = 2;",
+        "localparam int HISTORY_LEN = 10;",
+        "localparam int S_DIST = 40, C_DIST = 1;",
+        "localparam int S_APSP = 1, C_APSP = 20;",
+        "localparam int S_ACC = 1, C_ACC = 10;",
+        "localparam int S_GYR = 1024, C_GYR = 3574;",
+        "localparam int M_WIN = 100;",
+        "localparam int W_WIN = 2;",
+        "localparam int TH_DIST = 360;",
+        "localparam int TH_APSP = 51;",
+        "localparam int TH_ACC = 76;",
+        "localparam int TH_GYR = 270;",
+        "localparam int TH_ACC_STOP = 4;",
+        "localparam int TH_GYR_STOP = 4;",
+        "localparam int TH_ACC_TILT = 43;",
+        "localparam int TH_GYR_STEER = 120;",
+        "localparam int U_CONS = 1, D_CONS = 3, N_CONS = 8;"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\top_controller.sv",
+      "bytes": 10379,
+      "sha256": "281b383a0ea5e98cea5788d312c2e4fe15772c48e48e30a2b6f72d9c5552e7ce",
+      "parameter_declarations": [
+        "parameter integer C_S_AXI_DATA_WIDTH = 32, parameter integer C_S_AXI_ADDR_WIDTH = 6, parameter integer CLK_FREQ_HZ = 100000000, parameter integer SAMPLE_RATE_HZ = 20 )( //------------------------------------------------------------ // AXI Clock / Reset //------------------------------------------------------------ input logic S_AXI_ACLK, input logic S_AXI_ARESETN, //------------------------------------------------------------ // AXI Write Address Channel //------------------------------------------------------------ input logic [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_AWADDR, input logic [2:0] S_AXI_AWPROT, input logic S_AXI_AWVALID, output logic S_AXI_AWREADY, //------------------------------------------------------------ // AXI Write Data Channel //------------------------------------------------------------ input logic [C_S_AXI_DATA_WIDTH-1:0] S_AXI_WDATA, input logic [(C_S_AXI_DATA_WIDTH/8)-1:0] S_AXI_WSTRB, input logic S_AXI_WVALID, output logic S_AXI_WREADY, //------------------------------------------------------------ // AXI Write Response Channel //------------------------------------------------------------ output logic [1:0] S_AXI_BRESP, output logic S_AXI_BVALID, input logic S_AXI_BREADY, //------------------------------------------------------------ // AXI Read Address Channel //------------------------------------------------------------ input logic [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_ARADDR, input logic [2:0] S_AXI_ARPROT, input logic S_AXI_ARVALID, output logic S_AXI_ARREADY, //------------------------------------------------------------ // AXI Read Data Channel //------------------------------------------------------------ output logic [C_S_AXI_DATA_WIDTH-1:0] S_AXI_RDATA, output logic [1:0] S_AXI_RRESP, output logic S_AXI_RVALID, input logic S_AXI_RREADY //------------------------------------------------------------ // Pipeline Outputs //------------------------------------------------------------ );"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.gen\\sources_1\\bd\\design_1\\ipshared\\3a87\\sources_1\\new\\types_pkg.sv",
+      "bytes": 5709,
+      "sha256": "37e9b6092d9873cc4081d74f20cdfc2f8efdf412b2d9b29ca289c14e52a8b478",
+      "parameter_declarations": [
+        "localparam HISTORY = 10;"
+      ]
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.runs\\impl_1\\design_1_wrapper.bit",
+      "bytes": 5568788,
+      "sha256": "5a348773d20fcce04dd3b86aa36f0cb3079cf65a8f375451f7f74676f0372d90"
+    },
+    {
+      "path": "FPGA_project\\FPGA_project.xpr",
+      "bytes": 24375,
+      "sha256": "72780768dd68e9baca909854c6d5921f1cdd91fa89a7ce3b1614b628dad28994"
+    },
+    {
+      "path": "sources_1\\ip\\sensor_input_1_0\\hdl\\sensor_input_v1_0_S00_AXI.v",
+      "bytes": 23065,
+      "sha256": "5a04769d51d5d0c0a59a05b40855053d485103cbd1868b0e74e370f084f4c958",
+      "parameter_declarations": [
+        "parameter integer C_S_AXI_DATA_WIDTH = 32, // Width of S_AXI address bus parameter integer C_S_AXI_ADDR_WIDTH = 6 ) ( // Users to add ports here output sensor_data_t sensor_data_out, output sim_data_t sim_data_out, output logic [31:0] sample_seq, input risk_t risk_in, input reliability_state_t rel_in, input sensor_data_t sensor_data_in, input sim_data_t sim_data_in, input logic [31:0] sample_seq_risk, input logic [31:0] sample_seq_rel, input logic [1:0] valid_out_rel_risk, input logic transition_demand, input logic hud_warning, input logic mrm, input logic [3:0] td_remain_sec, // User ports ends // Do not modify the ports beyond this line // Global Clock Signal input wire S_AXI_ACLK, // Global Reset Signal. This Signal is Active LOW input wire S_AXI_ARESETN, // Write address (issued by master, acceped by Slave) input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_AWADDR, // Write channel Protection type. This signal indicates the // privilege and security level of the transaction, and whether // the transaction is a data access or an instruction access. input wire [2 : 0] S_AXI_AWPROT, // Write address valid. This signal indicates that the master signaling // valid write address and control information. input wire S_AXI_AWVALID, // Write address ready. This signal indicates that the slave is ready // to accept an address and associated control signals. output wire S_AXI_AWREADY, // Write data (issued by master, acceped by Slave) input wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_WDATA, // Write strobes. This signal indicates which byte lanes hold // valid data. There is one write strobe bit for each eight // bits of the write data bus. input wire [(C_S_AXI_DATA_WIDTH/8)-1 : 0] S_AXI_WSTRB, // Write valid. This signal indicates that valid write // data and strobes are available. input wire S_AXI_WVALID, // Write ready. This signal indicates that the slave // can accept the write data. output wire S_AXI_WREADY, // Write response. This signal indicates the status // of the write transaction. output wire [1 : 0] S_AXI_BRESP, // Write response valid. This signal indicates that the channel // is signaling a valid write response. output wire S_AXI_BVALID, // Response ready. This signal indicates that the master // can accept a write response. input wire S_AXI_BREADY, // Read address (issued by master, acceped by Slave) input wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_ARADDR, // Protection type. This signal indicates the privilege // and security level of the transaction, and whether the // transaction is a data access or an instruction access. input wire [2 : 0] S_AXI_ARPROT, // Read address valid. This signal indicates that the channel // is signaling valid read address and control information. input wire S_AXI_ARVALID, // Read address ready. This signal indicates that the slave is // ready to accept an address and associated control signals. output wire S_AXI_ARREADY, // Read data (issued by slave) output wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_RDATA, // Read response. This signal indicates the status of the // read transfer. output wire [1 : 0] S_AXI_RRESP, // Read valid. This signal indicates that the channel is // signaling the required read data. output wire S_AXI_RVALID, // Read ready. This signal indicates that the master can // accept the read data and response information. input wire S_AXI_RREADY );",
+        "parameter for addressing 32 bit / 64 bit C_S_AXI_DATA_WIDTH // ADDR_LSB is used for addressing 32/64 bit registers/memories // ADDR_LSB = 2 for 32 bits (n downto 2) // ADDR_LSB = 3 for 64 bits (n downto 3) localparam integer ADDR_LSB = (C_S_AXI_DATA_WIDTH/32) + 1;",
+        "localparam integer OPT_MEM_ADDR_BITS = 3;"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\consistency_checker.sv",
+      "bytes": 1862,
+      "sha256": "63abb5c8366a4f1c3458532c533ffcb61d6b694da3be4b6b43128f1376689c8e",
+      "parameter_declarations": [
+        "parameter WIDTH = 12, parameter S = 40, parameter CONSISTENCY_THRESHOLD = 360, parameter int unsigned CONSISTENCY_U = 1, parameter int unsigned CONSISTENCY_D = 3, parameter int unsigned CONSISTENCY_N = 8 )( input clk, input rst_n, input valid_s1, input timeout_mask_2s, input consistency_mask, input signed [WIDTH-1:0] sensor_data, input signed [WIDTH-1:0] pred_data, output logic consistency_error );"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\mask_20s.sv",
+      "bytes": 1357,
+      "sha256": "1a17f13f3341f9b45571a7fab7decb9a0245e14c85c202ddff6a224ac934ded3",
+      "parameter_declarations": [
+        "parameter CLK_FREQ = 100000000, //100MHz 가정 )( */ parameter int unsigned CLK_FREQ = 100000000 ) ( input logic clk, input logic rst_n, input logic stuck_err, input logic consistency_error_approach_speed, output logic stuck_mask_20s, output logic consistency_mask_20s_approach_speed );"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\preprocessor.sv",
+      "bytes": 22534,
+      "sha256": "a63a2b1d9349daa8d0fb854351758fabba6dea46f88fb79718da1cd1b70b10bb",
+      "parameter_declarations": [
+        "localparam HISTORY = 10;",
+        "localparam int S_DIST = 40;",
+        "localparam int C_DIST = 1;",
+        "localparam int S_APSP = 1;",
+        "localparam int C_APSP = 20;",
+        "localparam int S_ACC = 1;",
+        "localparam int C_ACC = 10;",
+        "localparam int S_GYR = 1024;",
+        "localparam int C_GYR = 3574;",
+        "localparam M = 100;",
+        "localparam W = 2;",
+        "localparam int G = 981;",
+        "localparam int L = 272;",
+        "localparam int LUT_SH = 10;",
+        "localparam int INCL_MAX = 3000;",
+        "localparam int STEER_MAX = 100;",
+        "localparam int CLAMP_TH = 2990;",
+        "localparam int LVL_TH = 300;",
+        "localparam int YAW_TH = 2000;",
+        "localparam int STOP_TH = 10;",
+        "localparam int SPD_MIN = 100;"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\risk_control.sv",
+      "bytes": 31244,
+      "sha256": "5dcfc5e027c873dc122efbad5d9e6e06f218b055eb6ca368a38b9298b790122a",
+      "parameter_declarations": [
+        "parameter int CLK_FREQ = 100000000 // 100MHz 가정 ) ( input logic clk,// input logic rst_n,// input logic valid_in,// input logic valid_in_rel,/// input logic [31:0] sample_seq_in,// input logic [31:0] sample_seq_in_rel, //수정 // input sensor_data_t sensor_data_in,// input sim_data_t sim_data_in,// input reliability_state_t rel_in,// input risk_t risk_in,// // output logic [31:0] sample_seq_out_risk,// output logic [31:0] sample_seq_out_rel, //수정 //output logic valid_out_risk, //output logic valid_out_rel, output logic [1:0] valid_out_rel_risk, // output risk_t risk_out,// output reliability_state_t rel_out,// output sensor_data_t sensor_data_out,// output sim_data_t sim_data_out,// output logic transition_demand, output logic hud_warning, output logic mrm, output logic [3:0] td_remain_sec );",
+        "localparam logic [1:0] NORMAL = 2'b00;",
+        "localparam logic [1:0] DEGRADED = 2'b01;",
+        "localparam logic [1:0] INVALID = 2'b10;",
+        "localparam int COUNT_05_FREQ = CLK_FREQ >>> 1;",
+        "localparam int CNT_WIDTH = (COUNT_05_FREQ <= 1) ? 1: $clog2(COUNT_05_FREQ + 1);",
+        "localparam int ONE_SEC_CYCLES = CLK_FREQ;"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\risk_types.sv",
+      "bytes": 6603,
+      "sha256": "c52c194fb5fbbce78cb2339b75d750b5baabc4d1e886424fe63330ec71ff3cd7",
+      "parameter_declarations": [
+        "localparam logic [11:0] ACCEL_0_5G = 12'd490;",
+        "localparam logic [11:0] ACCEL_0_8G = 12'd784;",
+        "localparam logic [11:0] ACCEL_1_0G = 12'd980;",
+        "localparam logic [11:0] ACCEL_2_0G = 12'd1960;",
+        "localparam logic [15:0] GYRO_30DEGS = 16'd524;",
+        "localparam logic [15:0] GYRO_40DEGS = 16'd698;",
+        "localparam logic [15:0] GYRO_60DEGS = 16'd1047;"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\sensor_checker.sv",
+      "bytes": 7122,
+      "sha256": "f87d12c24de3bbf084a6a1d6974ec70d630290e615f41f63747109b9a3a8c830",
+      "parameter_declarations": [
+        "parameter WIDTH = 12, parameter DW = 13, parameter TW = 13, parameter CHANNEL_TYPE_1 = 1, parameter CHANNEL_TYPE_2 = 1, parameter UPDATE_CLK_X2 = 20, parameter DROP_N = 2, parameter HISTORY = 10, parameter RANGE_THRESHOLD_MAX = 100, parameter RANGE_THRESHOLD_MIN = 100, parameter JUMP_THRESHOLD = 100, parameter STUCK_THRESHOLD = 0, parameter NOISE_THRESHOLD_1 = 10, parameter NOISE_THRESHOLD_2 = 10, parameter RANGE_USE_MIN = 1'b1, parameter RANGE_USE_MAX = 1'b1, parameter int unsigned RANGE_U = 1, // ← unsigned parameter int unsigned RANGE_D = 1, parameter int unsigned RANGE_N = 10, parameter int unsigned JUMP_U = 1, // ← unsigned parameter int unsigned JUMP_D = 1, parameter int unsigned JUMP_N = 10, parameter int unsigned STUCK_U = 1, // ← unsigned parameter int unsigned STUCK_D = 1, parameter int unsigned STUCK_N = 10, parameter int unsigned TIMEOUT_U = 1, // ← unsigned parameter int unsigned TIMEOUT_D = 1, parameter int unsigned TIMEOUT_N = 10 )( input clk, input rst_n, input valid_s1, input [31:0] clk_cnt, input stuck_mask, input signed [WIDTH-1:0] sensor_data, input signed [DW-1:0] processed_data, input signed [DW-1:0] prev_processed_data, input signed [TW-1:0] trig_val_1, input signed [TW-1:0] trig_val_2, input [2:0] situation, output logic range_error, output logic jump_error, output logic stuck_error, output logic timeout_error, output logic noise_error, output logic timeout_mask_1s, output logic timeout_mask_2s );",
+        "localparam int SUM_W = DW + $clog2(HISTORY + 1);"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\sensor_reliability.sv",
+      "bytes": 35848,
+      "sha256": "f8b192871584b272545085551c04e0532654593815c652e6ad59432f60492a08",
+      "parameter_declarations": [
+        "parameter int unsigned CLK_FREQ_HZ = 100000000, parameter int unsigned SAMPLE_RATE_HZ = 20 ) ( input clk,// input rst_n,// input valid_s1,// input [31:0] sample_seq_in,// input [31:0] clk_cnt, // input sensor_data_t sensor_data_in,// input processed_data_t processed_data_in,// input processed_data_t prev_processed_data_in,// input pred_data_t pred_data_in,// input consistency_mask_1,// input consistency_mask_2,// input consistency_mask_3,// input [2:0] situation, // output logic timeout_mask_1s,// output logic consistency_mask_1s_approach_speed,// output logic consistency_mask_20s_approach_speed, // 20s 추가// output logic [31:0] sample_seq_out_rel,// output logic valid_out_rel,// output reliability_state_t reliability_out// );",
+        "localparam int NCH = 11;",
+        "localparam int CH_DIST = 0, CH_APSP = 1, CH_AX = 2, CH_AY = 3, CH_AZ = 4, CH_GX = 5, CH_GY = 6, CH_GZ = 7, CH_TEMP = 8, CH_HUM = 9, CH_LUX = 10;",
+        "localparam int RU = 1, RD = 1, RN = 3;",
+        "localparam int JU = 6, JD = 1, JN = 18;",
+        "localparam int NU = 1, ND = 1, NN = 3;",
+        "localparam int TU = 1, TD = 2, TN = 10;",
+        "localparam int UPDATE_CLK_X2 = (2 * CLK_FREQ_HZ) / SAMPLE_RATE_HZ;",
+        "localparam int DROP_N = 2;",
+        "localparam int HISTORY_LEN = 10;",
+        "localparam int S_DIST = 40, C_DIST = 1;",
+        "localparam int S_APSP = 1, C_APSP = 20;",
+        "localparam int S_ACC = 1, C_ACC = 10;",
+        "localparam int S_GYR = 1024, C_GYR = 3574;",
+        "localparam int M_WIN = 100;",
+        "localparam int W_WIN = 2;",
+        "localparam int TH_DIST = 360;",
+        "localparam int TH_APSP = 51;",
+        "localparam int TH_ACC = 76;",
+        "localparam int TH_GYR = 270;",
+        "localparam int TH_ACC_STOP = 4;",
+        "localparam int TH_GYR_STOP = 4;",
+        "localparam int TH_ACC_TILT = 43;",
+        "localparam int TH_GYR_STEER = 120;",
+        "localparam int U_CONS = 1, D_CONS = 3, N_CONS = 8;"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\top_controller.sv",
+      "bytes": 10379,
+      "sha256": "281b383a0ea5e98cea5788d312c2e4fe15772c48e48e30a2b6f72d9c5552e7ce",
+      "parameter_declarations": [
+        "parameter integer C_S_AXI_DATA_WIDTH = 32, parameter integer C_S_AXI_ADDR_WIDTH = 6, parameter integer CLK_FREQ_HZ = 100000000, parameter integer SAMPLE_RATE_HZ = 20 )( //------------------------------------------------------------ // AXI Clock / Reset //------------------------------------------------------------ input logic S_AXI_ACLK, input logic S_AXI_ARESETN, //------------------------------------------------------------ // AXI Write Address Channel //------------------------------------------------------------ input logic [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_AWADDR, input logic [2:0] S_AXI_AWPROT, input logic S_AXI_AWVALID, output logic S_AXI_AWREADY, //------------------------------------------------------------ // AXI Write Data Channel //------------------------------------------------------------ input logic [C_S_AXI_DATA_WIDTH-1:0] S_AXI_WDATA, input logic [(C_S_AXI_DATA_WIDTH/8)-1:0] S_AXI_WSTRB, input logic S_AXI_WVALID, output logic S_AXI_WREADY, //------------------------------------------------------------ // AXI Write Response Channel //------------------------------------------------------------ output logic [1:0] S_AXI_BRESP, output logic S_AXI_BVALID, input logic S_AXI_BREADY, //------------------------------------------------------------ // AXI Read Address Channel //------------------------------------------------------------ input logic [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_ARADDR, input logic [2:0] S_AXI_ARPROT, input logic S_AXI_ARVALID, output logic S_AXI_ARREADY, //------------------------------------------------------------ // AXI Read Data Channel //------------------------------------------------------------ output logic [C_S_AXI_DATA_WIDTH-1:0] S_AXI_RDATA, output logic [1:0] S_AXI_RRESP, output logic S_AXI_RVALID, input logic S_AXI_RREADY //------------------------------------------------------------ // Pipeline Outputs //------------------------------------------------------------ );"
+      ]
+    },
+    {
+      "path": "sources_1\\new\\types_pkg.sv",
+      "bytes": 5709,
+      "sha256": "37e9b6092d9873cc4081d74f20cdfc2f8efdf412b2d9b29ca289c14e52a8b478",
+      "parameter_declarations": [
+        "localparam HISTORY = 10;"
+      ]
+    }
+  ]
+}

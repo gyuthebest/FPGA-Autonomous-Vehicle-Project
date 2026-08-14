@@ -1,0 +1,3 @@
+case,passed,samples,details
+sensor_gyro_x_stuck,1,13,OK
+sensor_gyro_y_stuck,1,13,OK

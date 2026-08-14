@@ -1,6 +1,6 @@
 # Vivado 2022.2 out-of-context verification for the complete PL pipeline.
-set script_dir {C:/Users/kim05/FPGA Project/FPGA Project.srcs/sources_1}
-set report_dir [file join $script_dir verification_reports]
+set script_dir [file normalize [file dirname [info script]]]
+set report_dir [file normalize [file join $script_dir .. verification_reports]]
 file mkdir $report_dir
 
 create_project -in_memory -part xczu2cg-sfvc784-1-e

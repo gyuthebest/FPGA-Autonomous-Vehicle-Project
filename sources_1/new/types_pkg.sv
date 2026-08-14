@@ -109,7 +109,10 @@ package types_pkg;
 
     typedef struct packed {
         
-        logic signed [15:0] pred_distance;
+        // distance is 0..20000 (cm) and S_DIST is 40, so the predictor must
+        // represent 0..800000.  signed 16-bit overflowed above 819.17 cm and
+        // made normal distance samples fail the consistency check.
+        logic signed [20:0] pred_distance;
 
         logic signed [12:0] pred_approach_speed;
 
@@ -122,11 +125,19 @@ package types_pkg;
         logic signed [11:0] pred_accel_z_1;
         logic signed [11:0] pred_accel_z_2;
 
-        logic signed [15:0] pred_gyro_x_1;
+        // pred_gyro_*_1 = (incline delta) * C_GYR(3574).
+        // incline LSB는 0.01 deg이므로 117 deg/s 선회에서
+        //   585 * 3574 = 2,090,790,
+        // yaw가 +-180 deg 경계를 넘는 순간에는
+        //   36000 * 3574 = 128,664,000
+        // 까지 나온다.  signed 16비트는 delta_incline 9(= 0.09 deg/sample,
+        // 1.8 deg/s) 이상에서 wrap되어 정상 주행 대부분에서 gyro consistency
+        // 판정을 무의미하게 만들었다.  28비트(+-134,217,728)로 넓힌다.
+        logic signed [27:0] pred_gyro_x_1;
         logic signed [15:0] pred_gyro_x_2;
-        logic signed [15:0] pred_gyro_y_1;
+        logic signed [27:0] pred_gyro_y_1;
         logic signed [15:0] pred_gyro_y_2;
-        logic signed [15:0] pred_gyro_z_1;
+        logic signed [27:0] pred_gyro_z_1;
         logic signed [15:0] pred_gyro_z_2;
         logic signed [15:0] pred_gyro_z_3;
     

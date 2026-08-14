@@ -1,0 +1,183 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Windowed: 1280x720
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+
+Town04 is already loaded; reusing the current world.
+Waiting for Town04...
+Town04 Ready.
+INFO:  Found the required file in cache!  Carla/Maps/TM/Town04.bin 
+[LIVE VERIFY] 1/27 baseline
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260814_001619.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260814_001619.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 74.31 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 163.32 ms (프레임 seq: 3)
+[LIVE VERIFY] PASS baseline: OK
+[LIVE VERIFY] 2/27 collision_caution
+[SCENARIO] Obstacle at 27.1 m (safe minimum 25.0 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 435.03 ms (프레임 seq: 25)
+[LIVE VERIFY] PASS collision_caution: OK
+[LIVE VERIFY] 3/27 collision_danger
+[SCENARIO] Obstacle at 26.8 m (safe minimum 25.0 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS collision_danger: OK
+[LIVE VERIFY] 4/27 collision_critical
+[SCENARIO] Obstacle at 25.5 m (safe minimum 25.0 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS collision_critical: OK
+[LIVE VERIFY] 5/27 collision_emergency
+[SCENARIO] Obstacle at 63.6 m (safe minimum 25.0 m)
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS collision_emergency: OK
+[LIVE VERIFY] 6/27 road_wet
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL road_wet: road_surface=2 expected=1 | road_surface=2 expected=1 | road_surface=2 expected=1 | road_surface=2 expected=1 | road_surface=2 expected=1
+[LIVE VERIFY] 7/27 road_ice
+[SCENARIO] Road surface: ICE (friction=0.55)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=ICE
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS road_ice: OK
+[LIVE VERIFY] 8/27 road_black_ice
+[SCENARIO] Road surface: BLACK_ICE (friction=0.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=BLACK_ICE
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS road_black_ice: OK
+[LIVE VERIFY] 9/27 impact_rough
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: 20% (1 strips)
+[LIVE VERIFY] FAIL impact_rough: road_impact=0 expected=1, brake=0 min=2
+[LIVE VERIFY] 10/27 impact_severe
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: 50% (3 strips)
+[LIVE VERIFY] FAIL impact_severe: road_impact=1 expected=2, speed_limit=61.16 max=47.08
+[LIVE VERIFY] 11/27 impact_extreme
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: 90% (5 strips)
+[LIVE VERIFY] FAIL impact_extreme: road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19 | road_impact=1 expected=3, speed_limit=35.57 max=23.19
+[LIVE VERIFY] 12/27 visibility_dim
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=20%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL visibility_dim: visibility_light=2 expected=1 | visibility_light=2 expected=1 | visibility_light=2 expected=1 | visibility_light=2 expected=1 | visibility_light=2 expected=1
+[LIVE VERIFY] 13/27 visibility_dark
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=50%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS visibility_dark: OK
+[LIVE VERIFY] 14/27 visibility_very_dark
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=90%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS visibility_very_dark: OK
+[LIVE VERIFY] 15/27 weather_fog
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=FOG, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS weather_fog: OK
+[LIVE VERIFY] 16/27 weather_rain
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=RAIN, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS weather_rain: OK
+[LIVE VERIFY] 17/27 weather_snow
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=SNOW, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 453.79 ms (프레임 seq: 445)
+[LIVE VERIFY] PASS weather_snow: OK
+[LIVE VERIFY] 18/27 posture_roll
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_roll: OK
+[LIVE VERIFY] 19/27 posture_yaw_caution
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_yaw_caution: OK
+[LIVE VERIFY] 20/27 posture_yaw_danger
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL posture_yaw_danger: yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0 | yaw=1 expected=2, accelerator=7 max=0
+[LIVE VERIFY] 21/27 posture_lateral_caution
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS posture_lateral_caution: OK
+[LIVE VERIFY] 22/27 posture_lateral_danger
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] FAIL posture_lateral_danger: brake=3 max=0 | brake=3 max=0 | brake=3 max=0 | brake=3 max=0 | brake=3 max=0
+[LIVE VERIFY] 23/27 reliability_degraded_escalates_surface
+[SCENARIO] Road surface: WET (friction=1.20)
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=WET
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_degraded_escalates_surface: OK
+[LIVE VERIFY] 24/27 reliability_invalid_surface_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_surface_floor: OK
+[LIVE VERIFY] 25/27 reliability_invalid_impact_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_impact_floor: OK
+[LIVE VERIFY] 26/27 reliability_invalid_visibility_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_visibility_floor: OK
+[LIVE VERIFY] 27/27 reliability_invalid_collision_floor
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[LIVE VERIFY] PASS reliability_invalid_collision_floor: OK
+CARLA LIVE CONTROL RESULT: PASS=20 FAIL=7
+
+Cleaning up session...
+Finished.

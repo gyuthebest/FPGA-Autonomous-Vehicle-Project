@@ -1,0 +1,55 @@
+﻿BRINGUP_BEGIN=2026-08-14 15:22:25
+BIT=C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/impl_1/design_1_wrapper.bit
+ELF=C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vitis_workspace/carla_fpga_bridge/Debug/carla_fpga_bridge.elf
+attempting to launch hw_server
+
+****** Xilinx hw_server v2022.2
+  **** Build date : Oct 14 2022 at 05:18:10
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+INFO: hw_server application started
+INFO: Use Ctrl-C to exit hw_server application
+
+
+
+****** Xilinx hw_server v2022.2
+
+  **** Build date : Oct 14 2022 at 05:18:10
+
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+
+
+INFO: hw_server application started
+
+INFO: Use Ctrl-C to exit hw_server application
+
+
+
+
+INFO: To connect to this hw_server instance use url: TCP:127.0.0.1:3121
+
+
+
+TCF_CONNECTED=1
+TARGET_SELECTED=PSU
+TARGET_SELECTED=PSU_AFTER_RESET
+PS_INITIALIZED=1
+BITSTREAM_PROGRAMMED=1
+PL_ISOLATION_AND_RESET_RELEASED=1
+TARGET_SELECTED=PSU_FOR_AXI_TEST
+AXI_RISK_SEQ=0xA5A50001
+AXI_REL_SEQ=0xA5A50001
+AXI_SMOKE_PASS=1
+TARGET_SELECTED=CORTEX_A53_0
+WARNING: If the reset is being triggered after powering on the device,
+ 
+         write bootloop at reset vector address (0xffff0000), or use
+ 
+         -clear-registers option, to avoid unpredictable behavior.
+ 
+         Further warnings will be suppressed
+ELF_DOWNLOADED=1
+A53_RUNNING=1
+BRINGUP_COMPLETE=1
+BRINGUP_END=2026-08-14 15:23:02

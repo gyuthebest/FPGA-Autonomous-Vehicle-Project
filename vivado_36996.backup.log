@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Wed Aug 12 22:52:02 2026
+# Process ID: 36996
+# Current directory: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project
+# Command line: vivado.exe -mode batch -source C:\Users\jiho0\OneDrive\문서\FPGA 자율주행 프로젝트\update_packaged_ip.tcl
+# Log file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/vivado.log
+# Journal file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project\vivado.jou
+# Running On: JH_HP, OS: Windows, CPU Frequency: 1996 MHz, CPU Physical cores: 12, Host memory: 16697 MB
+#-----------------------------------------------------------
+source {C:\Users\jiho0\OneDrive\문서\FPGA 자율주행 프로젝트\update_packaged_ip.tcl}
+# set component_file {C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/component.xml}
+# set core [ipx::open_core $component_file]
+# ipx::update_checksums $core
+# ipx::save_core $core
+# puts "UPDATED_IP_VLNV=[get_property VLNV $core]"
+UPDATED_IP_VLNV=xilinx.com:user:top_controller:1.0
+# ipx::unload_core $core
+# exit
+INFO: [Common 17-206] Exiting Vivado at Wed Aug 12 22:52:07 2026...

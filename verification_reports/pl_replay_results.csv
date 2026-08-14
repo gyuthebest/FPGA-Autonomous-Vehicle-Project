@@ -1,0 +1,6 @@
+sample_seq,commit_cycle,risk_word,reliability_word,risk_seq,rel_seq,command,status_speed_limit,range_mask,jump_mask,stuck_mask,noise_mask,consistency_mask,timeout_mask,cons_distance,cons_approach,cons_accel_x,cons_accel_y,cons_accel_z,cons_gyro_x,cons_gyro_y,cons_gyro_z,sensor_gyro_z,pred_gyro_z_1,pred_gyro_z_2,pred_gyro_z_3,delta_gyro_x,delta_gyro_y,delta_incline_x,delta_incline_y,stuck_cnt_gyro_x,stuck_cnt_gyro_y,timeout_cnt_gyro_x,timeout_hold_gyro_x,raw_stuck_gyro_x,cond_b_gyro_x,testable_gyro_x,valid_s1,timeout_mask1_gyro_x
+1,48,00030009,00040005,1,1,02000058,00000b41,000,000,000,203,000,000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2,152,00030009,00040005,2,2,02000058,00000b41,000,000,000,203,000,000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+3,256,00030009,00040005,3,3,02000058,00000b41,000,000,000,203,000,000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+4,360,00030009,00040005,4,4,02000058,00000b41,000,000,000,203,000,000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+5,464,00030009,00040005,5,5,02000058,00000b41,000,001,000,203,000,000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

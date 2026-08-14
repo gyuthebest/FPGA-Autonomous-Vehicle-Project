@@ -39,13 +39,16 @@ class KeyboardController:
     # System Events
     # ======================================================
 
-    def poll_system_events(self):
+    def poll_system_events(self, control_panel=None):
         """
         반환값: 'run' | 'restart' | 'quit'
         pygame 이벤트 큐는 프레임당 한 번, 이 함수에서만 소비한다.
         """
 
         for event in pygame.event.get():
+
+            if control_panel is not None and control_panel.handle_event(event):
+                continue
 
             if event.type == pygame.QUIT:
                 return "quit"
@@ -54,6 +57,9 @@ class KeyboardController:
 
                 if event.key == pygame.K_ESCAPE:
                     return "quit"
+
+                if event.key == pygame.K_F11:
+                    return "toggle_fullscreen"
 
                 if event.key == pygame.K_r:
                     return "restart"

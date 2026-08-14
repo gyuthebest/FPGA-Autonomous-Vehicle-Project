@@ -1,0 +1,101 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Thu Aug 13 21:37:20 2026
+# Process ID: 19480
+# Current directory: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project
+# Command line: vivado.exe -mode batch -source sources_1/verification/run_distance_pipeline_debug.tcl -nojournal -log verification_reports/distance_pipeline_debug.log
+# Log file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/distance_pipeline_debug.log
+# Journal file: 
+# Running On: JH_HP, OS: Windows, CPU Frequency: 1996 MHz, CPU Physical cores: 12, Host memory: 16697 MB
+#-----------------------------------------------------------
+source sources_1/verification/run_distance_pipeline_debug.tcl
+# set d [file normalize [file dirname [info script]]]
+# set s [file normalize [file join $d .. new]]
+# create_project distance_pipeline_debug [file normalize [file join $d .. .. verification_reports distance_pipeline_debug_proj]] -force -part xczu2cg-sfvc784-1-e
+create_project: Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 379.418 ; gain = 62.809
+# read_verilog -sv [list \
+#     [file join $s types_pkg.sv] [file join $s consistency_checker.sv] \
+#     [file join $s mask_20s.sv] [file join $s preprocessor.sv] \
+#     [file join $s sensor_checker.sv] [file join $s sensor_reliability.sv] \
+#     [file join $d tb_distance_pipeline_debug.sv]]
+# set_property top tb_distance_pipeline_debug [current_fileset -simset]
+# launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-12493] Simulation top is 'tb_distance_pipeline_debug'
+WARNING: [Vivado 12-13340] Unable to auto find GCC executables from simulator install path! (path not set)
+WARNING: [Vivado 12-13277] Compiled library path does not exist: ''
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/distance_pipeline_debug_proj/distance_pipeline_debug.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'C:/Xilinx/Vivado/2022.2/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_distance_pipeline_debug' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/distance_pipeline_debug_proj/distance_pipeline_debug.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -L uvm -prj tb_distance_pipeline_debug_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/types_pkg.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module consistency_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/mask_20s.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mask_20s
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/preprocessor.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module preprocessor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module each_sensor_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_reliability.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sensor_reliability
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/verification/tb_distance_pipeline_debug.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_distance_pipeline_debug
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/distance_pipeline_debug_proj/distance_pipeline_debug.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/distance_pipeline_debug_proj/distance_pipeline_debug.sim/sim_1/behav/xsim'
+"xelab --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_distance_pipeline_debug_behav xil_defaultlib.tb_distance_pipeline_debug xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2022.2/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_distance_pipeline_debug_behav xil_defaultlib.tb_distance_pipeline_debug xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package xil_defaultlib.types_pkg
+Compiling module xil_defaultlib.preprocessor
+Compiling module xil_defaultlib.mask_20s(CLK_FREQ=32'b0111110100...
+Compiling module xil_defaultlib.each_sensor_check(WIDTH=16,DW=16...
+Compiling module xil_defaultlib.each_sensor_check(WIDTH=13,DW=14...
+Compiling module xil_defaultlib.each_sensor_check(TW=15,UPDATE_C...
+Compiling module xil_defaultlib.each_sensor_check(WIDTH=16,DW=17...
+Compiling module xil_defaultlib.each_sensor_check(WIDTH=11,DW=12...
+Compiling module xil_defaultlib.each_sensor_check(WIDTH=8,DW=8,T...
+Compiling module xil_defaultlib.each_sensor_check(WIDTH=19,DW=19...
+Compiling module xil_defaultlib.consistency_check(WIDTH=21,CONSI...
+Compiling module xil_defaultlib.consistency_check(WIDTH=13,CONSI...
+Compiling module xil_defaultlib.consistency_check(CONSISTENCY_U=...
+Compiling module xil_defaultlib.consistency_check(WIDTH=16,CONSI...
+Compiling module xil_defaultlib.sensor_reliability(CLK_FREQ_HZ=3...
+Compiling module xil_defaultlib.tb_distance_pipeline_debug
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_distance_pipeline_debug_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 404.301 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '8' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/distance_pipeline_debug_proj/distance_pipeline_debug.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_distance_pipeline_debug_behav -key {Behavioral:sim_1:Functional:tb_distance_pipeline_debug} -tclbatch {tb_distance_pipeline_debug.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Time resolution is 1 ps
+source tb_distance_pipeline_debug.tcl
+## current_wave_config
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_distance_pipeline_debug_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:15 . Memory (MB): peak = 411.184 ; gain = 31.766
+# run all
+PIPE dist=20000 pred=0 delta=0 prev_delta=0 state=0 range=0 jump=0 stuck=0 noise=0 cons=0 timeout=0
+$finish called at time : 40095 ns : File "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/verification/tb_distance_pipeline_debug.sv" Line 61
+INFO: [Common 17-206] Exiting Vivado at Thu Aug 13 21:37:49 2026...

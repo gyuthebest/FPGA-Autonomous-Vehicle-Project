@@ -1,0 +1,178 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.9)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+============================================================
+Connecting to CARLA...
+============================================================
+[Display] Windowed: 1280x720
+[System] Pre-rendering engine sounds... (1.0 to 8.0, step 0.1)
+[System] 70 engine pitch levels pre-rendered successfully.
+
+[ 사용 가능한 맵 목록 ]
+1. Town04
+[System] CARLA_MAP=Town04
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town10HD_Opt.bin 
+
+Loading Town04...
+INFO:  Found the required file in cache!  Carla/Maps/Nav/Town04.bin 
+Waiting for Town04...
+Town04 Ready.
+INFO:  Found the required file in cache!  Carla/Maps/TM/Town04.bin 
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260813_224619.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260813_224619.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 81.77 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 104.01 ms (프레임 seq: 3)
+[*] 최대 지터 갱신! 새로운 gap_max: 1339.34 ms (프레임 seq: 88)
+[SCENARIO] Weather=RAIN, visibility risk=0%, surface=DRY
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+
+Cleaning up session...
+[PL VERIFY] Capture: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_capture_20260813_231644.csv
+[PL VERIFY] AXI vectors: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\logs\pl_verification\pl_vectors_20260813_231644.csv
+[FPGA] UDP bridge enabled: 192.168.1.10:5001
+[Audio] Mixer initialized: freq=44100, format=-16, channels=2
+[Audio] Loading sound from: C:\Users\jiho0\GitProjects\FPGA-Autonomous-Vehicle-Project\CARLA_FPGA_PROJECT\assets\sounds\engine_loop.wav
+[Audio] Engine sound started successfully.
+Vehicle Spawned.
+
+========== CONTROL ==========
+M   : AUTO / MANUAL
+W   : Throttle / Reverse-Brake
+S   : Brake / Reverse-Throttle
+A/D : Steering
+R   : Restart
+F11 : Window / Fullscreen
+ESC : Exit
+=============================
+
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 63.25 ms (프레임 seq: 2)
+[*] 최대 지터 갱신! 새로운 gap_max: 64.21 ms (프레임 seq: 23)
+[*] 최대 지터 갱신! 새로운 gap_max: 70.36 ms (프레임 seq: 28)
+[*] 최대 지터 갱신! 새로운 gap_max: 72.06 ms (프레임 seq: 29)
+[*] 최대 지터 갱신! 새로운 gap_max: 73.13 ms (프레임 seq: 31)
+[*] 최대 지터 갱신! 새로운 gap_max: 80.46 ms (프레임 seq: 396)
+[*] 최대 지터 갱신! 새로운 gap_max: 93.68 ms (프레임 seq: 417)
+[*] 최대 지터 갱신! 새로운 gap_max: 99.92 ms (프레임 seq: 418)
+[SCENARIO] Obstacle at 42.8 m (safe minimum 32.1 m)
+[*] 최대 지터 갱신! 새로운 gap_max: 110.46 ms (프레임 seq: 757)
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 120.68 ms (프레임 seq: 1953)
+[*] 최대 지터 갱신! 새로운 gap_max: 129.00 ms (프레임 seq: 1955)
+[*] 최대 지터 갱신! 새로운 gap_max: 143.58 ms (프레임 seq: 2474)
+[INJECT] accel_x/range: ON
+[*] 최대 지터 갱신! 새로운 gap_max: 159.37 ms (프레임 seq: 3313)
+[INJECT] accel_x/timeout: ON
+[INJECT] accel_x/timeout: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 1091.71 ms (프레임 seq: 4201)
+[INJECT] all injections and scenarios cleared
+[SCENARIO] Road surface: DRY
+[SCENARIO] Weather=CLEAR, visibility risk=0%, surface=DRY
+[SCENARIO] Road roughness: OFF
+[*] 최대 지터 갱신! 새로운 gap_max: 1093.70 ms (프레임 seq: 6117)
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO: INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+ streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 
+INFO:  streaming client: connection failed: 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다 

@@ -24,6 +24,13 @@ from posture_logic import PostureLogic
 from road_logic import RoadLogic
 from vision_logic import VisionLogic
 from fusion_logic import FusionLogic
+from fpga_interface import FPGAInterface, build_input_words
+from pl_verification_logger import PLVerificationLogger
+from sensor_noise import SensorNoiseModel
+from control_panel import ControlPanel
+from world_scenario_controller import WorldScenarioController
+from dashboard import draw_dashboard
+from live_scenario_verifier import LiveScenarioVerifier
 
 import os
 
@@ -32,45 +39,104 @@ PORT = 2000
 VEHICLE_ID = "vehicle.ford.mustang"
 
 WEATHER_CYCLE_INTERVAL = 30.0
-
-def hud_color(text):
-    if any(k in text for k in ("HIGH", "DANGER", "EXTREME", "BLACK_ICE", "VERY_DARK")):
-        return (255, 60, 60)
-    if any(k in text for k in ("MEDIUM", "CAUTION", "SEVERE", "ICE", "DARK", "FOG", "SNOW", "ROUGH", "RAIN")):
-        return (255, 220, 0)
-    if any(k in text for k in ("LOW", "SAFE", "DRY", "NORMAL", "CLEAR", "BRIGHT", "DIM")):
-        return (100, 255, 100)
-    if text.startswith("["):
-        return (120, 220, 255)
-    return (0, 255, 0)
+WINDOWED_SIZE = (1280, 720)
+ENABLE_LEGACY_AUTO_RAMPS = False
+ENABLE_LEGACY_AUTO_WEATHER = False
+ENABLE_LEGACY_AUTO_OBSTACLES = False
 
 
-_hud_cache = {}
+def env_flag(name, default=True):
+    """Read a conventional boolean environment variable."""
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() not in ("0", "false", "no", "off")
 
-def draw_hud_column(screen, font, lines, x, y, line_height):
-    for item in lines:
-        if isinstance(item, tuple):
-            text, color = item
-        else:
-            text, color = item, hud_color(item)
-            
-        if not text:
-            y += line_height
-            continue
-            
-        cache_key = (text, color)
-        if cache_key not in _hud_cache:
-            _hud_cache[cache_key] = font.render(text, True, color)
-            # 텍스트 캐시 용량이 커지면 절반 삭제 (메모리 누수 방지)
-            if len(_hud_cache) > 2000:
-                keys_to_delete = list(_hud_cache.keys())[:1000]
-                for k in keys_to_delete:
-                    del _hud_cache[k]
 
-        surface = _hud_cache[cache_key]
-        screen.blit(surface, (x, y))
-        y += line_height
-    return y
+# --- situation (3비트) : CARLA가 PL로 알려주는 주행 상황 ---------------------
+# PL은 이 값으로 jump/consistency 마스크를 결정하므로 인코딩이 정확해야 한다.
+#   000 정지        : consistency_mask_4/5/6 을 열어 "정지 시 각속도 ~ 0" 검사 활성화
+#   001 장애물 등장  : distance/approach_speed jump 마스크
+#   010 자세변화    : distance/approach_speed jump 마스크
+#   011 날씨 변화   : 온도/습도/조도 jump 마스크
+#   100 정상 주행   : 마스크 없음
+SITUATION_STOPPED = 0
+SITUATION_OBSTACLE = 1
+SITUATION_POSTURE = 2
+SITUATION_WEATHER = 3
+SITUATION_NORMAL = 4
+
+# 자세변화 판정 각속도 한계 (rad/s). 센서 높이 1.5 m 가정.
+POSTURE_RATE_LIMIT_RPS = 0.340
+# 정지 판정 속도 (1 km/h)
+STOPPED_SPEED_MPS = 0.278
+# 레이더 무표적 sentinel (m)
+OBSTACLE_SENTINEL_M = 200.0
+
+
+def classify_situation(sensor, prev_distance, environment_changing):
+    """주행 상황을 3비트 situation 코드로 분류한다.
+
+    우선순위: 날씨변화 > 자세변화 > 장애물등장 > 정지 > 정상.
+    사건(001/010/011)이 상태(000/100)보다 우선한다. 사건 구간에서 PL의
+    jump/consistency 마스크가 열려야 정상적인 값 계단이 고장으로 오판되지
+    않기 때문이다.
+    """
+    if environment_changing:
+        return SITUATION_WEATHER
+    if (abs(sensor.gyro_x) > POSTURE_RATE_LIMIT_RPS
+            or abs(sensor.gyro_y) > POSTURE_RATE_LIMIT_RPS
+            or abs(sensor.gyro_z) > POSTURE_RATE_LIMIT_RPS):
+        return SITUATION_POSTURE
+    if (prev_distance >= OBSTACLE_SENTINEL_M
+            and float(sensor.distance) < OBSTACLE_SENTINEL_M):
+        return SITUATION_OBSTACLE
+    if abs(float(sensor.speed_x)) <= STOPPED_SPEED_MPS:
+        return SITUATION_STOPPED
+    return SITUATION_NORMAL
+
+
+def should_apply_fpga_output(control_panel, fpga_result):
+    """Preserve PL authority for a latched TD/MRM after a test input clears."""
+    return bool(
+        fpga_result is not None
+        and control_panel.apply_fpga_output
+        and (
+            control_panel.intervention_scenario_active
+            or fpga_result.transition_demand
+            or fpga_result.mrm
+        )
+    )
+
+
+def create_main_display(fullscreen=None):
+    """Create a resizable window or a fullscreen display.
+
+    The normal window is the default so the Windows maximize button works.
+    Set CARLA_FULLSCREEN=1 to start fullscreen, or press F11 while running.
+    """
+    if fullscreen is None:
+        fullscreen = env_flag("CARLA_FULLSCREEN", default=False)
+
+    flags = pygame.DOUBLEBUF
+    if fullscreen:
+        screen = pygame.display.set_mode((0, 0), flags | pygame.FULLSCREEN)
+        print(f"[Display] Fullscreen: {screen.get_width()}x{screen.get_height()}")
+    else:
+        screen = pygame.display.set_mode(WINDOWED_SIZE, flags | pygame.RESIZABLE)
+        print(f"[Display] Windowed: {screen.get_width()}x{screen.get_height()}")
+    return screen
+
+
+def toggle_main_display(screen):
+    """Toggle between a resizable window and fullscreen mode."""
+    is_fullscreen = bool(screen.get_flags() & pygame.FULLSCREEN)
+    return create_main_display(fullscreen=not is_fullscreen)
+
+
+def create_hud_font(screen):
+    font_size = max(13, min(16, screen.get_height() // 60))
+    return pygame.font.SysFont("consolas", font_size)
 
 ENGINE_SOUND_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "sounds", "engine_loop.wav")
 
@@ -117,16 +183,25 @@ def resample_pitch(base_array, ratio):
         
     return pygame.sndarray.make_sound(np.ascontiguousarray(resampled))
 
-def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manager, engine_pitch_cache_global):
+def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manager,
+                engine_pitch_cache_global, control_panel):
     """
     차량 스폰부터 세션 종료까지 한 번의 주행을 실행한다.
     반환값: 'restart' | 'quit'
     """
 
+    # set_mode() replaces the display surface when F11 was used in an earlier
+    # session. Always start from pygame's current display surface.
+    screen = pygame.display.get_surface() or screen
+    font = create_hud_font(screen)
+
     vehicle = None
     camera = None
     obstacle_manager = None
     logger = None
+    pl_verify_logger = None
+    fpga = None
+    world_scenarios = None
     ramp_actors = []
     
     gc.disable()
@@ -152,7 +227,12 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         physics_control.suspension_damping_rate = 0.2
         vehicle.apply_physics_control(physics_control)
 
-        camera = CameraManager(world, vehicle)
+        camera = CameraManager(
+            world,
+            vehicle,
+            image_width=screen.get_width(),
+            image_height=screen.get_height(),
+        )
         sensor = SensorManager(vehicle)
 
         environment_manager = EnvironmentManager(map_manager)
@@ -161,7 +241,28 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         controller = VehicleController(world, vehicle)
         scenario = ScenarioManager()
         weather_manager = WeatherManager(world)
+        world_scenarios = WorldScenarioController(
+            world, vehicle, weather_manager, control_panel,
+        )
+        live_verifier = LiveScenarioVerifier(control_panel, world_scenarios)
+        sensor_noise = SensorNoiseModel()
+        print(f"[SENSOR NOISE] {'enabled' if sensor_noise.enabled else 'disabled'}"
+              " (CARLA_SENSOR_NOISE)")
         logger = CSVLogger()
+        pl_verify_logger = PLVerificationLogger.from_environment()
+        if pl_verify_logger.enabled:
+            print(f"[PL VERIFY] Capture: {pl_verify_logger.capture_path}")
+            print(f"[PL VERIFY] AXI vectors: {pl_verify_logger.vector_path}")
+
+        try:
+            fpga = FPGAInterface.from_environment()
+            if fpga.enabled:
+                print(f"[FPGA] UDP bridge enabled: {fpga.board_address[0]}:{fpga.board_address[1]}")
+            else:
+                print("[FPGA] Disabled by FPGA_ENABLED=0; software command fallback is active.")
+        except OSError as exc:
+            print(f"[FPGA] UDP initialization failed ({exc}); software command fallback is active.")
+            fpga = FPGAInterface(enabled=False)
 
 
         
@@ -195,6 +296,10 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
 
         simulation_time = 0.0
         sample_seq = 0  # Added for FPGA testing
+        # PL transition-demand/MRM registers survive a Python-only restart.
+        # Briefly assert the PL-facing MANUAL bit so stale safety state from a
+        # previous scenario cannot contaminate a new validation run.
+        pl_startup_reset_samples = 20
 
         # [추가된 부분: Jitter 측정용 변수 및 초시계 초기화]
         import time
@@ -220,6 +325,8 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         # [FPGA Situation Logic State Variables]
         prev_distance = 250.0
         prev_weather = -1
+        prev_environment_signature = None
+        environment_transition_samples = 0
         
         last_ramp_time = -20.0  # 시작하자마자 바로 한 번 생성되도록
 
@@ -231,19 +338,45 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         print("S   : Brake / Reverse-Throttle")
         print("A/D : Steering")
         print("R   : Restart")
+        print("F11 : Window / Fullscreen")
         print("ESC : Exit")
         print("=============================")
+        # --- 무인(스크립트) 실행 제어 ---------------------------------
+        # 검증을 재현 가능하게 돌리기 위한 시험용 스위치다. 주행 알고리즘에는
+        # 영향을 주지 않는다.
+        #   CARLA_APPLY_FPGA=0   : PL 출력을 차량에 적용하지 않는다(개루프 캡처)
+        #   CARLA_RUN_SECONDS=N  : N초 뒤 정상 종료한다(로그를 온전히 닫는다)
+        if not env_flag("CARLA_APPLY_FPGA", default=True):
+            control_panel.apply_fpga_output = False
+            print("[CONTROL] Apply FPGA output: OFF (CARLA_APPLY_FPGA=0)")
+        run_seconds = float(os.getenv("CARLA_RUN_SECONDS", "0") or 0)
+        run_deadline = (time.perf_counter() + run_seconds) if run_seconds > 0 else None
+        if run_deadline is not None:
+            print(f"[RUN] Auto-exit after {run_seconds:.0f} s")
+
         print()
 
         while True:
 
-            status = keyboard.poll_system_events()
+            if run_deadline is not None and time.perf_counter() >= run_deadline:
+                print("[RUN] Duration reached, exiting cleanly.")
+                return "quit"
+
+            status = keyboard.poll_system_events(control_panel)
 
             if status in ("quit", "restart"):
                 return status
+            if status == "toggle_fullscreen":
+                screen = toggle_main_display(screen)
+                font = create_hud_font(screen)
+                continue
+
+            # Pygame 2 updates the display surface after a RESIZABLE window is
+            # maximized or dragged. Use the new surface for this frame.
+            screen = pygame.display.get_surface() or screen
 
             # --- [ROLL TEST] 20초마다 정면 우측에 경사로 스폰 ---
-            if simulation_time - last_ramp_time >= 20.0:
+            if ENABLE_LEGACY_AUTO_RAMPS and simulation_time - last_ramp_time >= 20.0:
                 last_ramp_time = simulation_time
                 try:
                     ramp_bp = bp_lib.filter('static.prop.container')[0]
@@ -278,7 +411,10 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
                 except Exception as e:
                     print(f"[Warning] Dynamic Ramp spawn failed: {e}")
 
-            world.tick()
+            # Apply panel-selected world/vehicle conditions before advancing
+            # CARLA, so the sensors from this tick observe the new scenario.
+            world_scenarios.update(1.0 / 20.0)
+            carla_frame = world.tick()
 
             sensor.update()
             sensor.rpm = utils.rpm_to_level(controller.current_rpm)
@@ -286,8 +422,45 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             sensor.temperature = weather_manager.temperature
             sensor.humidity = weather_manager.humidity
 
-            environment = environment_manager.update(sensor, controller.upcoming_turn_speed_limit)
             perception = perception_manager.update()
+
+            # Associate raw radar reflections with the route-level tracked
+            # actor. CARLA radar points carry no actor ID; choosing the nearest
+            # reflection alone mistakes road furniture for a lead vehicle.
+            # The matched track supplies the coherent base measurement, after
+            # which the fault injector produces the deliberately corrupted
+            # sensor value sent to the PL.
+            if perception.front_actor is None or perception.front_distance > 200.0:
+                sensor.distance = 200.0
+                sensor.approach_speed = 0.0
+            else:
+                sensor.distance = min(200.0, float(perception.front_distance))
+                sensor.approach_speed = max(0.0, float(perception.relative_speed))
+
+            # Convert visible CARLA test conditions into sustained sensor
+            # responses before optional sensor-fault corruption.  This keeps
+            # the physical scenario as the baseline and the fault injector as
+            # the measurement-side failure, matching the PL data model.
+            world_scenarios.apply_sensor_conditions(sensor)
+
+            # Apply selected test faults before all decision logic and before
+            # the exact same values are packed into the AXI register image.
+            control_panel.injector.apply(sensor)
+
+            # 기본 측정 잡음.  CARLA IMU는 잡음 stddev가 0이고 온습도는 상수,
+            # 조도는 30프레임마다만 갱신되므로 delta == 0이 15표본 이상 이어져
+            # 정상 주행에서도 PL stuck이 확정된다.  실제 센서라면 최하위
+            # 비트가 항상 흔들리므로 그 특성을 되돌려 준다.
+            #
+            # 고장 주입 '뒤'에 두고 고장 채널만 건너뛴다.  위험도 주입이
+            # 온도/습도/조도를 상수로 덮어쓰기 때문에, 앞에서 호출하면 노면·
+            # 시야 위험도 시험이 매번 온습도 stuck까지 만들어 시험을 오염시킨다.
+            sensor_noise.apply(
+                sensor,
+                skip=(control_panel.injector.frozen_channels
+                      | world_scenarios.driven_channels),
+            )
+            environment = environment_manager.update(sensor, controller.upcoming_turn_speed_limit)
 
             # [FPGA Data Prep]
             control = vehicle.get_control()
@@ -309,97 +482,35 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
                 gap_max_ms = gap_ms
                 print(f"[*] 최대 지터 갱신! 새로운 gap_max: {gap_max_ms:.2f} ms (프레임 seq: {sample_seq})")
 
-            def to_signed(val, bits):
-                val = int(val)
-                if val < 0:
-                    val = (1 << bits) + val
-                return val & ((1 << bits) - 1)
-
-            def to_unsigned(val, bits):
-                return int(val) & ((1 << bits) - 1)
-
-            # --- 센서 스케일링 (x100, x1000) ---
-            accel_x = to_signed(sensor.accel_x * 100, 12)
-            accel_y = to_signed(sensor.accel_y * 100, 12)
-            accel_z = to_signed(sensor.accel_z * 100, 12)
-            
-            speed_x = to_signed(sensor.speed_x * 100, 14)
-            speed_y = to_signed(sensor.speed_y * 100, 14)
-            speed_z = to_signed(sensor.speed_z * 100, 14)
-
-            gyro_x = to_signed(sensor.gyro_x * 1000, 16)
-            gyro_y = to_signed(sensor.gyro_y * 1000, 16)
-            gyro_z = to_signed(sensor.gyro_z * 1000, 16)
-
-            incline_x = to_signed(sensor.incline_x * 100, 16)
-            incline_y = to_signed(sensor.incline_y * 100, 16)
-            incline_z = to_signed(sensor.incline_z * 100, 16)
-
-            distance = to_unsigned(sensor.distance * 100, 15)
-            app_speed = to_signed(sensor.approach_speed * 100, 13)
-            
-            speed_limit = to_unsigned(environment.speed_limit * 100, 13)
-            lux = to_unsigned(sensor.lux, 18)
-            temperature = to_signed(sensor.temperature, 11)
-            humidity = to_unsigned(sensor.humidity, 7)
-
-            weather_val = to_unsigned(environment.weather, 2)
-            rpm_val = to_unsigned(utils.rpm_to_level(controller.current_rpm), 2)
-            gear_val = to_unsigned(0 if control.reverse else controller.current_gear+1, 2)
-            
-            steering_val = to_signed(control.steer * 100, 8)
-            accelerator_val = to_unsigned(manual_command.throttle, 4)
-            brake_val = to_unsigned(manual_command.brake, 4)
-            
-            manual_mode = 1 if keyboard.manual_mode else 0
-            headlight = 1 if manual_command.headlight else 0
-            hazard = 1 if manual_command.hazard else 0
             # --- Situation Logic (3-bit) ---
             # 000: Stopped, 001: Obstacle, 010: Posture, 011: Weather, 100: Normal
             current_weather = environment.weather
             current_distance = sensor.distance
-            
-            if current_weather != prev_weather and prev_weather != -1:
-                situation_val = 3  # 011 (Weather changed)
-            elif abs(sensor.gyro_y) > 0.340 or abs(sensor.gyro_z) > 0.340:  # Assuming 1.5m sensor height (340 mrad/s limit)
-                situation_val = 2  # 010 (Rapid posture change)
-            elif prev_distance > 200.0 and current_distance <= 200.0:
-                situation_val = 1  # 001 (Obstacle suddenly appeared)
-            elif abs(sensor.speed_x) <= 0.278:
-                situation_val = 0  # 000 (Stopped, <= 1km/h)
-            else:
-                situation_val = 4  # 100 (Normal driving)
-                
+            environment_signature = (
+                current_weather,
+                control_panel.road_surface,
+                int(control_panel.visibility_risk),
+            )
+            if (prev_environment_signature is not None and
+                    environment_signature != prev_environment_signature):
+                # Temperature/humidity/lux legitimately step when the driver
+                # selects an environmental scenario.  Hold situation=011 for
+                # half a second so the PL jump predictor sees the complete
+                # transition as an intentional environment change.
+                environment_transition_samples = 10
+
+            environment_changing = environment_transition_samples > 0
+            if environment_changing:
+                environment_transition_samples -= 1
+            situation_val = classify_situation(
+                sensor, prev_distance, environment_changing
+            )
+
+
             prev_weather = current_weather
             prev_distance = current_distance
+            prev_environment_signature = environment_signature
             
-            situation_packed = to_unsigned(situation_val, 3)
-
-            # --- AXI Register Packing ---
-            slv_reg0 = (humidity << 24) | (accel_y << 12) | accel_x
-            slv_reg1 = (gear_val << 30) | (rpm_val << 28) | (weather_val << 26) | (speed_x << 12) | accel_z
-            slv_reg2 = (hazard << 30) | (headlight << 29) | (manual_mode << 28) | (speed_z << 14) | speed_y
-            slv_reg3 = (gyro_y << 16) | gyro_x
-            slv_reg4 = (app_speed << 16) | gyro_z
-            slv_reg5 = (incline_y << 16) | incline_x
-            slv_reg6 = (distance << 16) | incline_z
-            slv_reg7 = (speed_limit << 18) | lux
-            
-            # NOTE: situation_packed is placed in slv_reg8 at bits [29:27]
-            slv_reg8 = (situation_packed << 27) | (steering_val << 19) | (brake_val << 15) | (accelerator_val << 11) | temperature
-            
-            slv_reg9 = to_unsigned(sample_seq, 32)
-
-            # TODO: Add physical FPGA Write here
-            # --- AXI Register Read (MOCK) ---
-            # TODO: 실제 AXI Read 로직으로 교체 필요
-            fpga_transition_demand = 0
-            fpga_hud_warning = 0
-            fpga_mrm = 0
-            fpga_td_remain_sec = 11
-            fpga_headlight_auto_out = manual_command.headlight # 자율주행 모직이 판단한 라이트
-            fpga_hazard_auto_out = manual_command.hazard
-
 #             scenario.update(1.0 / 30.0, sensor)
 # 
 #             # -------------------------------
@@ -423,7 +534,7 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
 
             weather_timer += 1.0 / 20.0
 
-            if weather_timer >= WEATHER_CYCLE_INTERVAL:
+            if ENABLE_LEGACY_AUTO_WEATHER and weather_timer >= WEATHER_CYCLE_INTERVAL:
                 weather_timer = 0.0
                 weather_index = (weather_index + 1) % len(weather_cycle)
                 weather_cycle[weather_index]()
@@ -446,6 +557,8 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
                 frame = camera.image
                 frame = frame[:, :, ::-1]
                 surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
+                if surface.get_size() != screen.get_size():
+                    surface = pygame.transform.smoothscale(surface, screen.get_size())
                 screen.blit(surface, (0, 0))
 
             # (Moved to top for FPGA)
@@ -475,10 +588,145 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
             command.manual_headlight_state = keyboard.manual_headlight_state
             command.manual_hazard_state = keyboard.manual_hazard_state
 
+            # --------------------------------------------------------
+            # CARLA laptop -> Zynq PS (UDP) -> PL pipeline -> PS -> CARLA
+            # --------------------------------------------------------
+            fpga_transition_demand = False
+            fpga_hud_warning = False
+            fpga_mrm = False
+            fpga_td_remain_sec = 11
+            fpga_headlight_auto_out = command.headlight
+            fpga_hazard_auto_out = command.hazard
+
+            if command.manual_mode:
+                desired_steering = (
+                    command.steering - VehicleCommand.CENTER_STEERING
+                ) / float(VehicleCommand.CENTER_STEERING)
+            else:
+                desired_steering = controller.calculate_lane_steering()
+                desired_steering *= command.steering_rate_limit / 100.0
+
+            requested_speed_limit = min(
+                float(environment.speed_limit),
+                float(command.speed_limit),
+            )
+            fpga_manual_mode = bool(
+                command.manual_mode
+                or sample_seq < pl_startup_reset_samples
+                or live_verifier.force_manual_mode
+            )
+            input_words = build_input_words(
+                sample_seq=sample_seq,
+                accel_xyz=(sensor.accel_x, sensor.accel_y, sensor.accel_z),
+                gyro_xyz=(sensor.gyro_x, sensor.gyro_y, sensor.gyro_z),
+                incline_xyz=(sensor.incline_x, sensor.incline_y, sensor.incline_z),
+                speed_xyz=(sensor.speed_x, sensor.speed_y, sensor.speed_z),
+                distance_m=sensor.distance,
+                approach_speed_mps=sensor.approach_speed,
+                temperature=sensor.temperature,
+                humidity_pct=sensor.humidity,
+                lux=sensor.lux,
+                speed_limit_kmh=requested_speed_limit,
+                weather=environment.weather,
+                rpm_level=utils.rpm_to_level(controller.current_rpm),
+                accelerator=command.throttle,
+                brake=command.brake,
+                steering_normalized=desired_steering,
+                manual_mode=fpga_manual_mode,
+                gear=0 if control.reverse else controller.current_gear + 1,
+                headlight=command.headlight,
+                hazard=command.hazard,
+                situation=situation_val,
+            )
+            # Preserve the exact pre-control values that were packed for this
+            # PL transaction.  The cockpit input monitor must not show the
+            # post-FPGA command in place of the values that the FPGA received.
+            fpga_input_snapshot = {
+                "sample_seq": sample_seq,
+                "speed_limit": requested_speed_limit,
+                "rpm_level": utils.rpm_to_level(controller.current_rpm),
+                "accelerator": int(command.throttle),
+                "brake": int(command.brake),
+                "steering": float(desired_steering),
+                "manual_mode": bool(fpga_manual_mode),
+                "gear": 0 if control.reverse else controller.current_gear + 1,
+                "headlight": bool(command.headlight),
+                "hazard": bool(command.hazard),
+                "situation": int(situation_val),
+            }
+
+            host_send_ns = time.perf_counter_ns()
+            sample_dropped = control_panel.injector.drop_sample
+            fpga_result = (
+                fpga.exchange(input_words, sample_seq)
+                if fpga is not None and not sample_dropped
+                else None
+            )
+            control_panel.set_fpga_result(fpga_result)
+            # FPGA is armed continuously, but it receives authority only while
+            # a deliberate sensor-fault/risk demonstration is active.  Normal
+            # frames keep the CARLA autonomous command generated above.
+            # TD/MRM are latched PL safety states.  They retain control
+            # authority after the initiating test button is released, until
+            # manual takeover/reset clears the PL state.
+            fpga_actuation_active = should_apply_fpga_output(control_panel, fpga_result)
+            host_response_ns = time.perf_counter_ns()
+            if pl_verify_logger is not None and not sample_dropped:
+                pl_verify_logger.record(
+                    sample_seq=sample_seq,
+                    carla_frame=carla_frame,
+                    simulation_time_s=simulation_time,
+                    host_send_ns=host_send_ns,
+                    host_response_ns=host_response_ns,
+                    sensor=sensor,
+                    input_words=input_words,
+                    requested_speed_limit_kmh=requested_speed_limit,
+                    weather=environment.weather,
+                    rpm_level=utils.rpm_to_level(controller.current_rpm),
+                    accelerator_cmd=command.throttle,
+                    brake_cmd=command.brake,
+                    steering_normalized=desired_steering,
+                    manual_mode=fpga_manual_mode,
+                    gear=0 if control.reverse else controller.current_gear + 1,
+                    headlight=command.headlight,
+                    hazard=command.hazard,
+                    situation=situation_val,
+                    fpga_result=fpga_result,
+                    fault_label=control_panel.fault_label,
+                )
+            live_verifier.update(
+                1.0 / 20.0, fpga_result, requested_speed_limit, sensor,
+            )
+            if fpga_actuation_active:
+                command.throttle = min(VehicleCommand.MAX_THROTTLE, fpga_result.accelerator)
+                command.brake = min(VehicleCommand.MAX_BRAKE, fpga_result.brake)
+                command.speed_limit = min(command.speed_limit, fpga_result.speed_limit_kmh)
+                command.fpga_steering_override = fpga_result.steering_normalized
+
+                fpga_transition_demand = fpga_result.transition_demand
+                fpga_hud_warning = fpga_result.hud_warning
+                fpga_mrm = fpga_result.mrm
+                fpga_td_remain_sec = fpga_result.td_remain_sec
+                fpga_headlight_auto_out = fpga_result.headlight
+                fpga_hazard_auto_out = fpga_result.hazard
+
+            elif fpga_result is not None:
+                # Keep live warnings visible while software autonomous control
+                # is driving the car and FPGA actuation is disabled.
+                fpga_transition_demand = fpga_result.transition_demand
+                fpga_hud_warning = fpga_result.hud_warning
+                fpga_mrm = fpga_result.mrm
+                fpga_td_remain_sec = fpga_result.td_remain_sec
+
 #             obstacle_manager.update(1.0 / 30.0, ttc_result)
-            obstacle_manager.update(1.0 / 20.0, ttc_result)
+            if ENABLE_LEGACY_AUTO_OBSTACLES:
+                obstacle_manager.update(1.0 / 20.0, ttc_result)
 
             controller.update(command, posture_result)
+            # Use the command applied in this frame for the cockpit.  The
+            # earlier vehicle.get_control() snapshot belongs to the previous
+            # frame and would make the hand wheel visibly lag by one tick.
+            control = controller.control
 
             # ---------------- Engine Sound (RPM 기반 실시간 피치 조절) ----------------
 
@@ -543,133 +791,45 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
                 
             vehicle.set_light_state(carla.VehicleLightState(light_state))
 
-            mode = "MANUAL" if command.manual_mode else "AUTO"
-
-            risk_map = {0: "LOW", 1: "MEDIUM", 2: "HIGH"}
-
-            weather_map = {
-                Environment.CLEAR: "CLEAR",
-                Environment.FOG: "FOG",
-                Environment.RAIN: "RAIN",
-                Environment.SNOW: "SNOW",
-            }
-
-            # ---------------- Front Dist: 가까우면 빨강, 멀면 초록 ----------------
-
-            if ttc_result is not None and ttc_result.distance_over_range:
-                front_dist_text = "OVER 200m"
-                front_dist_color = (100, 255, 100)  # 멀다 = 안전 = 초록
+            if keyboard.camera_mode == "first_person":
+                draw_dashboard(
+                    screen=screen,
+                    sensor=sensor,
+                    environment=environment,
+                    controller=controller,
+                    command=command,
+                    vehicle_control=control,
+                    fpga_result=fpga_result,
+                    control_panel=control_panel,
+                    actuation_active=fpga_actuation_active,
+                    fpga_input_snapshot=fpga_input_snapshot,
+                    input_words=input_words,
+                )
             else:
-                d = ttc_result.distance if ttc_result else perception.front_distance
-                front_dist_text = f"{d:5.1f} m"
+                control_panel.fpga_input_toggle_rect = None
 
-                if d < 20:
-                    front_dist_color = (255, 60, 60)   # 가깝다 = 위험 = 빨강
-                elif d < 50:
-                    front_dist_color = (255, 220, 0)
-                else:
-                    front_dist_color = (100, 255, 100)
-
-            # ---------------- Speed Limit % (도로제한속도 대비 제어로직 제한 비율) ----------------
-
-            if environment.speed_limit > 0:
-                speed_limit_pct = min(100.0, (command.speed_limit / environment.speed_limit) * 100.0)
-            else:
-                speed_limit_pct = 100.0
-
-
-            confidence_color_map = {
-                "HIGH": (100, 255, 100),
-                "MEDIUM": (255, 220, 0),
-                "LOW": (255, 60, 60),
-            }
-            confidence_color = confidence_color_map.get(scenario.confidence, (0, 255, 0))
-
-            col_left = [
-                "===== DECISION MONITOR =====",
-                "",
-                "[SYSTEM]",
-                f"Mode          : {mode}",
-
-                "",
-                "[INPUT]",
-                f"Speed         : {sensor.speed:5.1f} km/h",
-                f" └ Speed X    : {sensor.speed_x:5.2f} m/s",
-                f" └ Speed Y    : {sensor.speed_y:5.2f} m/s",
-                f" └ Speed Z    : {sensor.speed_z:5.2f} m/s",
-                f"Road Limit    : {environment.speed_limit:5.1f} km/h",
-                (f"Front Dist    : {front_dist_text}", front_dist_color),
-                f"Lux           : {sensor.lux:6.1f}",
-                f"Temperature   : {sensor.temperature:5.1f} C",
-                f"Humidity      : {sensor.humidity:5.1f} %",
-                f"Weather       : {weather_map.get(environment.weather, environment.weather)}",
-
-                "",
-                f"Zone          : {map_manager.get_zone(vehicle.get_location())}",
-            ]
-
-            thr_bar = "#" * command.throttle + "-" * (10 - command.throttle)
-            brk_bar = "#" * command.brake + "-" * (10 - command.brake)
-
-            hl_mode = "AUTO" if command.headlight_auto else "MANUAL"
-            hz_mode = "AUTO" if command.hazard_auto else "MANUAL"
-
-            col_right = [
-                "[LOGIC]",
-                f"TTC Risk      : {'-' if ttc_result is None else risk_map.get(ttc_result.final_risk, ttc_result.final_risk)}",
-                f"Road Surface  : {'-' if road_result is None else road_result.surface_grade}",
-                f"Road Shock    : {'-' if road_result is None else road_result.shock_grade}",
-                f"Vision Lux    : {'-' if vision_result is None else vision_result.lux_grade}",
-                f"Vision Weather: {'-' if vision_result is None else vision_result.weather_grade}",
-                f"Posture Roll  : {'-' if posture_result is None else posture_result.roll_grade}",
-                f"Posture Yaw   : {'-' if posture_result is None else posture_result.yaw_grade}",
-                f"Posture Accel : {'-' if posture_result is None else posture_result.lateral_grade}",
-
-                "",
-                "[FPGA WARNINGS]",
-                f"HUD Warning   : {'ON' if fpga_hud_warning else 'OFF'}",
-                f"Trans. Demand : {'ON' if fpga_transition_demand else 'OFF'}",
-                f"MRM           : {'ON' if fpga_mrm else 'OFF'}",
-                f"TD Remain Sec : {fpga_td_remain_sec if fpga_td_remain_sec <= 10 else '-'}",
-
-                "",
-                "[OUTPUT]",
-                f"Throttle [{thr_bar}] {command.throttle:2d}/10",
-                f"Speed Limit   : {speed_limit_pct:5.1f} %",
-                f"Brake    [{brk_bar}] {command.brake:2d}/10",
-                f"Steer Limit   : {command.steering_rate_limit:3d}%",
-                f"Steering      : {control.steer:5.2f}",
-                f"Gear          : {'R' if control.reverse else 'D' + str(controller.current_gear+1)}",
-                f"RPM           : {controller.current_rpm:4d}",
-                f"Headlight     : {'ON' if command.headlight else 'OFF'} ({hl_mode})",
-                f"Hazard        : {'ON' if command.hazard else 'OFF'} ({hz_mode})",
-                f"Manual Mode   : {'YES' if command.manual_mode else 'NO'}",
-            ]
-
-            LINE_H = 16
-            HUD_X1 = 650
-            HUD_X2 = 965
-
-            hud_h = max(len(col_left), len(col_right)) * LINE_H + 20
-
-            hud_background = pygame.Surface((625, hud_h))
-            hud_background.set_alpha(150)
-            hud_background.fill((0, 0, 0))
-            screen.blit(hud_background, (HUD_X1 - 5, 5))
-
-            draw_hud_column(screen, font, col_left, HUD_X1, 10, LINE_H)
-            draw_hud_column(screen, font, col_right, HUD_X2, 10, LINE_H)
+            control_panel.draw(screen)
+            live_verifier.after_draw(screen)
 
 #             pygame.display.flip()
 #             clock.tick(30)
             pygame.display.flip()
             clock.tick(20)
 
+            if live_verifier.finished:
+                return "quit"
+
             if scenario.finished:
                 return "restart"
 
     finally:
         print("\nCleaning up session...")
+
+        if world_scenarios is not None:
+            try:
+                world_scenarios.destroy()
+            except Exception:
+                pass
 
         if camera is not None:
             try:
@@ -692,6 +852,18 @@ def run_session(world, map_manager, screen, font, clock, keyboard, traffic_manag
         if logger is not None:
             try:
                 logger.close()
+            except:
+                pass
+
+        if pl_verify_logger is not None:
+            try:
+                pl_verify_logger.close()
+            except Exception:
+                pass
+
+        if fpga is not None:
+            try:
+                fpga.close()
             except:
                 pass
 
@@ -722,10 +894,10 @@ def main():
         pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=2048)
         pygame.init()
         pygame.font.init()
-        screen = pygame.display.set_mode((1280, 600))
+        screen = create_main_display()
         pygame.display.set_caption("CARLA FPGA Autonomous Driving")
         
-        font = pygame.font.SysFont("consolas", 13)
+        font = create_hud_font(screen)
         clock = pygame.time.Clock()
 
         engine_pitch_cache_global = {}
@@ -745,13 +917,21 @@ def main():
         client.set_timeout(60.0)
 
         # 맵 선택 인터페이스
-        available_maps = [m.split('/')[-1] for m in client.get_available_maps()]
+        # This project is calibrated and verified against Town04 only.
+        available_maps = ["Town04"]
         print("\n[ 사용 가능한 맵 목록 ]")
         for i, m_name in enumerate(available_maps):
             print(f"{i+1}. {m_name}")
         
+        # 자동 검증 실행은 표준 입력을 기다리지 않고 환경 변수로 맵을 선택한다.
+        # CARLA_MAP이 없으면 기존 대화형 맵 선택 방식을 그대로 사용한다.
+        requested_map = "Town04"
         try:
-            choice = input(f"\n원하시는 맵 번호 또는 이름을 입력하세요 (엔터 시 기본값 Town04): ").strip()
+            if requested_map:
+                choice = requested_map
+                print(f"[System] CARLA_MAP={requested_map}")
+            else:
+                choice = input(f"\n원하시는 맵 번호 또는 이름을 입력하세요 (엔터 시 기본값 Town04): ").strip()
             if choice == "":
                 map_name = "Town04"
             elif choice in available_maps:
@@ -772,11 +952,30 @@ def main():
             print("입력 오류. 기본값 Town04를 로드합니다.")
             map_name = "Town04"
 
-        print(f"\nLoading {map_name}...")
-        world = client.load_world(map_name)
+        current_world = client.get_world()
+        current_map_name = current_world.get_map().name.rsplit("/", 1)[-1]
+        if current_map_name == map_name:
+            # Reuse Town04 when CARLA is already on the required map. Repeated
+            # load_world() calls are slow and can leave an interrupted Windows
+            # CARLA session waiting inside the map-load RPC.
+            world = current_world
+            print(f"\n{map_name} is already loaded; reusing the current world.")
+        else:
+            print(f"\nLoading {map_name}...")
+            world = client.load_world(map_name)
+
+        # A previous Python process may have terminated while owning a
+        # synchronous world.  wait_for_tick() would then deadlock forever
+        # because no client is issuing world.tick().  Normalize to asynchronous
+        # startup before the readiness ticks, then take synchronous ownership.
+        startup_settings = world.get_settings()
+        if startup_settings.synchronous_mode:
+            startup_settings.synchronous_mode = False
+            startup_settings.fixed_delta_seconds = None
+            world.apply_settings(startup_settings)
 
         print(f"Waiting for {map_name}...")
-        for _ in range(100):
+        for _ in range(10):
             world.wait_for_tick()
         print(f"{map_name} Ready.")
 
@@ -799,13 +998,19 @@ def main():
 
         map_manager = MapManager(world)
         keyboard = KeyboardController()
+        if env_flag("CARLA_FIRST_PERSON", default=False):
+            keyboard.camera_mode = "first_person"
+        control_panel = ControlPanel()
 
         status = "restart"
 
         status = "restart"
 
         while status == "restart":
-            status = run_session(world, map_manager, screen, font, clock, keyboard, traffic_manager, engine_pitch_cache_global)
+            status = run_session(
+                world, map_manager, screen, font, clock, keyboard,
+                traffic_manager, engine_pitch_cache_global, control_panel,
+            )
 
     except KeyboardInterrupt:
         print("\nUser Exit.")

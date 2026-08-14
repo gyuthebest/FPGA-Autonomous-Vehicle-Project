@@ -1,0 +1,955 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Thu Aug 13 20:44:33 2026
+# Process ID: 34560
+# Current directory: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project
+# Command line: vivado.exe -mode batch -source sources_1/verify_sources.tcl -nojournal -log verification_reports/width_fix_verify.log
+# Log file: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/width_fix_verify.log
+# Journal file: 
+# Running On: JH_HP, OS: Windows, CPU Frequency: 1996 MHz, CPU Physical cores: 12, Host memory: 16697 MB
+#-----------------------------------------------------------
+source sources_1/verify_sources.tcl
+# set script_dir [file normalize [file dirname [info script]]]
+# set report_dir [file normalize [file join $script_dir .. verification_reports]]
+# file mkdir $report_dir
+# create_project -in_memory -part xczu2cg-sfvc784-1-e
+create_project: Time (s): cpu = 00:00:04 ; elapsed = 00:00:12 . Memory (MB): peak = 379.852 ; gain = 64.559
+# set_property target_language Verilog [current_project]
+# read_verilog -sv [list \
+#     [file join $script_dir new types_pkg.sv] \
+#     [file join $script_dir new consistency_checker.sv] \
+#     [file join $script_dir new mask_20s.sv] \
+#     [file join $script_dir new preprocessor.sv] \
+#     [file join $script_dir new sensor_checker.sv] \
+#     [file join $script_dir new sensor_reliability.sv] \
+#     [file join $script_dir new risk_types.sv] \
+#     [file join $script_dir new risk_control.sv] \
+#     [file join $script_dir ip sensor_input_1_0 hdl sensor_input_v1_0_S00_AXI.v] \
+#     [file join $script_dir new top_controller.sv]]
+# if {[catch {
+#     synth_design -top top_controller -part xczu2cg-sfvc784-1-e -flatten_hierarchy rebuilt
+# } synth_error]} {
+#     # Vivado 2022.2 can report a Windows realtime/tmp cleanup error after a
+#     # successful synthesis. Continue only when an in-memory design exists.
+#     if {[llength [get_designs -quiet]] == 0} {
+#         error $synth_error
+#     }
+#     puts "WARNING: continuing after post-synthesis cleanup error: $synth_error"
+# }
+Command: synth_design -top top_controller -part xczu2cg-sfvc784-1-e -flatten_hierarchy rebuilt
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu2cg'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu2cg'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 34248
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Xilinx/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:06 ; elapsed = 00:00:08 . Memory (MB): peak = 819.906 ; gain = 416.172
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'top_controller' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/top_controller.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'sensor_input_v1_0_S00_AXI' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v:5]
+	Parameter C_S_AXI_DATA_WIDTH bound to: 32 - type: integer 
+	Parameter C_S_AXI_ADDR_WIDTH bound to: 6 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'sensor_input_v1_0_S00_AXI' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/ip/sensor_input_1_0/hdl/sensor_input_v1_0_S00_AXI.v:5]
+INFO: [Synth 8-6157] synthesizing module 'preprocessor' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/preprocessor.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'preprocessor' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/preprocessor.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'sensor_reliability' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_reliability.sv:5]
+	Parameter CLK_FREQ_HZ bound to: 88888000 - type: integer 
+	Parameter SAMPLE_RATE_HZ bound to: 20 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'mask_20s' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/mask_20s.sv:5]
+	Parameter CLK_FREQ bound to: 88888000 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'mask_20s' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/mask_20s.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+	Parameter WIDTH bound to: 16 - type: integer 
+	Parameter DW bound to: 16 - type: integer 
+	Parameter TW bound to: 14 - type: integer 
+	Parameter CHANNEL_TYPE_1 bound to: 1 - type: integer 
+	Parameter CHANNEL_TYPE_2 bound to: 1 - type: integer 
+	Parameter UPDATE_CLK_X2 bound to: 8888800 - type: integer 
+	Parameter DROP_N bound to: 2 - type: integer 
+	Parameter HISTORY bound to: 10 - type: integer 
+	Parameter RANGE_THRESHOLD_MAX bound to: 20000 - type: integer 
+	Parameter RANGE_THRESHOLD_MIN bound to: 0 - type: integer 
+	Parameter JUMP_THRESHOLD bound to: 100 - type: integer 
+	Parameter STUCK_THRESHOLD bound to: 20 - type: integer 
+	Parameter NOISE_THRESHOLD_1 bound to: 25 - type: integer 
+	Parameter NOISE_THRESHOLD_2 bound to: 7 - type: integer 
+	Parameter RANGE_USE_MIN bound to: 1'b0 
+	Parameter RANGE_USE_MAX bound to: 1'b1 
+	Parameter RANGE_U bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_D bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_N bound to: 32'b00000000000000000000000000000011 
+	Parameter JUMP_U bound to: 32'b00000000000000000000000000000110 
+	Parameter JUMP_D bound to: 32'b00000000000000000000000000000001 
+	Parameter JUMP_N bound to: 32'b00000000000000000000000000010010 
+	Parameter STUCK_U bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_D bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_N bound to: 32'b00000000000000000000000000001010 
+	Parameter TIMEOUT_U bound to: 32'b00000000000000000000000000000001 
+	Parameter TIMEOUT_D bound to: 32'b00000000000000000000000000000010 
+	Parameter TIMEOUT_N bound to: 32'b00000000000000000000000000001010 
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized0' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+	Parameter WIDTH bound to: 13 - type: integer 
+	Parameter DW bound to: 14 - type: integer 
+	Parameter TW bound to: 16 - type: integer 
+	Parameter CHANNEL_TYPE_1 bound to: 1 - type: integer 
+	Parameter CHANNEL_TYPE_2 bound to: 2 - type: integer 
+	Parameter UPDATE_CLK_X2 bound to: 8888800 - type: integer 
+	Parameter DROP_N bound to: 2 - type: integer 
+	Parameter HISTORY bound to: 10 - type: integer 
+	Parameter RANGE_THRESHOLD_MAX bound to: 4000 - type: integer 
+	Parameter RANGE_THRESHOLD_MIN bound to: -4000 - type: integer 
+	Parameter JUMP_THRESHOLD bound to: 10 - type: integer 
+	Parameter STUCK_THRESHOLD bound to: 2 - type: integer 
+	Parameter NOISE_THRESHOLD_1 bound to: 3 - type: integer 
+	Parameter NOISE_THRESHOLD_2 bound to: 7 - type: integer 
+	Parameter RANGE_USE_MIN bound to: 1'b1 
+	Parameter RANGE_USE_MAX bound to: 1'b1 
+	Parameter RANGE_U bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_D bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_N bound to: 32'b00000000000000000000000000000011 
+	Parameter JUMP_U bound to: 32'b00000000000000000000000000000110 
+	Parameter JUMP_D bound to: 32'b00000000000000000000000000000001 
+	Parameter JUMP_N bound to: 32'b00000000000000000000000000010010 
+	Parameter STUCK_U bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_D bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_N bound to: 32'b00000000000000000000000000001010 
+	Parameter TIMEOUT_U bound to: 32'b00000000000000000000000000000001 
+	Parameter TIMEOUT_D bound to: 32'b00000000000000000000000000000010 
+	Parameter TIMEOUT_N bound to: 32'b00000000000000000000000000001010 
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized0' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized1' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+	Parameter WIDTH bound to: 12 - type: integer 
+	Parameter DW bound to: 13 - type: integer 
+	Parameter TW bound to: 15 - type: integer 
+	Parameter CHANNEL_TYPE_1 bound to: 0 - type: integer 
+	Parameter CHANNEL_TYPE_2 bound to: 2 - type: integer 
+	Parameter UPDATE_CLK_X2 bound to: 8888800 - type: integer 
+	Parameter DROP_N bound to: 2 - type: integer 
+	Parameter HISTORY bound to: 10 - type: integer 
+	Parameter RANGE_THRESHOLD_MAX bound to: 1600 - type: integer 
+	Parameter RANGE_THRESHOLD_MIN bound to: -1600 - type: integer 
+	Parameter JUMP_THRESHOLD bound to: 2000 - type: integer 
+	Parameter STUCK_THRESHOLD bound to: 2 - type: integer 
+	Parameter NOISE_THRESHOLD_1 bound to: 500 - type: integer 
+	Parameter NOISE_THRESHOLD_2 bound to: 7 - type: integer 
+	Parameter RANGE_USE_MIN bound to: 1'b1 
+	Parameter RANGE_USE_MAX bound to: 1'b1 
+	Parameter RANGE_U bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_D bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_N bound to: 32'b00000000000000000000000000000011 
+	Parameter JUMP_U bound to: 32'b00000000000000000000000000000110 
+	Parameter JUMP_D bound to: 32'b00000000000000000000000000000001 
+	Parameter JUMP_N bound to: 32'b00000000000000000000000000010010 
+	Parameter STUCK_U bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_D bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_N bound to: 32'b00000000000000000000000000001010 
+	Parameter TIMEOUT_U bound to: 32'b00000000000000000000000000000001 
+	Parameter TIMEOUT_D bound to: 32'b00000000000000000000000000000010 
+	Parameter TIMEOUT_N bound to: 32'b00000000000000000000000000001010 
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized1' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized2' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+	Parameter WIDTH bound to: 16 - type: integer 
+	Parameter DW bound to: 17 - type: integer 
+	Parameter TW bound to: 17 - type: integer 
+	Parameter CHANNEL_TYPE_1 bound to: 0 - type: integer 
+	Parameter CHANNEL_TYPE_2 bound to: 2 - type: integer 
+	Parameter UPDATE_CLK_X2 bound to: 8888800 - type: integer 
+	Parameter DROP_N bound to: 2 - type: integer 
+	Parameter HISTORY bound to: 10 - type: integer 
+	Parameter RANGE_THRESHOLD_MAX bound to: 16000 - type: integer 
+	Parameter RANGE_THRESHOLD_MIN bound to: -16000 - type: integer 
+	Parameter JUMP_THRESHOLD bound to: 1000 - type: integer 
+	Parameter STUCK_THRESHOLD bound to: 2 - type: integer 
+	Parameter NOISE_THRESHOLD_1 bound to: 250 - type: integer 
+	Parameter NOISE_THRESHOLD_2 bound to: 7 - type: integer 
+	Parameter RANGE_USE_MIN bound to: 1'b1 
+	Parameter RANGE_USE_MAX bound to: 1'b1 
+	Parameter RANGE_U bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_D bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_N bound to: 32'b00000000000000000000000000000011 
+	Parameter JUMP_U bound to: 32'b00000000000000000000000000000110 
+	Parameter JUMP_D bound to: 32'b00000000000000000000000000000001 
+	Parameter JUMP_N bound to: 32'b00000000000000000000000000010010 
+	Parameter STUCK_U bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_D bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_N bound to: 32'b00000000000000000000000000001010 
+	Parameter TIMEOUT_U bound to: 32'b00000000000000000000000000000001 
+	Parameter TIMEOUT_D bound to: 32'b00000000000000000000000000000010 
+	Parameter TIMEOUT_N bound to: 32'b00000000000000000000000000001010 
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized2' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized3' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+	Parameter WIDTH bound to: 11 - type: integer 
+	Parameter DW bound to: 12 - type: integer 
+	Parameter TW bound to: 12 - type: integer 
+	Parameter CHANNEL_TYPE_1 bound to: 2 - type: integer 
+	Parameter CHANNEL_TYPE_2 bound to: 0 - type: integer 
+	Parameter UPDATE_CLK_X2 bound to: 8888800 - type: integer 
+	Parameter DROP_N bound to: 2 - type: integer 
+	Parameter HISTORY bound to: 10 - type: integer 
+	Parameter RANGE_THRESHOLD_MAX bound to: 600 - type: integer 
+	Parameter RANGE_THRESHOLD_MIN bound to: -500 - type: integer 
+	Parameter JUMP_THRESHOLD bound to: 5 - type: integer 
+	Parameter STUCK_THRESHOLD bound to: 0 - type: integer 
+	Parameter NOISE_THRESHOLD_1 bound to: 2 - type: integer 
+	Parameter NOISE_THRESHOLD_2 bound to: 7 - type: integer 
+	Parameter RANGE_USE_MIN bound to: 1'b1 
+	Parameter RANGE_USE_MAX bound to: 1'b1 
+	Parameter RANGE_U bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_D bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_N bound to: 32'b00000000000000000000000000000011 
+	Parameter JUMP_U bound to: 32'b00000000000000000000000000000110 
+	Parameter JUMP_D bound to: 32'b00000000000000000000000000000001 
+	Parameter JUMP_N bound to: 32'b00000000000000000000000000010010 
+	Parameter STUCK_U bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_D bound to: 32'b00000000000000000000000000000010 
+	Parameter STUCK_N bound to: 32'b00000000000000000000000000001111 
+	Parameter TIMEOUT_U bound to: 32'b00000000000000000000000000000001 
+	Parameter TIMEOUT_D bound to: 32'b00000000000000000000000000000010 
+	Parameter TIMEOUT_N bound to: 32'b00000000000000000000000000001010 
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized3' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized4' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+	Parameter WIDTH bound to: 8 - type: integer 
+	Parameter DW bound to: 8 - type: integer 
+	Parameter TW bound to: 8 - type: integer 
+	Parameter CHANNEL_TYPE_1 bound to: 2 - type: integer 
+	Parameter CHANNEL_TYPE_2 bound to: 0 - type: integer 
+	Parameter UPDATE_CLK_X2 bound to: 8888800 - type: integer 
+	Parameter DROP_N bound to: 2 - type: integer 
+	Parameter HISTORY bound to: 10 - type: integer 
+	Parameter RANGE_THRESHOLD_MAX bound to: 100 - type: integer 
+	Parameter RANGE_THRESHOLD_MIN bound to: 0 - type: integer 
+	Parameter JUMP_THRESHOLD bound to: 5 - type: integer 
+	Parameter STUCK_THRESHOLD bound to: 0 - type: integer 
+	Parameter NOISE_THRESHOLD_1 bound to: 2 - type: integer 
+	Parameter NOISE_THRESHOLD_2 bound to: 7 - type: integer 
+	Parameter RANGE_USE_MIN bound to: 1'b0 
+	Parameter RANGE_USE_MAX bound to: 1'b1 
+	Parameter RANGE_U bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_D bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_N bound to: 32'b00000000000000000000000000000011 
+	Parameter JUMP_U bound to: 32'b00000000000000000000000000000110 
+	Parameter JUMP_D bound to: 32'b00000000000000000000000000000001 
+	Parameter JUMP_N bound to: 32'b00000000000000000000000000010010 
+	Parameter STUCK_U bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_D bound to: 32'b00000000000000000000000000000010 
+	Parameter STUCK_N bound to: 32'b00000000000000000000000000001111 
+	Parameter TIMEOUT_U bound to: 32'b00000000000000000000000000000001 
+	Parameter TIMEOUT_D bound to: 32'b00000000000000000000000000000010 
+	Parameter TIMEOUT_N bound to: 32'b00000000000000000000000000001010 
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized4' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'each_sensor_check__parameterized5' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+	Parameter WIDTH bound to: 19 - type: integer 
+	Parameter DW bound to: 19 - type: integer 
+	Parameter TW bound to: 19 - type: integer 
+	Parameter CHANNEL_TYPE_1 bound to: 2 - type: integer 
+	Parameter CHANNEL_TYPE_2 bound to: 0 - type: integer 
+	Parameter UPDATE_CLK_X2 bound to: 8888800 - type: integer 
+	Parameter DROP_N bound to: 2 - type: integer 
+	Parameter HISTORY bound to: 10 - type: integer 
+	Parameter RANGE_THRESHOLD_MAX bound to: 130000 - type: integer 
+	Parameter RANGE_THRESHOLD_MIN bound to: 0 - type: integer 
+	Parameter JUMP_THRESHOLD bound to: 20000 - type: integer 
+	Parameter STUCK_THRESHOLD bound to: 0 - type: integer 
+	Parameter NOISE_THRESHOLD_1 bound to: 5000 - type: integer 
+	Parameter NOISE_THRESHOLD_2 bound to: 7 - type: integer 
+	Parameter RANGE_USE_MIN bound to: 1'b0 
+	Parameter RANGE_USE_MAX bound to: 1'b1 
+	Parameter RANGE_U bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_D bound to: 32'b00000000000000000000000000000001 
+	Parameter RANGE_N bound to: 32'b00000000000000000000000000000011 
+	Parameter JUMP_U bound to: 32'b00000000000000000000000000000110 
+	Parameter JUMP_D bound to: 32'b00000000000000000000000000000001 
+	Parameter JUMP_N bound to: 32'b00000000000000000000000000010010 
+	Parameter STUCK_U bound to: 32'b00000000000000000000000000000001 
+	Parameter STUCK_D bound to: 32'b00000000000000000000000000000010 
+	Parameter STUCK_N bound to: 32'b00000000000000000000000000001111 
+	Parameter TIMEOUT_U bound to: 32'b00000000000000000000000000000001 
+	Parameter TIMEOUT_D bound to: 32'b00000000000000000000000000000010 
+	Parameter TIMEOUT_N bound to: 32'b00000000000000000000000000001010 
+INFO: [Synth 8-6155] done synthesizing module 'each_sensor_check__parameterized5' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 21 - type: integer 
+	Parameter S bound to: 40 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 360 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized0' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 13 - type: integer 
+	Parameter S bound to: 1 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 51 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized0' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized1' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 12 - type: integer 
+	Parameter S bound to: 1 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 76 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized1' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized2' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 12 - type: integer 
+	Parameter S bound to: 1 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 4 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized2' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized3' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 12 - type: integer 
+	Parameter S bound to: 1 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 43 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized3' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized4' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 16 - type: integer 
+	Parameter S bound to: 1024 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 270 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized4' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized5' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 16 - type: integer 
+	Parameter S bound to: 1 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 4 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized5' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'consistency_check__parameterized6' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+	Parameter WIDTH bound to: 16 - type: integer 
+	Parameter S bound to: 1 - type: integer 
+	Parameter CONSISTENCY_THRESHOLD bound to: 120 - type: integer 
+	Parameter CONSISTENCY_U bound to: 32'b00000000000000000000000000000001 
+	Parameter CONSISTENCY_D bound to: 32'b00000000000000000000000000000011 
+	Parameter CONSISTENCY_N bound to: 32'b00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'consistency_check__parameterized6' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'sensor_reliability' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_reliability.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'risk_types' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_types.sv:3]
+INFO: [Synth 8-6155] done synthesizing module 'risk_types' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_types.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'risk_control_2' [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_control.sv:3]
+	Parameter CLK_FREQ bound to: 88888000 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'risk_control_2' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_control.sv:3]
+INFO: [Synth 8-6155] done synthesizing module 'top_controller' (0#1) [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/top_controller.sv:5]
+WARNING: [Synth 8-6014] Unused sequential element cnt_05_reg was removed.  [C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_control.sv:747]
+WARNING: [Synth 8-7129] Port sim_data_in[headlight] in module risk_control_2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sim_data_in[hazard] in module risk_control_2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[18] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[17] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[16] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[15] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[14] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[13] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[12] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[11] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[10] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[9] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[8] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[7] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[6] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[5] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[4] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[3] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[2] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[1] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[0] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[18] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[17] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[16] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[15] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[14] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[13] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[12] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[11] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[10] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[9] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[8] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check__parameterized5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[7] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[6] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[5] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[4] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[3] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[2] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[1] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[0] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check__parameterized4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[11] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[10] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[9] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[8] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[7] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[6] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[5] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[4] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[3] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[2] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[1] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_1[0] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[11] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[10] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[9] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[8] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check__parameterized3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[2] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[1] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[0] in module each_sensor_check__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[2] in module each_sensor_check__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[1] in module each_sensor_check__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port situation[0] in module each_sensor_check__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[13] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[12] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[11] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[10] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[9] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[8] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[7] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[6] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[5] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[4] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[3] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[2] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[1] in module each_sensor_check is either unconnected or has no load
+WARNING: [Synth 8-7129] Port trig_val_2[0] in module each_sensor_check is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:09 ; elapsed = 00:00:12 . Memory (MB): peak = 965.992 ; gain = 562.258
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:10 ; elapsed = 00:00:13 . Memory (MB): peak = 965.992 ; gain = 562.258
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xczu2cg-sfvc784-1-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xczu2cg-sfvc784-1-e
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:10 ; elapsed = 00:00:13 . Memory (MB): peak = 965.992 ; gain = 562.258
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1122.324 ; gain = 718.590
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input   32 Bit       Adders := 31    
+	  10 Input   32 Bit       Adders := 11    
+	   2 Input   32 Bit       Adders := 38    
+	   4 Input   32 Bit       Adders := 1     
+	  10 Input   23 Bit       Adders := 1     
+	  10 Input   21 Bit       Adders := 3     
+	   2 Input   21 Bit       Adders := 1     
+	  10 Input   20 Bit       Adders := 1     
+	   2 Input   19 Bit       Adders := 1     
+	   3 Input   19 Bit       Adders := 2     
+	  10 Input   18 Bit       Adders := 1     
+	   2 Input   17 Bit       Adders := 3     
+	  10 Input   17 Bit       Adders := 3     
+	   3 Input   17 Bit       Adders := 9     
+	   2 Input   16 Bit       Adders := 3     
+	  10 Input   16 Bit       Adders := 1     
+	   3 Input   16 Bit       Adders := 2     
+	   3 Input   15 Bit       Adders := 3     
+	   2 Input   15 Bit       Adders := 3     
+	   2 Input   14 Bit       Adders := 2     
+	   3 Input   14 Bit       Adders := 2     
+	   2 Input   13 Bit       Adders := 4     
+	   3 Input   13 Bit       Adders := 7     
+	  10 Input   12 Bit       Adders := 1     
+	   2 Input   12 Bit       Adders := 12    
+	   3 Input   12 Bit       Adders := 11    
+	   2 Input   11 Bit       Adders := 1     
+	   3 Input    9 Bit       Adders := 6     
+	   2 Input    9 Bit       Adders := 4     
+	   2 Input    8 Bit       Adders := 11    
+	   3 Input    8 Bit       Adders := 2     
+	   2 Input    4 Bit       Adders := 3     
+	   2 Input    3 Bit       Adders := 7     
+	   2 Input    2 Bit       Adders := 13    
++---XORs : 
+	   2 Input      1 Bit         XORs := 8     
++---Registers : 
+	               32 Bit    Registers := 25    
+	               21 Bit    Registers := 1     
+	               19 Bit    Registers := 12    
+	               18 Bit    Registers := 4     
+	               17 Bit    Registers := 40    
+	               16 Bit    Registers := 38    
+	               15 Bit    Registers := 8     
+	               14 Bit    Registers := 24    
+	               13 Bit    Registers := 43    
+	               12 Bit    Registers := 29    
+	               11 Bit    Registers := 4     
+	               10 Bit    Registers := 11    
+	                9 Bit    Registers := 2     
+	                8 Bit    Registers := 17    
+	                7 Bit    Registers := 4     
+	                6 Bit    Registers := 2     
+	                4 Bit    Registers := 7     
+	                3 Bit    Registers := 7     
+	                2 Bit    Registers := 50    
+	                1 Bit    Registers := 91    
++---Multipliers : 
+	              12x32  Multipliers := 1     
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 55    
+	   3 Input   32 Bit        Muxes := 4     
+	  11 Input   32 Bit        Muxes := 10    
+	   2 Input   19 Bit        Muxes := 1     
+	   2 Input   17 Bit        Muxes := 3     
+	   2 Input   16 Bit        Muxes := 5     
+	   2 Input   15 Bit        Muxes := 2     
+	   2 Input   14 Bit        Muxes := 1     
+	   2 Input   13 Bit        Muxes := 8     
+	   4 Input   13 Bit        Muxes := 3     
+	   3 Input   13 Bit        Muxes := 1     
+	   2 Input   12 Bit        Muxes := 14    
+	   2 Input   11 Bit        Muxes := 1     
+	   2 Input    9 Bit        Muxes := 6     
+	   2 Input    8 Bit        Muxes := 16    
+	   3 Input    8 Bit        Muxes := 2     
+	   2 Input    4 Bit        Muxes := 37    
+	   3 Input    4 Bit        Muxes := 3     
+	   4 Input    4 Bit        Muxes := 4     
+	   5 Input    4 Bit        Muxes := 1     
+	   7 Input    4 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 30    
+	   5 Input    3 Bit        Muxes := 1     
+	   3 Input    3 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 121   
+	   4 Input    2 Bit        Muxes := 34    
+	   5 Input    2 Bit        Muxes := 2     
+	   3 Input    2 Bit        Muxes := 2     
+	   2 Input    1 Bit        Muxes := 231   
+	   4 Input    1 Bit        Muxes := 2     
+	   3 Input    1 Bit        Muxes := 1     
+	   5 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:72)
+BRAMs: 300 (col length: RAMB18 72 RAMB36 36)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP val, operation Mode is: -C+A*(B:0x28)+1-1.
+DSP Report: operator val is absorbed into DSP val.
+DSP Report: operator val0 is absorbed into DSP val.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x28).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP pred_data_out_reg[pred_approach_speed], operation Mode is: (A*(B:0x14))'.
+DSP Report: register pred_data_out_reg[pred_approach_speed] is absorbed into DSP pred_data_out_reg[pred_approach_speed].
+DSP Report: operator p_0_out is absorbed into DSP pred_data_out_reg[pred_approach_speed].
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x3d5).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP pred_data_out_reg[pred_accel_x_3], operation Mode is: (A*B)'.
+DSP Report: register pred_data_out_reg[pred_accel_x_3] is absorbed into DSP pred_data_out_reg[pred_accel_x_3].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_accel_x_3].
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x3d5).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x3d5).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP pred_data_out_reg[pred_gyro_x_1], operation Mode is: ((D-A2)*(B:0xdf6))'.
+DSP Report: register sim_data_out_reg[incline_x] is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: register pred_data_out_reg[pred_gyro_x_1] is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_x_1].
+DSP Report: Generating DSP pred_data_out_reg[pred_gyro_y_1], operation Mode is: ((D-A2)*(B:0xdf6))'.
+DSP Report: register sim_data_out_reg[incline_y] is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: register pred_data_out_reg[pred_gyro_y_1] is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_y_1].
+DSP Report: Generating DSP pred_data_out_reg[pred_gyro_z_1], operation Mode is: ((D-A2)*(B:0xdf6))'.
+DSP Report: register sim_data_out_reg[incline_z] is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: register pred_data_out_reg[pred_gyro_z_1] is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: operator p_1_out is absorbed into DSP pred_data_out_reg[pred_gyro_z_1].
+DSP Report: Generating DSP p_0_out, operation Mode is: A*B.
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x266).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x2cd).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x39a).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+DSP Report: Generating DSP p_0_out, operation Mode is: A*(B:0x333).
+DSP Report: operator p_0_out is absorbed into DSP p_0_out.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:18 ; elapsed = 00:01:55 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+ROM: Preliminary Mapping Report
++-------------+------------+---------------+----------------+
+|Module Name  | RTL Object | Depth x Width | Implemented As | 
++-------------+------------+---------------+----------------+
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_SIN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_TAN    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
+|preprocessor | LUT_COS    | 32x10         | LUT            | 
++-------------+------------+---------------+----------------+
+
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++------------------+---------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name       | DSP Mapping         | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------------+---------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|consistency_check | -C+A*(B:0x28)+1-1   | 21     | 7      | 22     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x28)          | 15     | 6      | -      | -      | 21     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*(B:0x14))'       | 13     | 5      | -      | -      | 13     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x3d5)         | 12     | 11     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'              | 22     | 12     | -      | -      | 22     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x3d5)         | 12     | 11     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 23     | 12     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 12     | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 12     | 8      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*(B:0x3d5)         | 12     | 11     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B                 | 23     | 12     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | ((D-A2)*(B:0xdf6))' | 16     | 13     | -      | 16     | 29     | 1    | 0    | -    | 0    | 0     | 1    | 0    | 
+|preprocessor      | ((D-A2)*(B:0xdf6))' | 16     | 13     | -      | 16     | 29     | 1    | 0    | -    | 0    | 0     | 1    | 0    | 
+|preprocessor      | ((D-A2)*(B:0xdf6))' | 16     | 13     | -      | 16     | 29     | 1    | 0    | -    | 0    | 0     | 1    | 0    | 
+|preprocessor      | A*B                 | 14     | 12     | -      | -      | 26     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A*(B:0x266)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A*(B:0x2cd)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A*(B:0x39a)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A*(B:0x333)         | 13     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++------------------+---------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:01:19 ; elapsed = 00:01:56 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:01:23 ; elapsed = 00:02:01 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:01:33 ; elapsed = 00:02:12 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:33 ; elapsed = 00:02:12 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:34 ; elapsed = 00:02:13 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:34 ; elapsed = 00:02:13 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:35 ; elapsed = 00:02:13 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:35 ; elapsed = 00:02:13 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name       | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|preprocessor      | A*B         | 15     | 6      | -      | -      | 21     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'      | 13     | 5      | -      | -      | 13     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'      | 30     | 18     | -      | -      | 22     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 18     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (A*B)'      | 30     | 18     | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|preprocessor      | A*B         | 12     | 7      | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 10     | -      | -      | 23     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | A*B         | 30     | 18     | -      | -      | 35     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|preprocessor      | (D-A'*B)'   | 30     | 12     | -      | 27     | 16     | 1    | 0    | -    | 0    | 0     | 0    | 1    | 
+|preprocessor      | (D-A'*B)'   | 30     | 12     | -      | 27     | 16     | 1    | 0    | -    | 0    | 0     | 0    | 1    | 
+|preprocessor      | (D-A'*B)'   | 30     | 12     | -      | 27     | 16     | 1    | 0    | -    | 0    | 0     | 0    | 1    | 
+|preprocessor      | (A'*B)'     | 30     | 18     | -      | -      | 26     | 1    | 0    | -    | -    | -     | 0    | 1    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|risk_control_2    | A''*B       | 13     | 10     | -      | -      | 23     | 2    | 0    | -    | -    | -     | 0    | 0    | 
+|consistency_check | C'-(A'*B+1) | 15     | 6      | 48     | -      | 32     | 1    | 0    | 0    | -    | -     | 0    | 0    | 
++------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+----------------+------+
+|      |Cell            |Count |
++------+----------------+------+
+|1     |BUFG            |     1|
+|2     |CARRY8          |   816|
+|3     |DSP48E2         |     1|
+|4     |DSP_ALU         |    23|
+|5     |DSP_A_B_DATA    |    23|
+|6     |DSP_C_DATA      |    23|
+|7     |DSP_MULTIPLIER  |    23|
+|8     |DSP_M_DATA      |    23|
+|9     |DSP_OUTPUT      |    23|
+|10    |DSP_PREADD      |    23|
+|11    |DSP_PREADD_DATA |    23|
+|12    |LUT1            |  1474|
+|13    |LUT2            |  2270|
+|14    |LUT3            |  1747|
+|15    |LUT4            |  1723|
+|16    |LUT5            |  1585|
+|17    |LUT6            |  1484|
+|18    |MUXF7           |    30|
+|19    |MUXF8           |    12|
+|20    |FDRE            |  5713|
+|21    |FDSE            |     8|
+|22    |IBUF            |    51|
+|23    |OBUF            |    41|
++------+----------------+------+
+
+Report Instance Areas: 
++------+---------------------------------------------+-------------------------------------------------------------+------+
+|      |Instance                                     |Module                                                       |Cells |
++------+---------------------------------------------+-------------------------------------------------------------+------+
+|1     |top                                          |                                                             | 17140|
+|2     |  u_axi_slave                                |sensor_input_v1_0_S00_AXI                                    |  1388|
+|3     |  u_preprocessor                             |preprocessor                                                 |  4686|
+|4     |    \pred_data_out_reg[pred_approach_speed]  |\u_preprocessor/pred_data_out_reg[pred_accel_x_3]_funnel__1  |     8|
+|5     |    p_0_out__0                               |\u_preprocessor/p_0_out__0_funnel                            |     8|
+|6     |    p_0_out__1                               |\u_preprocessor/p_0_out__0_funnel__6                         |     8|
+|7     |    p_0_out__2                               |\u_preprocessor/p_0_out__0_funnel__8                         |     8|
+|8     |    \pred_data_out_reg[pred_accel_x_3]       |\u_preprocessor/pred_data_out_reg[pred_accel_x_3]_funnel     |     8|
+|9     |    p_0_out__3                               |\u_preprocessor/p_0_out__0_funnel__10                        |     8|
+|10    |    p_0_out__4                               |\u_preprocessor/p_0_out__0_funnel__3                         |     8|
+|11    |    p_0_out__5                               |\u_preprocessor/p_0_out__0_funnel__4                         |     8|
+|12    |    p_0_out__6                               |\u_preprocessor/p_0_out__0_funnel__1                         |     8|
+|13    |    p_0_out__7                               |\u_preprocessor/p_0_out__0_funnel__7                         |     8|
+|14    |    p_0_out__8                               |\u_preprocessor/p_0_out__8_funnel                            |     8|
+|15    |    p_0_out__9                               |\u_preprocessor/p_0_out__0_funnel__9                         |     8|
+|16    |    p_0_out__10                              |\u_preprocessor/p_0_out__0_funnel__5                         |     8|
+|17    |    p_0_out__11                              |\u_preprocessor/p_0_out__0_funnel__2                         |     8|
+|18    |    \pred_data_out_reg[pred_gyro_x_1]        |\u_preprocessor/pred_data_out_reg[pred_gyro_x_1]_funnel      |     8|
+|19    |    \pred_data_out_reg[pred_gyro_y_1]        |\u_preprocessor/pred_data_out_reg[pred_gyro_x_1]_funnel__1   |     8|
+|20    |    \pred_data_out_reg[pred_gyro_z_1]        |\u_preprocessor/pred_data_out_reg[pred_gyro_x_1]_funnel__2   |     8|
+|21    |    p_0_out__12                              |\u_preprocessor/p_0_out__12_funnel                           |     8|
+|22    |  u_risk_control                             |risk_control_2                                               |   781|
+|23    |    p_0_out                                  |\u_risk_control/p_0_out__1_funnel__3                         |     8|
+|24    |    p_0_out__0                               |\u_risk_control/p_0_out__1_funnel__1                         |     8|
+|25    |    p_0_out__1                               |\u_risk_control/p_0_out__1_funnel                            |     8|
+|26    |    p_0_out__2                               |\u_risk_control/p_0_out__1_funnel__2                         |     8|
+|27    |  u_risk_types                               |risk_types                                                   |   504|
+|28    |  u_sensor_reliability                       |sensor_reliability                                           |  9482|
+|29    |    u_chk_accel_x                            |each_sensor_check__parameterized1                            |   695|
+|30    |    u_chk_accel_y                            |each_sensor_check__parameterized1_0                          |   711|
+|31    |    u_chk_accel_z                            |each_sensor_check__parameterized1_1                          |   637|
+|32    |    u_chk_approach_speed                     |each_sensor_check__parameterized0                            |   536|
+|33    |    u_chk_distance                           |each_sensor_check                                            |   639|
+|34    |    u_chk_gyro_x                             |each_sensor_check__parameterized2                            |   866|
+|35    |    u_chk_gyro_y                             |each_sensor_check__parameterized2_2                          |   850|
+|36    |    u_chk_gyro_z                             |each_sensor_check__parameterized2_3                          |   893|
+|37    |    u_chk_humidity                           |each_sensor_check__parameterized4                            |   587|
+|38    |    u_chk_lux                                |each_sensor_check__parameterized5                            |   745|
+|39    |    u_chk_temperature                        |each_sensor_check__parameterized3                            |   671|
+|40    |    u_cons_1_accel_x                         |consistency_check__parameterized1                            |    54|
+|41    |    u_cons_1_accel_y                         |consistency_check__parameterized1_4                          |    54|
+|42    |    u_cons_1_accel_z                         |consistency_check__parameterized1_5                          |    54|
+|43    |    u_cons_1_approach_speed                  |consistency_check__parameterized0                            |   116|
+|44    |    u_cons_1_distance                        |consistency_check                                            |   191|
+|45    |      val                                    |\u_sensor_reliability/u_cons_1_distance/val_funnel           |     8|
+|46    |    u_cons_1_gyro_x                          |consistency_check__parameterized4                            |    79|
+|47    |    u_cons_1_gyro_y                          |consistency_check__parameterized4_6                          |    76|
+|48    |    u_cons_1_gyro_z                          |consistency_check__parameterized4_7                          |    77|
+|49    |    u_cons_2_accel_x                         |consistency_check__parameterized2                            |    54|
+|50    |    u_cons_2_accel_y                         |consistency_check__parameterized2_8                          |    54|
+|51    |    u_cons_2_accel_z                         |consistency_check__parameterized2_9                          |    53|
+|52    |    u_cons_2_gyro_x                          |consistency_check__parameterized5                            |    98|
+|53    |    u_cons_2_gyro_y                          |consistency_check__parameterized5_10                         |    86|
+|54    |    u_cons_2_gyro_z                          |consistency_check__parameterized5_11                         |    87|
+|55    |    u_cons_3_accel_x                         |consistency_check__parameterized3                            |    64|
+|56    |    u_cons_3_accel_y                         |consistency_check__parameterized3_12                         |    52|
+|57    |    u_cons_3_gyro_z                          |consistency_check__parameterized6                            |    52|
+|58    |    u_mask_20s_approach_speed                |mask_20s                                                     |   184|
+|59    |    u_mask_20s_distance                      |mask_20s_13                                                  |    92|
++------+---------------------------------------------+-------------------------------------------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:35 ; elapsed = 00:02:14 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 245 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:35 ; elapsed = 00:02:14 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+Synthesis Optimization Complete : Time (s): cpu = 00:01:35 ; elapsed = 00:02:14 . Memory (MB): peak = 1816.402 ; gain = 1412.668
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.357 . Memory (MB): peak = 1816.402 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 934 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1816.402 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 76 instances were transformed.
+  BUFG => BUFGCE: 1 instance 
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 24 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 51 instances
+
+Synth Design complete, checksum: 756b5971
+INFO: [Common 17-83] Releasing license: Synthesis
+59 Infos, 102 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:42 ; elapsed = 00:02:25 . Memory (MB): peak = 1816.402 ; gain = 1436.551
+# create_clock -name S_AXI_ACLK -period 10.000 [get_ports S_AXI_ACLK]
+# check_timing -file [file join $report_dir check_timing.rpt]
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+check_timing: Time (s): cpu = 00:00:33 ; elapsed = 00:00:38 . Memory (MB): peak = 3464.176 ; gain = 1647.773
+# report_timing_summary -delay_type min_max -report_unconstrained \
+#     -file [file join $report_dir timing_summary.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+# report_utilization -file [file join $report_dir utilization.rpt]
+# report_drc -file [file join $report_dir drc.rpt]
+Command: report_drc -file C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/drc.rpt
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2022.2/data/ip'.
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/drc.rpt.
+report_drc completed successfully
+report_drc: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 3464.176 ; gain = 0.000
+# write_checkpoint -force [file join $report_dir top_controller_synth.dcp]
+INFO: [Timing 38-480] Writing timing data to binary archive.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/top_controller_synth.dcp' has been generated.
+# puts "SOURCE_VERIFICATION_COMPLETE"
+SOURCE_VERIFICATION_COMPLETE
+INFO: [Common 17-206] Exiting Vivado at Thu Aug 13 20:48:14 2026...

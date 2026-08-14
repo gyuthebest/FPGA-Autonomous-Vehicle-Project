@@ -1,0 +1,99 @@
+﻿
+****** Vivado v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source {C:\Users\jiho0\AppData\Local\Temp\claude\C--Users-jiho0-GitProjects-FPGA-Autonomous-Vehicle-Project\ff7ecd3b-ec9b-48f5-8950-f685510dfe90\scratchpad\finish_build.tcl}
+# set repo_root "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project"
+# set report_dir [file join $repo_root verification_reports full_project_88888mhz]
+# open_project [file join $repo_root FPGA_project FPGA_project.xpr]
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project' may become invalid. A better location for the repository would be in a path adjacent to the project. (Current project location is 'c:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2022.2/data/ip'.
+open_project: Time (s): cpu = 00:00:10 ; elapsed = 00:00:14 . Memory (MB): peak = 470.277 ; gain = 156.484
+# set impl_status [get_property STATUS [get_runs impl_1]]
+# puts "IMPL_STATUS=$impl_status"
+IMPL_STATUS=write_bitstream Complete!
+# if {![string match "*Complete*" $impl_status]} {
+#     error "Implementation is not complete: $impl_status"
+# }
+# open_run impl_1
+INFO: [Device 21-403] Loading part xczu2cg-sfvc784-1-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.258 . Memory (MB): peak = 1374.789 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 963 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2022.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF Files: Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1849.984 ; gain = 50.320
+Restored from archive | CPU: 5.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1849.984 ; gain = 50.320
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 2294.082 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 25 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 13 instances
+  DSP48E2 => DSP48E2 (inverted pins: RSTA) (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 4 instances
+  DSP48E2 => DSP48E2 (inverted pins: RSTA, RSTC) (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 1 instance 
+  DSP48E2 => DSP48E2 (inverted pins: RSTA, RSTP) (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 3 instances
+  DSP48E2 => DSP48E2 (inverted pins: RSTP) (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 4 instances
+
+open_run: Time (s): cpu = 00:00:37 ; elapsed = 00:00:48 . Memory (MB): peak = 2294.082 ; gain = 1823.805
+# report_drc -file [file join $report_dir implemented_drc.rpt]
+Command: report_drc -file C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/full_project_88888mhz/implemented_drc.rpt
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/verification_reports/full_project_88888mhz/implemented_drc.rpt.
+report_drc completed successfully
+report_drc: Time (s): cpu = 00:00:09 ; elapsed = 00:00:06 . Memory (MB): peak = 2384.781 ; gain = 90.699
+# set wns [get_property STATS.WNS [get_runs impl_1]]
+# set tns [get_property STATS.TNS [get_runs impl_1]]
+# set whs [get_property STATS.WHS [get_runs impl_1]]
+# set ths [get_property STATS.THS [get_runs impl_1]]
+# puts "TIMING_SETUP_WNS=$wns"
+TIMING_SETUP_WNS=0.311331
+# puts "TIMING_SETUP_TNS=$tns"
+TIMING_SETUP_TNS=0.000000
+# puts "TIMING_HOLD_WHS=$whs"
+TIMING_HOLD_WHS=0.005045
+# puts "TIMING_HOLD_THS=$ths"
+TIMING_HOLD_THS=0.000000
+# if {$wns < 0 || $tns < 0 || $whs < 0 || $ths < 0} {
+#     puts "TIMING_CLOSURE=FAIL"
+#     error "Timing not met"
+# }
+# puts "TIMING_CLOSURE=PASS"
+TIMING_CLOSURE=PASS
+# set drc_errors [get_drc_violations -quiet -filter {SEVERITY == "Error"}]
+# set drc_critical [get_drc_violations -quiet -filter {SEVERITY == "Critical Warning"}]
+# puts "DRC_ERRORS=[llength $drc_errors]"
+DRC_ERRORS=0
+# puts "DRC_CRITICAL_WARNINGS=[llength $drc_critical]"
+DRC_CRITICAL_WARNINGS=0
+# if {[llength $drc_errors] != 0} {
+#     error "DRC reported [llength $drc_errors] error(s)"
+# }
+# set bit_file [file join $repo_root FPGA_project FPGA_project.runs impl_1 design_1_wrapper.bit]
+# if {![file exists $bit_file]} { error "Bitstream was not created: $bit_file" }
+# write_hw_platform -fixed -include_bit -force \
+#     -file [file join $repo_root FPGA_project design_1_wrapper.xsa]
+INFO: [Project 1-1918] Creating Hardware Platform: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/design_1_wrapper.xsa ...
+INFO: [Project 1-1943] The Hardware Platform can be used for Hardware
+INFO: [Project 1-1941] Successfully created Hardware Platform: C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/design_1_wrapper.xsa
+INFO: [Hsi 55-2053] elapsed time for repository (C:/Xilinx/Vivado/2022.2/data/embeddedsw) loading 4 seconds
+write_hw_platform: Time (s): cpu = 00:00:14 ; elapsed = 00:00:21 . Memory (MB): peak = 2547.887 ; gain = 163.105
+# puts "BITSTREAM_FILE=$bit_file"
+BITSTREAM_FILE=C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/FPGA_project/FPGA_project.runs/impl_1/design_1_wrapper.bit
+# puts "FULL_PROJECT_BUILD=PASS"
+FULL_PROJECT_BUILD=PASS
+# close_project
+INFO: [Common 17-206] Exiting Vivado at Fri Aug 14 15:21:58 2026...

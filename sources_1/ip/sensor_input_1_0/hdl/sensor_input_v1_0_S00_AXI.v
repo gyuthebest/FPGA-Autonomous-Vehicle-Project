@@ -27,6 +27,10 @@
         input logic [31:0] sample_seq_risk,
         input logic [31:0] sample_seq_rel,
         input logic [1:0] valid_out_rel_risk,
+        input logic transition_demand,
+        input logic hud_warning,
+        input logic mrm,
+        input logic [3:0] td_remain_sec,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -435,7 +439,7 @@
 
 	logic [31:0] read_reg0, read_reg1, read_reg2, read_reg3, read_reg4;
     logic [31:0] read_reg5, read_reg6, read_reg7, read_reg8, read_reg9;
-    logic [31:0] read_reg10, read_reg11, read_reg12;
+    logic [31:0] read_reg10, read_reg11, read_reg12, read_reg13, read_reg14;
 
     assign read_reg0 = { {4{sensor_data_in.accel_y[11]}}, sensor_data_in.accel_y, {4{sensor_data_in.accel_x[11]}}, sensor_data_in.accel_x };
     assign read_reg1 = { sensor_data_in.gyro_x, {4{sensor_data_in.accel_z[11]}}, sensor_data_in.accel_z };
@@ -445,11 +449,29 @@
     assign read_reg5 = { 7'b0, sensor_data_in.humidity, sensor_data_in.approach_speed[9:0], sensor_data_in.distance };
     assign read_reg6 = { 2'b0, sim_data_in.weather, sim_data_in.accelerator, sim_data_in.speed_z[7:0], sensor_data_in.lux };
     assign read_reg7 = { 2'b0, sim_data_in.gear, sim_data_in.rpm, sim_data_in.brake, sim_data_in.steering[4:0], sim_data_in.speed_limit[7:0], sensor_data_in.temperature };
-    assign read_reg8 = { 26'b0, sim_data_in.situation, sim_data_in.hazard, sim_data_in.headlight, sim_data_in.manual_mode };
+    // Mirror the low speed bits so the loopback matches the write side.
+    assign read_reg8 = { 5'b0, sim_data_in.steering[2:0], sim_data_in.speed_z[5:0], sim_data_in.speed_y[5:0], sim_data_in.speed_x[5:0], sim_data_in.situation, sim_data_in.hazard, sim_data_in.headlight, sim_data_in.manual_mode };
     assign read_reg9 = { 14'b0, valid_out_rel_risk[1], valid_out_rel_risk[0], risk_in.Ri_posture_C, risk_in.Ri_posture_B, risk_in.Ri_posture_A, risk_in.Ri_vision_B, risk_in.Ri_vision_A, risk_in.Ri_road_B, risk_in.Ri_road_A, risk_in.Ri_collision };
     assign read_reg10 = { 10'b0, rel_in.lux.state, rel_in.humidity.state, rel_in.temperature.state, rel_in.gyro_z.state, rel_in.gyro_y.state, rel_in.gyro_x.state, rel_in.accel_z.state, rel_in.accel_y.state, rel_in.accel_x.state, rel_in.approach_speed.state, rel_in.distance.state };
     assign read_reg11 = sample_seq_risk;
     assign read_reg12 = sample_seq_rel;
+    // Final FPGA command/status.  Keep full command widths so the PS does not
+    // have to reconstruct signed steering from the lossy legacy read_reg7.
+    assign read_reg13 = {
+        4'b0,
+        sim_data_in.manual_mode,
+        sim_data_in.gear,
+        sim_data_in.steering,
+        sim_data_in.brake,
+        sim_data_in.accelerator,
+        sim_data_in.hazard,
+        sim_data_in.headlight,
+        td_remain_sec,
+        mrm,
+        hud_warning,
+        transition_demand
+    };
+    assign read_reg14 = {19'b0, sim_data_in.speed_limit};
 
 	// Implement memory mapped register select and read logic generation
 	// Slave register read enable is asserted when valid address is available
@@ -472,6 +494,8 @@
 	        4'ha   : reg_data_out <= read_reg10;
 	        4'hb   : reg_data_out <= read_reg11;
 	        4'hc   : reg_data_out <= read_reg12;
+	        4'hd   : reg_data_out <= read_reg13;
+	        4'he   : reg_data_out <= read_reg14;
 	        default : reg_data_out <= 0;
 	      endcase
 	end
@@ -518,8 +542,17 @@
 
     // slv_reg4
     sim_data_out.incline_z      = $signed(slv_reg4[15:0]);
-    sim_data_out.speed_x        = $signed({slv_reg4[23:16], 6'b0});
-    sim_data_out.speed_y        = $signed({slv_reg4[31:24], 6'b0});
+    // speed_* used to arrive as 8 bits padded with six zero LSBs, i.e. an
+    // effective resolution of 0.64 m/s.  pred_accel_*_1 differentiates speed
+    // over two samples and scales by C_ACC(10), so one quantisation step moved
+    // the reference by 640 (6.4 m/s^2) while TH_ACC is 76 (0.76 m/s^2).
+    // Consistency relations 3/4/5 could not pass during normal driving:
+    // measured residual medians were 203 and 124 against a threshold of 76,
+    // giving 70 % / 55 % false-fault rates on accel_x / accel_y.
+    // The six low bits now travel in the spare upper half of slv_reg8, which
+    // restores the full 14-bit 0.01 m/s resolution without moving any field.
+    sim_data_out.speed_x        = $signed({slv_reg4[23:16], slv_reg8[11:6]});
+    sim_data_out.speed_y        = $signed({slv_reg4[31:24], slv_reg8[17:12]});
 
     // slv_reg5
     sensor_data_out.distance       = slv_reg5[14:0];
@@ -528,14 +561,19 @@
 
     // slv_reg6
     sensor_data_out.lux            = slv_reg6[17:0];
-    sim_data_out.speed_z        = $signed({slv_reg6[25:18], 6'b0});
+    sim_data_out.speed_z        = $signed({slv_reg6[25:18], slv_reg8[23:18]});
     sim_data_out.accelerator    = slv_reg6[29:26];
     sim_data_out.weather        = slv_reg6[31:30];
 
     // slv_reg7
     sensor_data_out.temperature    = $signed(slv_reg7[10:0]);
     sim_data_out.speed_limit    = {slv_reg7[18:11], 5'b0};
-    sim_data_out.steering       = $signed({slv_reg7[23:19], 3'b0});
+    // steering also arrived truncated: 5 bits padded with three zero LSBs, one
+    // step being 8 % of full lock.  pred_gyro_z_3 = speed_x * steer_lut >> 10
+    // moved by 359 per steering step at 20 m/s against TH_GYR_STEER = 120, so
+    // relation 17 exceeded its threshold on 26 % of normal-driving samples.
+    // The three low bits now ride in slv_reg8[26:24].
+    sim_data_out.steering       = $signed({slv_reg7[23:19], slv_reg8[26:24]});
     sim_data_out.brake          = slv_reg7[27:24];
     sim_data_out.rpm            = slv_reg7[29:28];
     sim_data_out.gear           = slv_reg7[31:30];

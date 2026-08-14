@@ -1,0 +1,17 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/types_pkg.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/preprocessor.sv" into library work
+INFO: [VRFC 10-311] analyzing module preprocessor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/consistency_checker.sv" into library work
+INFO: [VRFC 10-311] analyzing module consistency_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/mask_20s.sv" into library work
+INFO: [VRFC 10-311] analyzing module mask_20s
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_checker.sv" into library work
+INFO: [VRFC 10-311] analyzing module each_sensor_check
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/sensor_reliability.sv" into library work
+INFO: [VRFC 10-311] analyzing module sensor_reliability
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_types.sv" into library work
+INFO: [VRFC 10-311] analyzing module risk_types
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/new/risk_control.sv" into library work
+INFO: [VRFC 10-311] analyzing module risk_control_2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/tb_core_logic.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_core_logic

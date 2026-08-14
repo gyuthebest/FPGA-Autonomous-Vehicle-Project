@@ -1,0 +1,11 @@
+timestamp=[2026-08-13 16:20:46], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.681, duration_ms=681, data={}
+timestamp=[2026-08-13 16:22:41], mode=APP_CREATION, duration=0:00:04.948, duration_ms=4948, data={name=carla_fpga_bridge, project_type=sdk, os=standalone, processor=cortex-a53, runtime=C/C++, platform=carla_fpga_platform, application_type=application}
+timestamp=[2026-08-13 16:28:21], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.588, duration_ms=588, data={}
+timestamp=[2026-08-13 16:29:35], mode=PLATFORM_GENERATION, duration=0:01:13.345, duration_ms=73345, data={name=carla_fpga_platform}
+timestamp=[2026-08-13 16:29:47], mode=BUILD, duration=0:00:00.398, duration_ms=398, data={name=carla_fpga_bridge, configuration=Debug, clean_build=false}
+timestamp=[2026-08-13 16:30:22], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.482, duration_ms=482, data={}
+timestamp=[2026-08-13 16:31:14], mode=PLATFORM_GENERATION, duration=0:00:50.415, duration_ms=50415, data={name=carla_fpga_platform}
+timestamp=[2026-08-13 16:31:25], mode=BUILD, duration=0:00:00.359, duration_ms=359, data={name=carla_fpga_bridge, configuration=Debug, clean_build=false}
+timestamp=[2026-08-13 17:33:56], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.592, duration_ms=592, data={}
+timestamp=[2026-08-13 17:34:48], mode=PLATFORM_GENERATION, duration=0:00:51.672, duration_ms=51672, data={name=carla_fpga_platform}
+timestamp=[2026-08-13 17:35:00], mode=BUILD, duration=0:00:02.457, duration_ms=2457, data={name=carla_fpga_bridge, configuration=Debug, clean_build=false}

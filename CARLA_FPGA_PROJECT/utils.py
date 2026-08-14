@@ -221,3 +221,49 @@ def dynamic_throttle_cap(speed: float, threshold_speed: float, cap_throttle: int
     if speed > threshold_speed:
         return 0
     return cap_throttle
+
+
+# ==========================================================
+# WAYPOINT HEADING (장애물 스폰 정렬)
+# ==========================================================
+
+MAX_SPAWN_HEADING_DEG = 25.0
+
+
+def heading_error_deg(waypoint_yaw: float, reference_yaw: float) -> float:
+    """두 heading 사이의 부호 없는 최소 각도차(0~180도)."""
+    return abs(((float(waypoint_yaw) - float(reference_yaw) + 180.0) % 360.0) - 180.0)
+
+
+def select_aligned_waypoint(
+    waypoints,
+    reference_yaw: float,
+    max_heading_deg: float = MAX_SPAWN_HEADING_DEG,
+    reject_junction: bool = True,
+):
+    """자차 진행 방향과 정렬된 waypoint만 고른다. 없으면 None.
+
+    기존 코드는 `min(candidates, key=heading_error)`만 사용했다. min()은 후보가
+    전부 교차로 가지여도 "가장 덜 어긋난" 것을 무조건 반환하므로, Town04
+    인터체인지/분기점에서 진행 방향과 90도 어긋난 waypoint에 차량이 스폰되어
+    앞차가 도로를 가로질러 서 있는 것처럼 보였다.
+
+    허용 각도를 넘거나 교차로 내부인 waypoint는 후보에서 제외하고, 남는 후보가
+    없으면 None을 돌려 호출부가 이번 시도를 건너뛰게 한다.
+    """
+    best = None
+    best_error = None
+
+    for waypoint in waypoints or ():
+        if reject_junction and getattr(waypoint, "is_junction", False):
+            continue
+        error = heading_error_deg(
+            waypoint.transform.rotation.yaw, reference_yaw
+        )
+        if error > max_heading_deg:
+            continue
+        if best_error is None or error < best_error:
+            best = waypoint
+            best_error = error
+
+    return best

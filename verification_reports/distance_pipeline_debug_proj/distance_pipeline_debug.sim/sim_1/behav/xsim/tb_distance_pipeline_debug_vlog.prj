@@ -1,0 +1,15 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  \
+"../../../../../../sources_1/new/types_pkg.sv" \
+"../../../../../../sources_1/new/consistency_checker.sv" \
+"../../../../../../sources_1/new/mask_20s.sv" \
+"../../../../../../sources_1/new/preprocessor.sv" \
+"../../../../../../sources_1/new/sensor_checker.sv" \
+"../../../../../../sources_1/new/sensor_reliability.sv" \
+"../../../../../../sources_1/verification/tb_distance_pipeline_debug.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

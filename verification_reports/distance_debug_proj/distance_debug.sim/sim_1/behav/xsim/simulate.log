@@ -1,0 +1,3 @@
+Time resolution is 1 ps
+DIST state=0 range=0 jump=0 stuck=0 noise=0 cons=0 timeout=0
+$finish called at time : 40046 ns : File "C:/Users/jiho0/GitProjects/FPGA-Autonomous-Vehicle-Project/sources_1/verification/tb_distance_debug.sv" Line 46
